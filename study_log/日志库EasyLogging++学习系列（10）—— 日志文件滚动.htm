@@ -1,0 +1,1085 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0057)https://blog.csdn.net/Fish_55_66/article/details/49617403 -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-CN"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+     
+<META charset="UTF-8">     <LINK href="https://blog.csdn.net/Fish_55_66/article/details/49617403" 
+rel="canonical">          
+<META name="renderer" content="webkit">     
+<META name="force-rendering" content="webkit">     
+<META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    
+<META name="apple-mobile-web-app-status-bar-style" content="black">     
+<META name="referrer" content="always">     
+<META name="description" content="在很多应用场合，我们是需要实现日志文件滚动的，特别是在一些长期运行的服务器程序中，如果把所有的日志都记录在一个文件之中，势必会造成日志文件越来越大。当日志内容很多的时候，万一哪天突然需要查询某个日志信息就会显得十分不便。所以，支持日志文件滚动是很多日志库都支持的功能，而文件滚动又可以分为按大小滚动和按时间滚动。&#10;&#10;&#10;按大小滚动文件&#10;&#10;&#10;&#10;在 Easylogging++ 中，已经实现了"> 
+    
+<META name="keywords" content="Easylogging++,C++日志">     
+<META http-equiv="Cache-Control" content="no-siteapp"><LINK href="#" rel="alternate" 
+media="handheld">     
+<META name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+    
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/tingyun-rum-blog.js"></SCRIPT>
+     <LINK href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">     
+<TITLE>日志库EasyLogging++学习系列（10）—— 日志文件滚动 - CSDN博客</TITLE>             <LINK 
+href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/detail-4170e79ecf.min.css" rel="stylesheet"> 
+        <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/skin3-template-9b39979775.min.css" 
+rel="stylesheet">     
+<SCRIPT type="text/javascript">
+        var username = "Fish_55_66";
+        var blog_address = "https://blog.csdn.net/fish_55_66";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49617403"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin3-template";
+        // 第四范式所需数据
+        var articleTitles = "日志库EasyLogging++学习系列（10）—— 日志文件滚动";
+        var articleID = "49617403";
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/main-1.0.6.js"></SCRIPT>
+     <!-- 新版上报 -->     
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/track.js" type="text/javascript"></SCRIPT>
+     <!-- 新版上报end -->             <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/sandalstrap.min.css" 
+rel="stylesheet">     
+<STYLE>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </STYLE>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> <!-- nodata 为 第四范式接口有问题时样式不变的处理 --> 
+<BODY class="nodata"><LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/content_toolbar.css" 
+rel="stylesheet">     
+<SCRIPT id="toolbar-tpl-scriptId" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></SCRIPT>
+ <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/blog_code-c3a0c33d5c.css" 
+rel="stylesheet"> <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/paging.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/mvf_news_feed.js" type="text/javascript"></SCRIPT>
+ 
+<DIV style="display: none;"><IMG onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' 
+src=""> </DIV><LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/chart-3456820cac.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/ds.js"></SCRIPT>
+ 
+<DIV class="container clearfix" id="mainBox"><!-- <div id="breadcrumbs">
+			<span><a href="https://blog.csdn.net/">博客首页</a></span>
+			<i>></i>
+			<span><a href="https://blog.csdn.net/fish_55_66">Fish的博客</a></span>
+			<i>></i>
+			<span>日志库EasyLogging++学习系列（10）—— 日志文件滚动...</span>
+		</div> -->
+		 
+<UL class="recommend-right"></UL><main>
+<DIV class="blog-content-box">
+<DIV class="article-header-box">
+<DIV class="article-header">
+<DIV class="article-title-box"><SPAN 
+class="article-type type-1 float-left">原</SPAN>				
+<H1 class="title-article">日志库EasyLogging++学习系列（10）—— 日志文件滚动</H1></DIV>
+<DIV class="article-info-box">
+<DIV class="article-bar-top"><SPAN class="time">2015年11月03日 15:54:52</SPAN>
+					 <A class="follow-nickName" href="https://me.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>
+						 <SPAN class="read-count">阅读数：5112</SPAN>																										 <SPAN 
+class="tags-box artic-tag-box"><SPAN class="label">标签：</SPAN>																 <A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=Easylogging++&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"Easylogging++"}' 
+data-track-click='{"mod":"popu_626","con":"Easylogging++"}'>Easylogging++																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=C++日志&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"C++日志"}' 
+data-track-click='{"mod":"popu_626","con":"C++日志"}'>C++日志																</A>
+							 </SPAN>																					 
+<DIV class="tags-box space"><SPAN class="label">个人分类：</SPAN>																 <A 
+class="tag-link" href="https://blog.csdn.net/Fish_55_66/article/category/5911481" 
+target="_blank">Easylogging++日志库																</A>							 </DIV></DIV>
+<DIV class="operating"></DIV></DIV></DIV></DIV><ARTICLE>
+<DIV class="article_content clearfix csdn-tracking-statistics" id="article_content" 
+data-dsm="post" data-mod="popu_307" data-pid="blog">
+<DIV class="article-copyright">
+					版权声明：本文为博主原创文章，转载请注明出处。					https://blog.csdn.net/Fish_55_66/article/details/49617403				</DIV><LINK 
+href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/ck_htmledit_views-e2445db1a8.css" 
+rel="stylesheet">						 
+<DIV class="htmledit_views">
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>在很多应用场合，我们是需要实现日志文件滚动的，特别是在一些长期运行的服务器程序中，如果把所有的日志都记录在一个文件之中，势必会造成日志文件越来越大。当日志内容很多的时候，万一哪天突然需要查询某个日志信息就会显得十分不便。所以，<SPAN 
+style="line-height: 25px;">支持日志文件滚动是很多日志库都支持的功能，而文件滚动又可以分为按大小滚动和按时间滚动。</SPAN></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25px;"><BR></SPAN></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25px;"><SPAN 
+style='line-height: 25px; font-family: "Microsoft YaHei";'><SPAN style="font-size: 24px;"><STRONG>按大小滚动文件</STRONG></SPAN></SPAN><BR></SPAN></SPAN></P>
+<P><BR></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>在 
+Easylogging++ 中，已经实现了按照日志文件大小来滚动日志记录。在前面《<A href="http://blog.csdn.net/fish_55_66/article/details/49425949" 
+rel="nofollow">日志库EasyLogging++学习系列（3）—— 配置功能</A>》一文中介绍配置文件时，有一个配置项：<SPAN style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(248, 248, 248);">MAX_LOG_FILE_SIZE，这个配置项的值（以字节为单位）表示的就是日志文件的最大大小。一旦日志文件的大小达到这个配置项设置的值，日志文件就会自动清空文件中所有的日志记录，并重新开始写入。不过</SPAN><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>配置项&nbsp;</SPAN><SPAN 
+style="line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>MAX_LOG_FILE_SIZE&nbsp;在默认情况下是不生效的，需要设置标记：</SPAN><SPAN 
+style="line-height: 21.76px; background-color: rgb(255, 255, 255);">LoggingFlag::StrictLogFileSizeCheck 
+ 来激活。另外，</SPAN></SPAN><SPAN 
+style="background-color: rgb(248, 248, 248);">如果我们想要保留之前的日志记录，那么我们可以注册一个回调函数，这个回调函数将会允许我们在清空日志文件之前对日志文件进行一次处理。下面的代码演示了按大小滚动日志文件，并通过回调函数保留了所有的日志记录：</SPAN></SPAN></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25.6px;"></SPAN></SPAN></P>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+static unsigned int idx;
+
+void rolloutHandler(const char* filename, std::size_t size) 
+{
+	/// 备份日志
+	system("mkdir bin");
+	std::stringstream ss;
+	ss &lt;&lt; "move " &lt;&lt; filename &lt;&lt; " bin\\log_backup_" &lt;&lt; ++idx;
+	system(ss.str().c_str());
+}
+
+int main(int, char**)
+{
+	idx = 0;
+	el::Loggers::addFlag(el::LoggingFlag::StrictLogFileSizeCheck);
+	el::Loggers::reconfigureAllLoggers(el::ConfigurationType::MaxLogFileSize, "100");
+
+	/// 注册回调函数
+	el::Helpers::installPreRollOutCallback(rolloutHandler);
+
+	for (int i = 0; i &lt; 100; ++i)
+	{
+		LOG(INFO) &lt;&lt; "Test";
+	}
+
+	/// 注销回调函数
+	el::Helpers::uninstallPreRollOutCallback();
+	return 0;
+}</CODE></PRE><SPAN 
+style="background-color: rgb(248, 248, 248);">通过配置文件来设置</SPAN><SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>配置项&nbsp;</SPAN><SPAN 
+style="line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>MAX_LOG_FILE_SIZE&nbsp;的大小也可以实现上述演示代码的效果，另外我们还可以设置不同级别的日志文件按照不同的文件大小来滚动。如果不小心忘记了</SPAN><SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>设置标记：</SPAN><SPAN 
+style="line-height: 21.76px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>LoggingFlag::StrictLogFileSizeCheck 
+ ，我们还可以通过调用函数&nbsp;</SPAN><SPAN style="line-height: 21.76px; background-color: rgb(255, 255, 255);">el::Helpers::validateFileRolling(el::Logger*, 
+const el::Level&amp;) 以</SPAN><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>手动的方式来检查日志滚动，</SPAN></SPAN><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>建议各位小伙伴可以自己尝试一下。</SPAN></SPAN><BR><BR>
+<P></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(248, 248, 248);"><SPAN style='line-height: 25px; font-family: "Microsoft YaHei"; font-size: 24px;'><STRONG>按时间滚动文件</STRONG></SPAN></SPAN></SPAN></SPAN></P>
+<P><BR></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(248, 248, 248);">在 Easylogging++ 
+中是没有实现按时间滚动日志文件的，不过既然是开源的日志库，我们可以参考着按大小滚动日志文件的实现方式，根据自己的需求去实现一个按时间滚动日志文件的功能。下面简单地说明一下实现步骤：</SPAN></SPAN></SPAN></P>
+<P></P>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;"><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>在按大小滚动日志文件中有</SPAN>配置项<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>&nbsp;</SPAN><SPAN 
+  style="line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>MAX_LOG_FILE_SIZE，所以我们也增加一个配置项&nbsp;LOG_FILE_ROLLING_TIME 
+   ，新增配置项的值类型为 char* 型，其值只能是以下四个："MONTH" 、"DAY"、"HOUR"、"MINUTE"，其中<SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>MONTH</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"表示按月份滚动日志文件，<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>DAY</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"表示按天数滚动日志文件，<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>HOUR</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"表示按小时滚动日志文件，<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>MINUTE</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>"表示按分钟滚动日志文件。</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;"><SPAN 
+  style="line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>在按大小滚动日志文件中有<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>标记&nbsp;</SPAN><SPAN 
+  style="line-height: 21.76px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>LoggingFlag::StrictLogFileSizeCheck 
+   来激活滚动功能，所以我们在实现按时间滚动日志文件的功能中也增加一个标记&nbsp;LoggingFlag::StrictLogFileTimeCheck 
+  来激活滚动功能。</SPAN></SPAN></SPAN><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>在按大小滚动日志文件中，允许我们在清空文件重新写入之前通过回调函数对日志文件进行处理，所以我们在<SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>按时间滚动日志文件的功能实现中，也同样保留该回调函数的功能，但是在<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>回调函数中增加了一个参数，用来<SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>区分是</SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>按大小滚动日志文件还是<SPAN 
+  style="line-height: 21.76px;">按时间滚动日志文件。</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN><BR></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 21.76px; font-size: 14px; background-color: rgb(248, 248, 248);">本文的最后提供了实现<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+  style="line-height: 21.76px;">按时间滚动日志文件</SPAN></SPAN>功能的<SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>Easylogging++&nbsp;</SPAN>源码，实现的细节可在源码中搜索“modify 
+  by Fish”来查看。 因本功能目前只限于本人在使用，如有错误，欢迎指正。</SPAN></SPAN></LI></UL>
+<DIV><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 21.76px; font-size: 14px;">下面的代码演示了如何使用新增的<SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'><SPAN 
+style="line-height: 21.76px;">按时间滚动日志文件的</SPAN></SPAN><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>功能：</SPAN></SPAN></SPAN></DIV>
+<DIV>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+void rolloutHandler(const char* filename, std::size_t size, el::base::RollingLogFileBasis rollingbasis)
+{
+	switch (rollingbasis)
+	{
+	case el::base::RollingLogFileBasis::RollLog_FileSize:
+		/// 按大小滚动日志文件
+		break;
+	case el::base::RollingLogFileBasis::RollLog_DateTime:
+		/// 按时间滚动日志文件
+	{
+		time_t cuurenttime = time(NULL);
+		cuurenttime -= 60;
+
+		struct::tm oneMinuteAgo;
+		localtime_s(&amp;oneMinuteAgo, &amp;cuurenttime);
+
+		std::string filenameTemp = filename;
+		int pos = filenameTemp.rfind('.');
+		filenameTemp = filenameTemp.substr(0, pos);
+		char backupFile[MAX_PATH] = { 0 };
+		sprintf_s(backupFile, MAX_PATH, "%s_%04d%02d%02d%02d%02d.log", filenameTemp.c_str(), oneMinuteAgo.tm_year + 1900
+			, oneMinuteAgo.tm_mon + 1, oneMinuteAgo.tm_mday, oneMinuteAgo.tm_hour, oneMinuteAgo.tm_min);
+
+		/// 自定义日志备份
+		std::stringstream ss;
+		ss &lt;&lt; "move " &lt;&lt; filename &lt;&lt; " " &lt;&lt; backupFile;
+		system(ss.str().c_str());
+	}
+		break;
+	default:
+		break;
+	}
+}
+
+int main(int, char**)
+{
+	el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
+	el::Loggers::addFlag(el::LoggingFlag::StrictLogFileTimeCheck);
+	el::Loggers::reconfigureAllLoggers(el::ConfigurationType::LogFileRollingTime, "minute");	/// 按分钟滚动日志文件
+
+	/// 注册回调函数
+	el::Helpers::installPreRollOutCallback(rolloutHandler);
+
+	for (int i = 0; i &lt; 100000; ++i)
+	{
+		LOG(DEBUG) &lt;&lt; "DEBUG";
+		LOG(INFO) &lt;&lt; "INFO";
+		DLOG(INFO) &lt;&lt; "DEBUG";
+		LOG(WARNING) &lt;&lt; "WARNING";
+		LOG(ERROR) &lt;&lt; "ERROR";
+		LOG(FATAL) &lt;&lt; "FATAL";
+		LOG(TRACE) &lt;&lt; "TRACE";
+
+		VLOG(0) &lt;&lt; "VERBOSE";
+		Sleep(1000);
+	}
+
+	/// 注销回调函数
+	el::Helpers::uninstallPreRollOutCallback();
+	return 0;
+}</CODE></PRE><SPAN 
+style="color: rgb(204, 0, 0);"></SPAN> 
+<DIV><SPAN style="color: rgb(204, 0, 0);"><BR></SPAN></DIV>特别提醒：</DIV>
+<DIV>
+<UL>
+  <LI><SPAN 
+  style="color: rgb(204, 0, 0);">因为在新增按时间滚动日志文件的功能中修改了回调函数，所以如果使用按大小滚动日志文件功能，也需要使用修改后的回调函数。</SPAN></LI>
+  <LI><SPAN 
+  style="color: rgb(204, 0, 0);">因为只有在有日志写入的时候才判断是否需要更新文件，所以如果无日志记录，日志文件是无法按时间滚动的。</SPAN></LI></UL><BR></DIV>
+<P></P>
+<P><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px; background-color: rgb(248, 248, 248);">在实际应用中，如果日志按时间滚动，我们的日志文件基本上都会以时间来命名，所以为了更加方便地使用，我们可以在实现了按时间滚动功能的代码上再增加一个宏定义ELPP<SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>_NAME</SPAN>_LOG_FILE_AFTER_TIME。通过定义这个宏，我们实现了这样一个功能：当按时间滚动日志时，可以自动地创建新的日志文件，并且会以滚动时间命名新建文件。不过这个功能目前并不是很完善，使用起来有以下几个限制条件：</SPAN></SPAN></P>
+<P></P>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;">不同级别的日志必须保存在不同的日志文件中，否则无法实现日志滚动。</SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;">按月份滚动的日志文件名中日期格式须配置：%datetime{%Y%M}，如</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'>FILENAME 
+  = "log\\test_%datetime{%Y%M}.log"。</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 25.6px;">按天数滚动的日志文件名中日期格式须配置：%datetime{%Y%M%d}，如</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'>FILENAME 
+  = "log\\test_%datetime{%Y%M%d}.log"。</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 25.6px;">按小时滚动的日志文件名中日期格式须配置：%datetime{%Y%M%d%H}，如</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'>FILENAME 
+  = "log\\test_%datetime{%Y%M%d%H}.log"。</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 25.6px;">按分钟滚动的日志文件名中日期格式须配置：%datetime{%Y%M%d%H%m}，如</SPAN></SPAN><SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'>FILENAM="log\\test_%datetime{%Y%M<SPAN 
+  style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px;'>%d%H%m</SPAN>}.log"。</SPAN></LI></UL>
+<DIV><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;">虽然使用这个功能有些限制条件，但是这些条件基本符合我平时的使用习惯，因为不同级别的日志在实际应用中我肯定是会保存在不同的文件中，而且文件名中的日期格式也和滚动的时间间隔一致，所以我也就没有去完善这个功能。下面通过配置文件的方式演示了这个功能：</SPAN></SPAN></DIV>
+<DIV><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;"></SPAN></SPAN>
+<PRE><CODE class="language-cpp">#define ELPP_NAME_LOG_FILE_AFTER_TIME
+#define ELPP_NO_DEFAULT_LOG_FILE
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int, char**)
+{
+	el::Loggers::addFlag(el::LoggingFlag::DisableApplicationAbortOnFatalLog);
+	el::Loggers::addFlag(el::LoggingFlag::StrictLogFileTimeCheck);
+
+	el::Configurations conf("log.conf");
+	el::Loggers::reconfigureAllLoggers(conf);
+
+	for (int i = 0; i &lt; 100000; ++i)
+	{
+		LOG(DEBUG) &lt;&lt; "DEBUG";
+		LOG(INFO) &lt;&lt; "INFO";
+		LOG(WARNING) &lt;&lt; "WARNING";
+		LOG(ERROR) &lt;&lt; "ERROR";
+		LOG(FATAL) &lt;&lt; "FATAL";
+		LOG(TRACE) &lt;&lt; "TRACE";
+
+		VLOG(0) &lt;&lt; "VERBOSE";
+		Sleep(1000);
+	}
+
+	return 0;
+}</CODE></PRE>其中的配置文件 
+log.conf 内容如下：</DIV>
+<DIV>
+<PRE><CODE class="language-plain">* GLOBAL:
+    FORMAT                  =   "[%level | %datetime] | %msg"
+    ENABLED                 =   true
+    TO_FILE                 =   true
+    TO_STANDARD_OUTPUT      =   true
+	LOG_FLUSH_THRESHOLD     =   0
+    MILLISECONDS_WIDTH      =   3
+    PERFORMANCE_TRACKING    =   false
+    MAX_LOG_FILE_SIZE       =   2097152 ## Throw log files away after 2097152 2MB / 209715200 200MB / 4398046511104 1GB
+    LOG_FILE_ROLLING_TIME   =   minute
+* INFO:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_info.log"
+* DEBUG:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_debug.log"
+* WARNING:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_warning.log"
+* TRACE:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_trace.log"
+* VERBOSE:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_verbose.log"
+* ERROR:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_error.log"
+* FATAL:
+    FILENAME                =   "log\\test_%datetime{%Y%M%d%H%m}_fatal.log"</CODE></PRE>利用上述演示代码，可以完全自动地按照每分钟的间隔创建如下格式的日志文件：</DIV>
+<DIV><IMG alt="" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/20151105100039340.png"><BR><BR></DIV>
+<DIV><SPAN style='font-family: "Microsoft YaHei";'><SPAN style="line-height: 25.6px; font-size: 14px;">按时间滚动日志文件之所以写了这么多，最主要的原因就是为了说明在开源的日志库中，我们可以完全自主地按照自己的想法来实现一些符合自己需求的功能。比如上面介绍的宏定义<SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>ELPP</SPAN><SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>_NAME</SPAN><SPAN 
+style='line-height: 25.6px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(248, 248, 248);'>_LOG_FILE_AFTER_TIME功能，虽然还不完善，但是只要严格按照限制条件来使用，完全可以达到我们想要的效果。对于开源代码，能够直接使用还并不是我们最终的目的，能够在开源的基础上加以修改完善并应用于实际编程当中才是我们学习开源代码的初衷。</SPAN></SPAN></SPAN></DIV>
+<DIV><BR></DIV>
+<DIV><SPAN style="color: rgb(51, 51, 255); font-size: 24px;"><A href="http://download.csdn.net/detail/fish_55_66/9247547" 
+rel="nofollow">猛戳这里，下载源码！</A></SPAN></DIV>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(248, 248, 248);"><BR></SPAN></SPAN></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(248, 248, 248);"><BR></SPAN></SPAN></SPAN></P></DIV></DIV>
+<DIV class="hide-article-box text-center"><A class="btn" id="btn-readmore" 
+data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,"}' 
+data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,"}'>阅读更多</A>
+			 <A class="btn" id="btn-lobinreadmore" href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_more_login" 
+target="_self" data-track-view='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,"}' 
+data-track-click='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,"}'>登录后自动展开</A>
+		 </DIV></ARTICLE></DIV>
+<SCRIPT>
+		$(".MathJax").remove();
+		if($('div.markdown_views pre.prettyprint code.hljs').length > 0 ){
+				$('div.markdown_views')[0].className = 'markdown_views';
+		}
+</SCRIPT>
+ <!-- 博客详情页PC增加广告系统刷量代码 --> 
+<DIV id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+<SCRIPT id="adJs52b5334"></SCRIPT>
+ 
+<SCRIPT>document.getElementById("adJs52b5334").src = "https://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</SCRIPT>
+ </DIV>
+<SCRIPT>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</SCRIPT>
+         
+<DIV class="p4course_target"></DIV>
+<SCRIPT>window.p4sdk_enable_courseBox=true</SCRIPT>
+        <A id="commentBox"></A> 
+<DIV class="comment-box">
+<DIV class="unlogin-box text-center">想对作者说点什么？		 <!-- $curl 当前地址 -->		 <A class="btn btn-sm btn-red" 
+href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49617403#commentBox">我来说一句</A>
+	 </DIV>
+<DIV class="comment-list-container"><A id="comments"></A>		 
+<DIV class="comment-list-box"></DIV>
+<DIV class="pagination-box d-none" id="commentPage"></DIV>
+<DIV class="opt-box text-center"><BUTTON class="btn btn-sm btn-link-blue" id="btnMoreComment"></BUTTON>
+		 </DIV></DIV></DIV>
+<DIV class="recommend-box">
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/du_bingbing/article/details/54970120,BlogCommendClickRateRank_0"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/du_bingbing/article/details/54970120,BlogCommendClickRateRank_0"}'><A 
+title="Easyloggingpp的使用" href="https://blog.csdn.net/du_bingbing/article/details/54970120" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">						Easyloggingpp的使用				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="du_bingbing" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_du_bingbing.jpg">
+							 <SPAN class="namebox"><SPAN class="name">du_bingbing</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-10</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1272</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/u013595419/article/details/79172322,BlogCommendClickRateRank_1"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/u013595419/article/details/79172322,BlogCommendClickRateRank_1"}'><A 
+title="shell实现<em>日志</em><em>滚动</em>" href="https://blog.csdn.net/u013595419/article/details/79172322" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">shell实现<EM>日志</EM><EM>滚动</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="u013595419" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_u013595419.jpg">
+							 <SPAN class="namebox"><SPAN class="name">u013595419</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">01-26</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							488</SPAN>						 </P></DIV>
+<P class="content oneline">什么是日志滚动？
+ 在日常linux的操作中，经常会产生各种各样的日志文件，如果不加以处理，经常会导致单个日志文件体积过于臃肿，不利于后期排查。因此需要对日志文件定期操作，比如每天将日志文件打包备份，...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box clearfix">
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/pc3553.js" type="text/javascript"></SCRIPT>
+				 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendClickRateRank_2"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendClickRateRank_2"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（1）—— 简要介绍" href="https://blog.csdn.net/Fish_55_66/article/details/49367197" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（1）—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-23</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							7905</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Qsir/article/details/73335809,BlogCommendClickRateRank_3"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Qsir/article/details/73335809,BlogCommendClickRateRank_3"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（3）—— 配置功能" href="https://blog.csdn.net/Qsir/article/details/73335809" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（3）—— 
+配置功能				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Qsir" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_qsir.gif">
+							 <SPAN class="namebox"><SPAN class="name">Qsir</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							527</SPAN>						 </P></DIV>
+<P class="content oneline">在前面的文章 《日志库Easylogging++学习系列（1） —— 
+简要介绍&nbsp;》中，我们已经初步见识到了 Easylogging++  
+日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident recommend-download-box clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://download.csdn.net/download/starelegant/9932372,BlogCommendClickRateRank_4"}' 
+data-track-click='{"mod":"popu_387","con":",https://download.csdn.net/download/starelegant/9932372,BlogCommendClickRateRank_4"}'><A 
+href="https://download.csdn.net/download/starelegant/9932372" target="_blank">
+<DIV class="content">
+<DIV><SPAN class="type">下载</SPAN>						 
+<H4 class="text-truncate oneline clearfix">
+							简单好用的Log类，<EM>easylogging++</EM>示例工程						</H4><SPAN class="data float-right">08-14</SPAN>
+					 </DIV>
+<DIV 
+class="desc oneline">程序开发中，为了对程序运行状况的了解，使用log记录输出到文件，能方便地调试程序，可以极大地提升开发效率。知名的log类有Boost.log，Log4cpp 
+log4cplus 等。推荐一个方便好用的					</DIV></DIV></A></DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/TT_DUL/article/details/51601683,BlogCommendClickRateRank_5"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/TT_DUL/article/details/51601683,BlogCommendClickRateRank_5"}'><A 
+title="log4j <em>滚动</em><em>日志</em> 及 实现操作<em>日志</em>" href="https://blog.csdn.net/TT_DUL/article/details/51601683" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">log4j <EM>滚动</EM><EM>日志</EM> 及 
+实现操作<EM>日志</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="TT_DUL" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_tt_dul.jpg">
+							 <SPAN class="namebox"><SPAN class="name">TT_DUL</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-07</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4423</SPAN>						 </P></DIV>
+<P class="content oneline">							log4j.xml 用户操作日志   系统滚动日志  Druid 
+连接池配置					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></DIV>
+<SCRIPT>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 8,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</SCRIPT>
+						 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/tterminator/article/details/45077035,BlogCommendClickRateRank_6"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/tterminator/article/details/45077035,BlogCommendClickRateRank_6"}'><A 
+title="tail实时<em>滚动</em>显示log文件内容" href="https://blog.csdn.net/tterminator/article/details/45077035" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">						tail实时<EM>滚动</EM>显示log文件内容				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="tterminator" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_tterminator.jpg">
+							 <SPAN class="namebox"><SPAN class="name">tterminator</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">04-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1.5万</SPAN>						 </P></DIV>
+<P class="content oneline">Linux shell中有一个tail命令，常用来显示一个文件的最后n行文档内容
+ 但更多情况下，我们要在服务器端运行程序，并且需要实时监控运行日志，这时候有什么办法实时滚动显示log文件内容？ ...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/arkblue/article/details/50908001,BlogCommendClickRateRank_7"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/arkblue/article/details/50908001,BlogCommendClickRateRank_7"}'><A 
+title="logback配置按照大小<em>滚动</em>" href="https://blog.csdn.net/arkblue/article/details/50908001" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">logback配置按照大小<EM>滚动</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="arkblue" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_arkblue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">arkblue</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">03-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							5453</SPAN>						 </P></DIV>
+<P class="content oneline">
+							appender的定义，最多20个后备文件，index从1到20；当前日志文件大小超过1G，会滚动执行	
+		 /home/admin/pull/project.log					/home/a...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendClickRateRank_8"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendClickRateRank_8"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（2）—— <em>日志</em>级别" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49407891" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（2）—— 
+<EM>日志</EM>级别				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-25</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4182</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多的C++日志库中，日志信息会根据严重性来划分级别，使用者可以设置严重性级别门阀值来控制日志的输出，即严重性级别在该门阀值以上的日志信息才进行记录。然而在Easylogging++中，故意默认采用...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendClickRateRank_9"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendClickRateRank_9"}'><A 
+title="在VS2015中使用<em>easylogging++</em>添加支持Unicode" href="https://blog.csdn.net/mail_cm/article/details/73604744" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline">在VS2015中使用<EM>easylogging++</EM>添加支持Unicode				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="mail_cm" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_mail_cm.jpg">
+							 <SPAN class="namebox"><SPAN class="name">mail_cm</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-22</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							665</SPAN>						 </P></DIV>
+<P 
+class="content oneline">我在win32应用程序中使用easylogging++做日志，字符集使用的是Unicode,默认无法输出中文到日志，看了http://blog.csdn.net/Fish_55_66/article/...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box type_hot_word">
+<DIV class="content clearfix oneline">
+<H5 class="float-left">相关热词</H5>
+<DIV class="float-left"><SPAN><A href="https://blog.csdn.net/anning_88/article/details/53694810" 
+target="_blank">was的日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/watermelonh/article/details/77471354" 
+target="_blank">as日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_29580525/article/details/79482020" 
+target="_blank">						日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/sdwxqing/article/details/21523079" 
+target="_blank">was日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_19891827/article/details/73732983" 
+target="_blank">						日志组件打日志</A>					 </SPAN>								 </DIV></DIV></DIV>
+<DIV class="recommend-loading-box"><IMG src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/feedLoading.gif"> 
+            </DIV>
+<DIV class="recommend-end-box">
+<P class="text-center">没有更多推荐了，<A class="c-blue c-blue-hover c-blue-focus" href="https://blog.csdn.net/">返回首页</A></P></DIV></DIV></main><ASIDE>
+<DIV class="aside-box" id="asideProfile">
+<H3 class="aside-title">个人资料</H3>
+<DIV class="profile-intro d-flex">
+<DIV class="avatar-box d-flex justify-content-center flex-column"><A href="https://blog.csdn.net/Fish_55_66"><IMG 
+class="avatar_pic" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/3_fish_55_66.jpg"></A> 
+        </DIV>
+<DIV class="user-info d-flex justify-content-center flex-column">
+<P class="name csdn-tracking-statistics tracking-click" data-mod="popu_379"><A 
+id="uid" href="https://blog.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>  
+           </P></DIV>
+<DIV class="opt-box d-flex justify-content-center flex-column"><SPAN class="csdn-tracking-statistics tracking-click" 
+data-mod="popu_379"><A class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49617403" 
+target="_self">关注</A>                             </SPAN>                     
+</DIV></DIV>
+<DIV class="data-info d-flex item-tiling">
+<DL title="22" class="text-center">
+  <DT><A href="https://blog.csdn.net/fish_55_66?t=1">原创</A></DT>
+  <DD><A href="https://blog.csdn.net/fish_55_66?t=1"><SPAN 
+  class="count">22</SPAN></A></DD></DL>
+<DL title="30" class="text-center">
+  <DT>粉丝</DT>
+  <DD><SPAN class="count" id="fan">30</SPAN></DD></DL>
+<DL title="7" class="text-center">
+  <DT>喜欢</DT>
+  <DD><SPAN class="count">7</SPAN></DD></DL>
+<DL title="20" class="text-center">
+  <DT>评论</DT>
+  <DD><SPAN class="count">20</SPAN></DD></DL></DIV>
+<DIV class="grade-box clearfix">
+<DL>
+  <DT>等级：</DT>             
+  <DD><A title="3级,点击查看等级说明" href="https://blog.csdn.net/home/help.html#level" 
+  target="_blank"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon icon-level" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bloglevel-3" />                     </svg>                 
+  </A>             </DD>         </DL>
+<DL>
+  <DT>访问：</DT>             
+  <DD title="63690">6万+            </DD>         </DL>
+<DL>
+  <DT>积分：</DT>             
+  <DD title="864">864            </DD>         </DL>
+<DL title="66590">
+  <DT>排名：</DT>             
+  <DD>6万+</DD>         </DL></DIV>
+<DIV class="badge-box d-flex"><SPAN>勋章：</SPAN>                         <A title="持之以恒" 
+class="icon-badge"><svg xmlns="http://www.w3.org/2000/svg" class="icon" 
+aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" 
+/>             </svg>             
+<DIV class="icon-arrow"></DIV>
+<DIV class="grade-detail-box item2">
+<DIV class="pos-box">
+<DIV class="left-box d-flex justify-content-center align-items-center flex-column"><svg 
+xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" />      
+                   </svg>                         
+<P>持之以恒</P></DIV>
+<DIV class="right-box d-flex justify-content-center align-items-center">         
+               
+授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！              
+       </DIV></DIV></DIV></A></DIV></DIV>
+<DIV class="csdn-tracking-statistics mb8 box-shadow" style="height: 250px;" 
+data-mod="popu_4" data-pid="blog">
+<DIV class="aside-content text-center" id="cpro_u2734133"><!-- 广告位：PC-博客内页-百度联盟-300x250 -->
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/ymebi.js" type="text/javascript"></SCRIPT>
+    </DIV></DIV>
+<DIV class="aside-box" id="asideNewArticle">
+<H3 class="aside-title">最新文章</H3>
+<DIV class="aside-content">
+<UL class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/51064137" 
+  target="_blank">MFC调用4.0.1版本libpqxx库连接postgresql数据库提示编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50955806" 
+  target="_blank">图文说明Visual Studio 2013编译libpqxx步骤以及常见编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50601289" 
+  target="_blank">在DLL中定义宏ELPP_THREAD_SAFE会导致EasyLogging++初始化死锁的问题</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50454754" 
+  target="_blank">探讨WaitForMultipleObjects如何突破64个句柄的限制</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50352080" 
+  target="_blank">Windows网络编程之Select模型学习笔记</A></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideCategory">
+<H3 class="aside-title">个人分类</H3>
+<DIV class="aside-content">
+<UL>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5887819"><SPAN 
+  class="title oneline">C++点滴记录</SPAN>                     <SPAN class="count float-right">3篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5911481"><SPAN 
+  class="title oneline">Easylogging++日志库</SPAN>                     <SPAN class="count float-right">12篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5999661"><SPAN 
+  class="title oneline">日常杂记</SPAN>                     <SPAN class="count float-right">7篇</SPAN> 
+                  </A></LI></UL></DIV></DIV>
+<DIV class="aside-box flexible-box" id="asideArchive">
+<H3 class="aside-title">归档</H3>
+<DIV class="aside-content">
+<UL class="archive-list"><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/04">2016年4月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/03">2016年3月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/01">2016年1月   
+                   <SPAN class="count float-right">2篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/12">2015年12月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/11">2015年11月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/10">2015年10月  
+                    <SPAN class="count float-right">12篇</SPAN>                 
+  </A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box" id="asideHotArticle">
+<H3 class="aside-title">热门文章</H3>
+<DIV class="aside-content">
+<UL class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49367197">日志库EasyLogging++学习系列（1）—— 
+  简要介绍</A>
+  <P class="read">阅读量：<SPAN>7890</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49425949">日志库EasyLogging++学习系列（3）—— 
+  配置功能</A>
+  <P class="read">阅读量：<SPAN>5870</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49617403">日志库EasyLogging++学习系列（10）—— 
+  日志文件滚动</A>
+  <P class="read">阅读量：<SPAN>5098</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/details/49152531">Visual 
+  Studio 2013开发MFC程序对Excel 2010进行写操作（上）</A>
+  <P class="read">阅读量：<SPAN>5058</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49407891">日志库EasyLogging++学习系列（2）—— 
+  日志级别</A>
+  <P class="read">阅读量：<SPAN>4167</SPAN></P></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideNewComments">
+<H3 class="aside-title">最新评论</H3>
+<DIV class="aside-content">
+<UL class="newcomment-list">
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/50601289#comments" 
+  target="_blank">在DLL中定义宏ELPP_THRE...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Doctor_Warren" 
+  target="_blank">Doctor_Warren</A>：谢谢，我最近也被easylogging的多线程问题折腾了，学习学习            
+      </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Wuzm_" 
+  target="_blank">Wuzm_</A>：[reply]woyouyigemengmeng[/reply] 添加 INITIALIZE_EA... 
+                 </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49451321#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：配置好多，大多用不到                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49659825#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：这个库确实功能强大                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/yokeyoke" 
+  target="_blank">yokeyoke</A>：感谢你分享这么完整的资料                
+</P></LI></UL></DIV></DIV>
+<DIV id="asideFooter">
+<DIV class="aside-box">
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/yn6yz.js" type="text/javascript"></SCRIPT>
+					 </DIV>
+<DIV class="aside-box">
+<DIV class="persion_article"></DIV></DIV></DIV></ASIDE>
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/publib_footer-1.0.3.js" type="text/javascript" data-isfootertrack="false"></SCRIPT>
+ 
+<SCRIPT>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</SCRIPT>
+ </DIV>
+<DIV class="mask-dark"></DIV>
+<DIV class="pulllog-box" style="display: block;">
+<DIV class="pulllog clearfix"><SPAN class="text float-left"><!-- 广告位：PC-博客内页底通 文字链位置 -->
+										 
+<SCRIPT>
+			var mediav_ad_pub = 'cXt9eo_2313086';
+			var mediav_ad_width = '500';
+			var mediav_ad_height = '36';
+			</SCRIPT>
+			 
+<SCRIPT language="javascript" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/mvf_g2.js" type="text/javascript" charset="utf-8"></SCRIPT>
+							 </SPAN>		 
+<DIV class="pulllog-btn float-right clearfix"><BUTTON class="pulllog-login float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_557"><A href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_login" 
+target="_self">登录</A></BUTTON>             
+<DIV class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_558"><A href="https://passport.csdn.net/account/mobileregister" 
+target="_blank">注册</A></DIV><BUTTON class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-times" />                 </svg>             </BUTTON>
+		 </DIV></DIV></DIV>
+<DIV id="loginWrap" style="display: none;"></DIV>
+<DIV class="tool-box">
+<UL class="meau-list">
+  <LI class="btn-like-box "><BUTTON title="点赞" class=" low-height hover-box btn-like "><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon active hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup" />				 </svg>				 <SPAN class="hover-show text-box text"><SPAN 
+  class="no-active">点赞</SPAN>					 <SPAN class="active">取消点赞</SPAN>				 </SPAN>
+  				 
+  <P>0</P></BUTTON>		 </LI>
+  <LI><A title="写评论" class="btn-comments low-height hover-box" href="https://blog.csdn.net/Fish_55_66/article/details/49617403#commentBox"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-comments" />				 </svg>				 <SPAN 
+  class="hover-show text">评论</SPAN>				 
+  <P></P></A></LI>
+  <LI class="toc-container-box" id="liTocBox"><BUTTON title="目录" class="btn-toc low-height hover-box"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-contents" />				 </svg>				 <SPAN 
+  class="hover-show text">目录</SPAN>			 </BUTTON>			 
+  <DIV class="toc-container">
+  <DIV class="pos-box">
+  <DIV class="icon-arrow"></DIV>
+  <DIV class="scroll-box">
+  <DIV class="toc-box"></DIV></DIV></DIV>
+  <DIV class="opt-box"><BUTTON title="向上" class="btn-opt prev nomore"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevronup" />
+  						 </svg>					 </BUTTON>					 <BUTTON class="btn-opt next"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevrondown" />
+  						 </svg>					 </BUTTON>				 </DIV></DIV></LI>
+  <LI><BUTTON title="收藏" class="btn-bookmark low-height hover-box"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark" />				 </svg>					 <SPAN 
+  class="hover-show text">收藏</SPAN>				 <!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+  			 </BUTTON>		 </LI>
+  <LI class="bdsharebuttonbox"><BUTTON 
+  class="btn-comments low-height hover-box"><A title="手机看" class="bds_weixin clear-share-style" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49617403#" data-cmd="weixin"></A>
+  				 <svg xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-wechat" />				 </svg>				 <SPAN class="hover-show text text3">手机看
+  				 </SPAN>			 </BUTTON>		 </LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（9）—— 性能跟踪功能" class="btn-comments low-height hover-box" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49587949"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-shangyiye" />					 </svg>					 <SPAN class="hover-show text text3">上一篇</SPAN>
+  				 </A></LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（11）—— 共享日志库" class="btn-comments hover-box low-height" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49659825"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-xiayiye" />				 </svg>				 <SPAN class="hover-show text text3">下一篇</SPAN>
+  			 </A></LI>
+  <LI class="bdsharebuttonbox _360_interactive" style="margin-top: 8px;">
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/interactive_plugin.js" type="text/javascript"></SCRIPT>
+   			
+<STYLE>
+				#_360_interactive > *{
+					 margin-left: -8px;
+				}
+			</STYLE>
+  			 
+  <DIV id="_360_interactive">
+<SCRIPT> INTERACTIVE_PLUGIN.render({ showid : 'N0ufqn', w: 60, h: 60, type: 'click', placeholderId: '_360_interactive' }); </SCRIPT>
+   			</DIV><IMG style="margin: 0px auto; display: block;" alt="" src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/201608021757063065.png"></LI><!-- 宽屏更多按钮 -->
+  		 
+  <LI class="widescreen-more"><A title="快问" class="btn-comments chat-ask-button low-height hover-box" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49617403#chatqa"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-more" />				 </svg>				 <SPAN 
+  class="hover-show text">更多</SPAN>							 </A>
+  <UL class="widescreen-more-box">
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（9）—— 性能跟踪功能" 
+    class="btn-comments low-height hover-box" href="https://blog.csdn.net/fish_55_66/article/details/49587949"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-shangyiye" />							 </svg>							 <SPAN class="hover-show text text3">上一篇</SPAN>
+    						 </A></LI>
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（11）—— 共享日志库" 
+    class="btn-comments hover-box low-height" href="https://blog.csdn.net/fish_55_66/article/details/49659825"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-xiayiye" />						 </svg>						 <SPAN class="hover-show text text3">下一篇</SPAN>
+    					 </A></LI></UL></LI></UL></DIV>
+<SCRIPT>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</SCRIPT>
+ 
+<SCRIPT>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "日志库EasyLogging++学习系列（10）—— 日志文件滚动";
+    var ChannelId = 0;
+    var articleId = "49617403";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Fish_55_66/article/details/49617403";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "easylogging%2B%2B+%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F";
+    var needInsertBaidu = false;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u65e5\u5fd7","easylogging++","\u5b66\u4e60","\u7cfb\u5217","10","\u65e5\u5fd7\u6587\u4ef6","\u6eda\u52a8"];//高亮数组
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/sandalstrap.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/paging.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/goTop-v1.0.min.js"></SCRIPT>
+ 
+<SCRIPT>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"日志库EasyLogging++学习系列（10）—— 日志文件滚动");
+        }
+    })
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/common-ffcd47990c.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/detail-7060b66935.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/skin3-template-9376486353.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/baidu_search-1.1.2.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/chart.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/chart.min.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/widget2chart.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/atom-one-dark.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/pc_wap_common-676a063698.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（10）——%20日志文件滚动_files/MathJax.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</SCRIPT>
+ </BODY><!-- 第四范式SDK --><!-- 高亮未与 markdown兼容  --></HTML>

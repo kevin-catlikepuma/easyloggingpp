@@ -1,0 +1,1131 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0057)https://blog.csdn.net/Fish_55_66/article/details/49508961 -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-CN"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+     
+<META charset="UTF-8">     <LINK href="https://blog.csdn.net/Fish_55_66/article/details/49508961" 
+rel="canonical">          
+<META name="renderer" content="webkit">     
+<META name="force-rendering" content="webkit">     
+<META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    
+<META name="apple-mobile-web-app-status-bar-style" content="black">     
+<META name="referrer" content="always">     
+<META name="description" content="这里之所以把Verbose日志单独拿出来讲，是因为最初接触 Easylogging++ 的时候，对Verbose级别的日志感到有点迷惑，并不是十分清楚其用法。不过后来发现，在不扩展日志级别的情况下，其实Verbose日志可以让我们轻松地记录更多更详细的信息，特别是在排错的日志记录中，使用Verbose级别的日志最为合适。"> 
+    
+<META name="keywords" content="Easylogging++,C++日志">     
+<META http-equiv="Cache-Control" content="no-siteapp"><LINK href="#" rel="alternate" 
+media="handheld">     
+<META name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+    
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/tingyun-rum-blog.js"></SCRIPT>
+     <LINK href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">     
+<TITLE>日志库EasyLogging++学习系列（8）—— Verbose日志详解 - CSDN博客</TITLE>             <LINK 
+href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/detail-4170e79ecf.min.css" 
+rel="stylesheet">         <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/skin3-template-9b39979775.min.css" 
+rel="stylesheet">     
+<SCRIPT type="text/javascript">
+        var username = "Fish_55_66";
+        var blog_address = "https://blog.csdn.net/fish_55_66";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49508961"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin3-template";
+        // 第四范式所需数据
+        var articleTitles = "日志库EasyLogging++学习系列（8）—— Verbose日志详解";
+        var articleID = "49508961";
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/main-1.0.6.js"></SCRIPT>
+     <!-- 新版上报 -->     
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/track.js" type="text/javascript"></SCRIPT>
+     <!-- 新版上报end -->             <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/sandalstrap.min.css" 
+rel="stylesheet">     
+<STYLE>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </STYLE>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> <!-- nodata 为 第四范式接口有问题时样式不变的处理 --> 
+<BODY class="nodata"><LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/content_toolbar.css" 
+rel="stylesheet">     
+<SCRIPT id="toolbar-tpl-scriptId" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></SCRIPT>
+ <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/blog_code-c3a0c33d5c.css" 
+rel="stylesheet"> <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/paging.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/mvf_news_feed.js" type="text/javascript"></SCRIPT>
+ 
+<DIV style="display: none;"><IMG onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' 
+src=""> </DIV><LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/chart-3456820cac.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/ds.js"></SCRIPT>
+ 
+<DIV class="container clearfix" id="mainBox"><!-- <div id="breadcrumbs">
+			<span><a href="https://blog.csdn.net/">博客首页</a></span>
+			<i>></i>
+			<span><a href="https://blog.csdn.net/fish_55_66">Fish的博客</a></span>
+			<i>></i>
+			<span>日志库EasyLogging++学习系列（8）—— Verbose日志详解...</span>
+		</div> -->
+		 
+<UL class="recommend-right"></UL><main>
+<DIV class="blog-content-box">
+<DIV class="article-header-box">
+<DIV class="article-header">
+<DIV class="article-title-box"><SPAN 
+class="article-type type-1 float-left">原</SPAN>				
+<H1 class="title-article">日志库EasyLogging++学习系列（8）—— Verbose日志详解</H1></DIV>
+<DIV class="article-info-box">
+<DIV class="article-bar-top"><SPAN class="time">2015年10月30日 11:43:44</SPAN>
+					 <A class="follow-nickName" href="https://me.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>
+						 <SPAN class="read-count">阅读数：3537</SPAN>																										 <SPAN 
+class="tags-box artic-tag-box"><SPAN class="label">标签：</SPAN>																 <A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=Easylogging++&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"Easylogging++"}' 
+data-track-click='{"mod":"popu_626","con":"Easylogging++"}'>Easylogging++																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=C++日志&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"C++日志"}' 
+data-track-click='{"mod":"popu_626","con":"C++日志"}'>C++日志																</A>
+							 </SPAN>																					 
+<DIV class="tags-box space"><SPAN class="label">个人分类：</SPAN>																 <A 
+class="tag-link" href="https://blog.csdn.net/Fish_55_66/article/category/5911481" 
+target="_blank">Easylogging++日志库																</A>							 </DIV></DIV>
+<DIV class="operating"></DIV></DIV></DIV></DIV><ARTICLE>
+<DIV class="article_content clearfix csdn-tracking-statistics" id="article_content" 
+data-dsm="post" data-mod="popu_307" data-pid="blog">
+<DIV class="article-copyright">
+					版权声明：本文为博主原创文章，转载请注明出处。					https://blog.csdn.net/Fish_55_66/article/details/49508961				</DIV><LINK 
+href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/ck_htmledit_views-e2445db1a8.css" 
+rel="stylesheet">						 
+<DIV class="htmledit_views">
+<P><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>这里之所以把Verbose日志单独拿出来讲，是因为最初接触 
+Easylogging++ 
+的时候，对Verbose级别的日志感到有点迷惑，并不是十分清楚其用法。不过后来发现，在不扩展日志级别的情况下，其实Verbose日志可以让我们更轻松地记录更多更详细的信息，特别是在排错的日志记录中，没有哪个级别的日志比使用Verbose级别的日志更为合适了。</SPAN></P>
+<P><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></P>
+<P><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="line-height: 26px;">正如如前面文章提到的一样，Verbose日志并不适用于划分级别的日志记录，意思就是说在设置了<SPAN 
+style="line-height: 26px;">标记：</SPAN><SPAN 
+style="line-height: 21.76px;">LoggingFlag::HierarchicalLogging  
+的日志记录中，</SPAN>即使门阀值设置大于<SPAN 
+style="line-height: 26px;">Verbose</SPAN>级别，甚至是设置成Unknown，也无法关闭<SPAN style="line-height: 26px;">Verbose</SPAN><SPAN 
+style="line-height: 26px;">级别日志的输出</SPAN>。同时，</SPAN><SPAN style="line-height: 21.76px;"><SPAN 
+style="line-height: 26px;">Verbose日志拥有专属的宏定义来记录日志，而<SPAN style="line-height: 21.76px;">不支持类似于 
+ LOG(VERBOSE) 等宏定义。下面列出<SPAN style="line-height: 26px;"><SPAN style="line-height: 26px;">Verbose日志专属的宏定义：</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN><BR></P>
+<P></P>
+<UL style='color: rgb(51, 51, 51); line-height: 25.6px; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; font-size: 16px; background-color: rgb(255, 255, 255);'>
+  <LI><CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>VLOG(verbose-level)</CODE></LI>
+  <LI><CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'><SPAN 
+  style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>CVLOG(verbose-level, 
+  logger ID)</SPAN></CODE></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>VLOG_IF(condition, 
+  verbose-level)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>CVLOG_IF(condition, 
+  verbose-level, loggerID)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>VLOG_EVERY_N(n, 
+  verbose-level)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>CVLOG_EVERY_N(n, 
+  verbose-level, loggerID)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>VLOG_AFTER_N(n, 
+  verbose-level)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>CVLOG_AFTER_N(n, 
+  verbose-level, loggerID)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>VLOG_N_TIMES(n, 
+  verbose-level)</SPAN></LI>
+  <LI><SPAN style='line-height: 25.6px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>CVLOG_N_TIMES(n, 
+  verbose-level, loggerID)</SPAN></LI></UL>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style="line-height: 25.6px;"><SPAN 
+style="line-height: 26px;"><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="line-height: 26px;">提示：Verbose日志同样支持</SPAN>DEBUG模式，上述所有宏定义都有与之对应的DEBUG模式的宏定义，在前面加上大写字母 
+ D 即可。</SPAN></SPAN><BR></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><BR></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><BR></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style="color: rgb(51, 51, 51);"><SPAN 
+style="line-height: 25.6px;"><SPAN style="color: rgb(51, 51, 51); line-height: 26px;"><STRONG><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 24px;'>理解Verbose日志的级别</SPAN></STRONG></SPAN><BR></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><BR></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style="line-height: 25.6px;"><SPAN 
+style="line-height: 26px;"><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>Verbose日志可以分为 
+1 ~ 9 共九个级别，而这九个级别<SPAN 
+style="line-height: 26px;">最初是处于未激活状态的。所谓的未激活状态就是说在默认的情况下，这<SPAN style="line-height: 26px;">九个级别的<SPAN 
+style="line-height: 26px;">Verbose日志是不会输出日志信息的，除非我们设置程序参数来激活它。而VLOG(0)虽然也可以记录<SPAN 
+style="line-height: 26px;">Verbose日志，但是它在默认的情况下是可以输出日志信息的，所以  0 并不属于<SPAN style="line-height: 26px;">Verbose日志的级别。不过实践发现，即使把 
+0 理解成<SPAN style="line-height: 26px;">Verbose日志的级别也可以，即可以认为<SPAN style="line-height: 26px;">Verbose日志分为 
+0 ~ 9 共十个级别，只是 0 级别的日志是无法被禁止输出的而已，但是在<SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><STRONG>vmodule分模块日志</STRONG></SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>部分内容演示代码中有一种方法可以把 
+ VLOG(0) 
+的输出也禁用了</SPAN>。</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN><BR></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><BR></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><BR></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="color: rgb(51, 51, 51); line-height: 26px;"><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 24px;'><STRONG>设置Verbose日志的级别</STRONG></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><BR></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style="line-height: 25.6px;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>在前面《<A 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321" 
+rel="nofollow">日志库EasyLogging++学习系列（5）——  
+辅助配置功能</A>》这篇文章中，其实已经演示了一种设置Verbose日志级别的方法，即通过命令行参数来设置。在命令行参数中，<SPAN style="line-height: 26px;">&nbsp;-v 
+、 --verbose 、<SPAN style="line-height: 26px;">--v 、&nbsp;</SPAN>-vmodule 
+都是用来设置Verbose日志的，这四个参数只能有一个生效，优先级高的会覆盖优先级低的（优先级：&nbsp;</SPAN><SPAN style="line-height: 26px;">-v 
+&nbsp; &gt; &nbsp; --verbose &nbsp;&gt; &nbsp;--v &nbsp;&gt; &nbsp;-vmodule 
+）。但是，在效果上 -v 和 --verbose 是一样的。在这里介绍另外一种可以动态设置Verbose日志级别的方法，就是利用函数&nbsp;<SPAN 
+style="line-height: 21.76px;">Loggers::setVerboseLevel(base::type::VerboseLevel)&nbsp;</SPAN>来设置，其中的&nbsp;<SPAN 
+style="line-height: 21.76px;">base::type::VerboseLevel  实际上</SPAN>是个 int 
+整型。不过需要特别注意的是，该函数不适应于&nbsp;<SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>-vmodule。关于&nbsp;<SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>-vmodule 
+ 的级别设置请参考本文中下面的<SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><STRONG>vmodule分模块日志</STRONG>部分内容。</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><BR></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><BR></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 24px;'><SPAN 
+style="line-height: 25.6px;"><SPAN 
+style="line-height: 26px;"><STRONG>判断Verbose日志的级别</STRONG></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><BR></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);">我们可以通过函数&nbsp;</SPAN><SPAN style="line-height: 21.76px;">Loggers::verboseLevel()&nbsp;</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">来获取当前Verbose日志的级别，也可以利用宏&nbsp;<SPAN 
+style="line-height: 21.76px;">VLOG_IS_ON(verbose-level)&nbsp;</SPAN>来判断某个级别是否已被激活。下面的代码演示了设置和判断Verbose日志级别的用法：</SPAN></SPAN></DIV>
+<DIV><SPAN style="color: rgb(51, 51, 51);"><SPAN style="font-size: 12px;"><SPAN 
+style='font-family: "Microsoft YaHei"; background-color: rgb(255, 255, 255);'></SPAN></SPAN></SPAN>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char** argv)
+{
+	int verboseLevel = 0;
+	/// 获取Verbose日志级别
+	verboseLevel = el::Loggers::verboseLevel();
+	LOG(INFO) &lt;&lt; "Verbose Level = " &lt;&lt; verboseLevel;
+
+	VLOG(0);
+	VLOG(1);	//该行不会输出
+
+	/// 动态设置Verbose日志级别
+	el::Loggers::setVerboseLevel(3);
+	/// 获取Verbose日志级别
+	verboseLevel = el::Loggers::verboseLevel();
+	LOG(INFO) &lt;&lt; "Verbose Level = " &lt;&lt; verboseLevel;
+	
+	VLOG(1);
+	VLOG(2);
+	VLOG(3);
+	VLOG(4);	//该行不会输出
+
+	/// 动态设置Verbose日志级别
+	el::Loggers::setVerboseLevel(9);
+	/// 获取Verbose日志级别
+	verboseLevel = el::Loggers::verboseLevel();
+	LOG(INFO) &lt;&lt; "Verbose Level = " &lt;&lt; verboseLevel;
+
+	VLOG(4);
+	VLOG(5);
+	VLOG(6);
+	VLOG(7);
+	VLOG(8);
+	VLOG(9);
+	VLOG(10);	//该行不会输出
+
+	/// 尝试将Verbose日志级别设置为10
+	el::Loggers::setVerboseLevel(10);
+	/// 获取Verbose日志级别
+	verboseLevel = el::Loggers::verboseLevel();
+	LOG(INFO) &lt;&lt; "Verbose Level = " &lt;&lt; verboseLevel;
+
+	VLOG(10);	//该行不会输出
+
+	system("pause");
+	return 0;
+}</CODE></PRE><BR><SPAN style="color: rgb(51, 51, 51); line-height: 26px;"><STRONG><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 24px;'><SPAN style="color: rgb(51, 51, 51); line-height: 26px;">vmodule分</SPAN>模块日志</SPAN></STRONG></SPAN><BR></DIV>
+<DIV><BR></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>分模块日志也可以叫分文件日志，如果以前接触过GLOG日志库的小伙伴会对这个概念比较好理解，因为GLOG日志库也有这个功能。简单来说，分模块日志就是可以指定哪些文件中的日志允许输出，哪些文件中的日志不允许输出。因为分模块日志本身就是Verbose日志，所以在指定文件的同时，还必须指定Verbose日志的级别，而 
+-vmodule 就是用来指定文件和级别的，必须遵循下面的格式：</SPAN></DIV>
+<DIV>
+<BLOCKQUOTE style="border: currentColor; border-image: none;">
+  <DIV><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(153, 255, 153);'>-vmodule=&lt;module 
+  name&gt;=&lt;verboser level&gt;,<SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>&lt;module 
+  name&gt;=&lt;verboser level&gt;,···</SPAN></SPAN></DIV></BLOCKQUOTE></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>在格式中，多个模块之间用英文逗号“,”隔开；而&lt;verbose 
+level&gt;表示Verbose日志的级别，&lt;module 
+name&gt;则表示文件的名称，文件名称中支持通配符“*”和“?”。在默认情况下，Easylogging++ 会自动在文件名称后加上文件扩展名<SPAN 
+style="background-color: rgb(255, 255, 255);">（<SPAN style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>.h, 
+.c, .cpp, .cc, .cxx, -inl.h, .hxx, .hpp</SPAN>），</SPAN>请看下面的例子：</SPAN></DIV>
+<DIV>
+<UL>
+  <LI><SPAN style="color: rgb(51, 51, 51);">命令行参数 -vmodule=main=3 
+  ，表示只有以下所列文件会输出日志，并且只能输出Verbose级别不大于 3 的日志。</SPAN></LI></UL></DIV>
+<BLOCKQUOTE style="border: currentColor; border-image: none;">
+  <DIV><SPAN 
+  style="color: rgb(51, 51, 51);">main.h、main.c、main.cpp、main.cc、main.cxx、main.-inl.h、main.hxx、main.hpp</SPAN></DIV></BLOCKQUOTE>
+<UL>
+  <LI><SPAN style="color: rgb(51, 51, 51);">命令行参数 -vmodule=main=5,parse*=6 
+  ，表示名称为 main 的文件能够输出Verbose级别不大于 5 的日志，而名称为 parse* 的文件能够输出Verbose级别不大于 6 的日志（注意 
+  main 文件 和 parse* 文件会自动加上文件扩展名）。</SPAN></LI></UL>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'>但是如果设置了标记：<SPAN 
+style='line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>LoggingFlag::DisableVModulesExtensions，</SPAN>那么<SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>&lt;module 
+name&gt;表示的文件名称</SPAN>就不会在后面加上扩展名了</SPAN><SPAN style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);">。另外还有一个与 Verbose 
+日志相关的标记&nbsp;</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>LoggingFlag::AllowVerboseIfModuleNotSpecified&nbsp;</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">，如果设置了该标记并且使用  -vmodule 
+来指定文件和级别，那么除了指定的文件会按照指定的Verbose级别输出日志之外，其他所有的文件中全部的 Verbose 
+日志都会输出。当我们</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'>在初始化日志库的宏定义中就已经默认设置了标</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'>记&nbsp;</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>LoggingFlag::AllowVerboseIfModuleNotSpecified&nbsp;</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">，这一点需要特别注意，所以如果希望在程序中</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);">使用  -vmodule 
+来指定文件和级别控制日志输出，必须先用&nbsp;el::Loggers::removeFlag 将标记</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'>&nbsp;</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>LoggingFlag::AllowVerboseIfModuleNotSpecified&nbsp;</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">删除才行，否则可能达不到预期的效果。最后，还有一个比较有用的标记</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>LoggingFlag::DisableVModules 
+ ，</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px; background-color: rgb(255, 255, 255);'>这个标记可以</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">用来完全关闭  vmodule 
+分模块日志。</SPAN></SPAN></SPAN><BR></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);"><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);">除了可以用命令行参数设置  vmodule 
+分模块日志之外，还可以利用函数 </SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Loggers::setVModules(const 
+char*)&nbsp;</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">来动态设置，只是函数中的参数就不需要用“</SPAN><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'>-vmodule=&lt;module 
+name&gt;=&lt;verboser level&gt;</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px; background-color: rgb(255, 255, 255);'></SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">”的格式了，只需直接指定文件名和级别就行了。比如直接传入参数“</SPAN><SPAN 
+style="color: rgb(51, 51, 51); background-color: rgb(255, 255, 255);">main=3</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);">”就行了。需要注意的是，除了第一次调用<SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>函数&nbsp;</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Loggers::setVModules(const 
+char*) 之外</SPAN><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>，如果其他的地方想要再次调用该函数来实现动态设置，都必须先调用&nbsp;Loggers<SPAN 
+style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>::</SPAN>clearVModules() 
+ 
+来清除之前设置过的参数，否则，后面设置的参数都将无法覆盖第一次设置的参数。下面给出关于分模块日志的部分功能的演示代码：</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style="line-height: 25.6px;"><SPAN style="line-height: 26px;"><SPAN 
+style="line-height: 26px;"><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN 
+style="line-height: 26px;"></SPAN></SPAN></SPAN></SPAN></SPAN>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char** argv)
+{
+	VLOG(0);
+
+	/// 特别注意这里的参数"*main=3"，如果传入"main=3"，将达不到预期的效果
+	el::Loggers::setVModules("*main=3");
+	
+	VLOG(1);
+	VLOG(2);
+	VLOG(3);
+	VLOG(4);	//这一行不会输出
+
+	/// 一定要先clear，否则重新设置参数不生效
+	el::Loggers::clearVModules();
+	el::Loggers::setVModules("*main=6");
+	VLOG(4);
+	VLOG(5);
+	VLOG(6);
+	VLOG(7);	//这一行不会输出
+
+	/// 一定要先clear，否则重新设置参数不生效
+	el::Loggers::clearVModules();
+	el::Loggers::setVModules("main=6");
+	VLOG(7);
+	VLOG(8);
+	VLOG(9);
+
+	/// 取消标记AllowVerboseIfModuleNotSpecified
+	el::Loggers::removeFlag(el::LoggingFlag::AllowVerboseIfModuleNotSpecified);
+
+	/// 以下所有Verbose日志都被禁止输出，包括VLOG(0)
+	VLOG(0);
+	VLOG(1);
+	VLOG(2);
+	VLOG(3);
+	VLOG(4);	
+	VLOG(5);
+	VLOG(6);
+	VLOG(7);	
+	VLOG(8);	
+	VLOG(9);	
+
+	system("pause");
+	return 0;
+}</CODE></PRE><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'>在上面的演示代码中，可以看到参数“*main=6”和参数“main=6”会有不同的日志输出。按照上面描述的分模块日志参数设置格式定义我们知道，参数“*mian=6”表示的是允许文件“*main.cpp”输出级别不大于6的Verbose日志，在前面的星号“*”是个通配符；而参数“main=6”表示的是允许文件“main.cpp”输出级别不大于6的Verbose日志。该演示代码中main.cpp文件的完整路径是“F:\SvnCode\EasyLoggingTest\main.cpp”，在分模块日志匹配文件的时候会使用该完整路径和参数中指定的文件进行比较，所以会出现<SPAN 
+style="line-height: 26px;">参数<SPAN 
+style="line-height: 26px;">“*main=6”能匹配上，而参数<SPAN 
+style="line-height: 26px;">“main=6”匹配不上的现象。</SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 24px;'><STRONG>关于Verbose日志的总结</STRONG></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><BR></DIV>
+<DIV><SPAN style="line-height: 25.6px;"><SPAN style="line-height: 26px;"><SPAN 
+style="line-height: 26px;"><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN 
+style="line-height: 26px;"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="color: rgb(51, 51, 51); font-size: 14px;">本文的学习记录中，写了很多关于Verbose日志的功能和用法，其中的内容有些可能比较抽象，特别是vmodule分模块日志，这里只是尽可能详细、简单地进行说明和演示。如果想要更好地理解其中的某些概念，或者功能，还是建议自己真正动手写代码进行尝试和验证，通过编写代码来理解代码绝对是一个很好的学习方法。只有真正地理解了<SPAN 
+style="line-height: 26px;">Verbose日志，我们才能将其更好地应用于自己的程序开发当中。</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><SPAN style="line-height: 26px; font-family: Arial;"><SPAN 
+style='color: rgb(51, 51, 51); font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style="background-color: rgb(255, 255, 255);"><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><BR></SPAN></SPAN></DIV>
+<DIV style="background-color: rgb(255, 255, 255);"><SPAN style='color: rgb(51, 51, 51); font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'><SPAN 
+style="line-height: 25.6px; font-size: 13.6px;"><BR></SPAN></SPAN></DIV>
+<P></P></DIV></DIV>
+<DIV class="hide-article-box text-center"><A class="btn" id="btn-readmore" 
+data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,"}' 
+data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,"}'>阅读更多</A>
+			 <A class="btn" id="btn-lobinreadmore" href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_more_login" 
+target="_self" data-track-view='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,"}' 
+data-track-click='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,"}'>登录后自动展开</A>
+		 </DIV></ARTICLE></DIV>
+<SCRIPT>
+		$(".MathJax").remove();
+		if($('div.markdown_views pre.prettyprint code.hljs').length > 0 ){
+				$('div.markdown_views')[0].className = 'markdown_views';
+		}
+</SCRIPT>
+ <!-- 博客详情页PC增加广告系统刷量代码 --> 
+<DIV id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+<SCRIPT id="adJs52b5334"></SCRIPT>
+ 
+<SCRIPT>document.getElementById("adJs52b5334").src = "https://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</SCRIPT>
+ </DIV>
+<SCRIPT>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</SCRIPT>
+         
+<DIV class="p4course_target"></DIV>
+<SCRIPT>window.p4sdk_enable_courseBox=true</SCRIPT>
+        <A id="commentBox"></A> 
+<DIV class="comment-box">
+<DIV class="unlogin-box text-center">想对作者说点什么？		 <!-- $curl 当前地址 -->		 <A class="btn btn-sm btn-red" 
+href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49508961#commentBox">我来说一句</A>
+	 </DIV>
+<DIV class="comment-list-container"><A id="comments"></A>		 
+<DIV class="comment-list-box"></DIV>
+<DIV class="pagination-box d-none" id="commentPage"></DIV>
+<DIV class="opt-box text-center"><BUTTON class="btn btn-sm btn-link-blue" id="btnMoreComment"></BUTTON>
+		 </DIV></DIV></DIV>
+<DIV class="recommend-box">
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/wangzi11322/article/details/46858185,BlogCommendFromBaidu_0"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/wangzi11322/article/details/46858185,BlogCommendFromBaidu_0"}'><A 
+title="<em>Verbose</em> Logging Will Disturb Your Sleep" href="https://blog.csdn.net/wangzi11322/article/details/46858185" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>Verbose</EM> Logging Will Disturb Your 
+Sleep				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="wangzi11322" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_wangzi11322.jpg">
+							 <SPAN class="namebox"><SPAN class="name">wangzi11322</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">07-13</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							965</SPAN>						 </P></DIV>
+<P class="content oneline">							Verbose Logging Will Disturb Your 
+SleepJohannes BrodwallWHEN I ENCOUNTER A SYSTEM that has already 
+b...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/u013626215/article/details/51249919,BlogCommendFromBaidu_1"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/u013626215/article/details/51249919,BlogCommendFromBaidu_1"}'><A 
+title="Android 自定义打印log" href="https://blog.csdn.net/u013626215/article/details/51249919" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">						Android 自定义打印log				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="u013626215" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_u013626215.jpg">
+							 <SPAN class="namebox"><SPAN class="name">u013626215</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">04-26</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1805</SPAN>						 </P></DIV>
+<P class="content oneline">一。如果我们在开发过程中只要debug状态时打印log，
+ 在release环境就不会打印log，可如下封装(适用于gradle编译)： 就是检测BuildConfig.DEBUG的值 if 
+(B...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box clearfix">
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/pc3553.js" type="text/javascript"></SCRIPT>
+				 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Mr_Qiao93/article/details/78729095,BlogCommendFromBaidu_2"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Mr_Qiao93/article/details/78729095,BlogCommendFromBaidu_2"}'><A 
+title="Android真机调试----不打印debug和<em>verbose</em>级别的<em>日志</em>之华为手机的坑" href="https://blog.csdn.net/Mr_Qiao93/article/details/78729095" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">
+						Android真机调试----不打印debug和<EM>verbose</EM>级别的<EM>日志</EM>之华为手机的坑				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Mr_Qiao93" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_mr_qiao93.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Mr_Qiao93</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">12-06</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1327</SPAN>						 </P></DIV>
+<P class="content oneline">华为nava2真机调试过程中，不打印debug和verbose级别的日志 
+——————除了以上debug和verbose级别的日志不打印，error，info，warn级别的日志可打印—————— 
+...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/qq_31332467/article/details/77198158,BlogCommendFromBaidu_3"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/qq_31332467/article/details/77198158,BlogCommendFromBaidu_3"}'><A 
+title="Android_Log输出的优先级: <em>Verbose</em>,Debug,Info,Warn,Error" href="https://blog.csdn.net/qq_31332467/article/details/77198158" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">Android_Log输出的优先级: 
+<EM>Verbose</EM>,Debug,Info,Warn,Error				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="qq_31332467" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_qq_31332467.jpg">
+							 <SPAN class="namebox"><SPAN class="name">qq_31332467</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">08-15</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							962</SPAN>						 </P></DIV>
+<P 
+class="content oneline">转自：http://blog.csdn.net/liuxd3000/article/details/13768141
+ 1、&nbsp;&nbsp;目的： 为了规范软件工程师在Android代码编写...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/qq_30764991/article/details/80642502,BlogCommendFromBaidu_4"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/qq_30764991/article/details/80642502,BlogCommendFromBaidu_4"}'><A 
+title="log<em>日志</em>级别与简介" href="https://blog.csdn.net/qq_30764991/article/details/80642502" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">log<EM>日志</EM>级别与简介				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="qq_30764991" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_qq_30764991.jpg">
+							 <SPAN class="namebox"><SPAN class="name">qq_30764991</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-10</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1518</SPAN>						 </P></DIV>
+<P class="content oneline">
+							log4j定义了8个级别的log（除去OFF和ALL，可以说分为6个级别），优先级从高到低依次为：OFF、FATAL、ERROR、WARN、INFO、DEBUG、TRACE、 
+ALL。 如果对您有帮...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/hj7jay/article/details/52093155,BlogCommendFromBaidu_5"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/hj7jay/article/details/52093155,BlogCommendFromBaidu_5"}'><A 
+title="【Redis】配置文件参数说明<em>详解</em>" href="https://blog.csdn.net/hj7jay/article/details/52093155" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">【Redis】配置文件参数说明<EM>详解</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="hj7jay" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_hj7jay.jpg">
+							 <SPAN class="namebox"><SPAN class="name">hj7jay</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">08-02</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							2514</SPAN>						 </P></DIV>
+<P class="content oneline">							1. Redis默认不是以守护进程的方式运行，可以通过该配置项修改，使用yes启用守护进程 
+&nbsp;&nbsp;&nbsp;&nbsp;daemonize no 2. 
+当Redis以守护进程方式运行时，Redis默认会把pid写入/...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></DIV>
+<SCRIPT>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 8,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</SCRIPT>
+						 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Qsir/article/details/73335809,BlogCommendFromBaidu_6"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Qsir/article/details/73335809,BlogCommendFromBaidu_6"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（3）—— 配置功能" href="https://blog.csdn.net/Qsir/article/details/73335809" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（3）—— 
+配置功能				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Qsir" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_qsir.gif">
+							 <SPAN class="namebox"><SPAN class="name">Qsir</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							527</SPAN>						 </P></DIV>
+<P class="content oneline">在前面的文章 《日志库Easylogging++学习系列（1） —— 
+简要介绍&nbsp;》中，我们已经初步见识到了 Easylogging++  
+日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/u011897392/article/details/53021287,BlogCommendFromBaidu_7"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/u011897392/article/details/53021287,BlogCommendFromBaidu_7"}'><A 
+title="JVM -<em>verbose</em>参数<em>详解</em>(转)" href="https://blog.csdn.net/u011897392/article/details/53021287" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">JVM -<EM>verbose</EM>参数<EM>详解</EM>(转)				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="u011897392" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_u011897392.jpg">
+							 <SPAN class="namebox"><SPAN class="name">u011897392</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">11-03</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							6658</SPAN>						 </P></DIV>
+<P class="content oneline">转自：http://www.javaranger.com/archives/367 java 
+-verbose[:class|gc|jni] 在输出设备上显示虚拟机运行信息。 1.java -ve...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/hgy413/article/details/12399867,BlogCommendFromBaidu_8"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/hgy413/article/details/12399867,BlogCommendFromBaidu_8"}'><A 
+title="58.windbg-<em>Verbose</em> Output模式" href="https://blog.csdn.net/hgy413/article/details/12399867" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">						58.windbg-<EM>Verbose</EM> 
+Output模式				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="hgy413" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_hgy413.jpg">
+							 <SPAN class="namebox"><SPAN class="name">hgy413</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-07</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							2592</SPAN>						 </P></DIV>
+<P class="content oneline">							ctrl+alt+v能切换详细模式的打开和关闭
+ 打开详细模式后，一些显示命令会产生更详细的输出，发送给调试器的每个模块加载操作都会被显示出来 并且操作系统每次加载驱动或都DLL也会提示 
+Verb...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/starelegant/article/details/60960029,BlogCommendFromBaidu_9"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/starelegant/article/details/60960029,BlogCommendFromBaidu_9"}'><A 
+title="简单好用的Log类，<em>easylogging++</em>" href="https://blog.csdn.net/starelegant/article/details/60960029" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">简单好用的Log类，<EM>easylogging++</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="starelegant" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_starelegant.jpg">
+							 <SPAN class="namebox"><SPAN class="name">starelegant</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">03-09</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							270</SPAN>						 </P></DIV>
+<P 
+class="content oneline">程序开发中，为了对程序运行状况的了解，使用log记录输出到文件，能方便地调试程序，可以极大地提升开发效率。知名的log类有Boost.log，Log4cpp&nbsp;log4cplus
+&nbsp; 等。推荐一个方便好用...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box type_hot_word">
+<DIV class="content clearfix oneline">
+<H5 class="float-left">相关热词</H5>
+<DIV class="float-left"><SPAN><A href="https://blog.csdn.net/anning_88/article/details/53694810" 
+target="_blank">was的日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/watermelonh/article/details/77471354" 
+target="_blank">as日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_29580525/article/details/79482020" 
+target="_blank">						日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/sdwxqing/article/details/21523079" 
+target="_blank">was日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_19891827/article/details/73732983" 
+target="_blank">						日志组件打日志</A>					 </SPAN>								 </DIV></DIV></DIV>
+<DIV class="recommend-loading-box"><IMG src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/feedLoading.gif"> 
+            </DIV>
+<DIV class="recommend-end-box">
+<P class="text-center">没有更多推荐了，<A class="c-blue c-blue-hover c-blue-focus" href="https://blog.csdn.net/">返回首页</A></P></DIV></DIV></main><ASIDE>
+<DIV class="aside-box" id="asideProfile">
+<H3 class="aside-title">个人资料</H3>
+<DIV class="profile-intro d-flex">
+<DIV class="avatar-box d-flex justify-content-center flex-column"><A href="https://blog.csdn.net/Fish_55_66"><IMG 
+class="avatar_pic" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/3_fish_55_66.jpg"></A> 
+        </DIV>
+<DIV class="user-info d-flex justify-content-center flex-column">
+<P class="name csdn-tracking-statistics tracking-click" data-mod="popu_379"><A 
+id="uid" href="https://blog.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>  
+           </P></DIV>
+<DIV class="opt-box d-flex justify-content-center flex-column"><SPAN class="csdn-tracking-statistics tracking-click" 
+data-mod="popu_379"><A class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49508961" 
+target="_self">关注</A>                             </SPAN>                     
+</DIV></DIV>
+<DIV class="data-info d-flex item-tiling">
+<DL title="22" class="text-center">
+  <DT><A href="https://blog.csdn.net/fish_55_66?t=1">原创</A></DT>
+  <DD><A href="https://blog.csdn.net/fish_55_66?t=1"><SPAN 
+  class="count">22</SPAN></A></DD></DL>
+<DL title="30" class="text-center">
+  <DT>粉丝</DT>
+  <DD><SPAN class="count" id="fan">30</SPAN></DD></DL>
+<DL title="7" class="text-center">
+  <DT>喜欢</DT>
+  <DD><SPAN class="count">7</SPAN></DD></DL>
+<DL title="20" class="text-center">
+  <DT>评论</DT>
+  <DD><SPAN class="count">20</SPAN></DD></DL></DIV>
+<DIV class="grade-box clearfix">
+<DL>
+  <DT>等级：</DT>             
+  <DD><A title="3级,点击查看等级说明" href="https://blog.csdn.net/home/help.html#level" 
+  target="_blank"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon icon-level" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bloglevel-3" />                     </svg>                 
+  </A>             </DD>         </DL>
+<DL>
+  <DT>访问：</DT>             
+  <DD title="63689">6万+            </DD>         </DL>
+<DL>
+  <DT>积分：</DT>             
+  <DD title="864">864            </DD>         </DL>
+<DL title="66590">
+  <DT>排名：</DT>             
+  <DD>6万+</DD>         </DL></DIV>
+<DIV class="badge-box d-flex"><SPAN>勋章：</SPAN>                         <A title="持之以恒" 
+class="icon-badge"><svg xmlns="http://www.w3.org/2000/svg" class="icon" 
+aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" 
+/>             </svg>             
+<DIV class="icon-arrow"></DIV>
+<DIV class="grade-detail-box item2">
+<DIV class="pos-box">
+<DIV class="left-box d-flex justify-content-center align-items-center flex-column"><svg 
+xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" />      
+                   </svg>                         
+<P>持之以恒</P></DIV>
+<DIV class="right-box d-flex justify-content-center align-items-center">         
+               
+授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！              
+       </DIV></DIV></DIV></A></DIV></DIV>
+<DIV class="csdn-tracking-statistics mb8 box-shadow" style="height: 250px;" 
+data-mod="popu_4" data-pid="blog">
+<DIV class="aside-content text-center" id="cpro_u2734133"><!-- 广告位：PC-博客内页-百度联盟-300x250 -->
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/ymebi.js" type="text/javascript"></SCRIPT>
+    </DIV></DIV>
+<DIV class="aside-box" id="asideNewArticle">
+<H3 class="aside-title">最新文章</H3>
+<DIV class="aside-content">
+<UL class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/51064137" 
+  target="_blank">MFC调用4.0.1版本libpqxx库连接postgresql数据库提示编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50955806" 
+  target="_blank">图文说明Visual Studio 2013编译libpqxx步骤以及常见编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50601289" 
+  target="_blank">在DLL中定义宏ELPP_THREAD_SAFE会导致EasyLogging++初始化死锁的问题</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50454754" 
+  target="_blank">探讨WaitForMultipleObjects如何突破64个句柄的限制</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50352080" 
+  target="_blank">Windows网络编程之Select模型学习笔记</A></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideCategory">
+<H3 class="aside-title">个人分类</H3>
+<DIV class="aside-content">
+<UL>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5887819"><SPAN 
+  class="title oneline">C++点滴记录</SPAN>                     <SPAN class="count float-right">3篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5911481"><SPAN 
+  class="title oneline">Easylogging++日志库</SPAN>                     <SPAN class="count float-right">12篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5999661"><SPAN 
+  class="title oneline">日常杂记</SPAN>                     <SPAN class="count float-right">7篇</SPAN> 
+                  </A></LI></UL></DIV></DIV>
+<DIV class="aside-box flexible-box" id="asideArchive">
+<H3 class="aside-title">归档</H3>
+<DIV class="aside-content">
+<UL class="archive-list"><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/04">2016年4月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/03">2016年3月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/01">2016年1月   
+                   <SPAN class="count float-right">2篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/12">2015年12月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/11">2015年11月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/10">2015年10月  
+                    <SPAN class="count float-right">12篇</SPAN>                 
+  </A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box" id="asideHotArticle">
+<H3 class="aside-title">热门文章</H3>
+<DIV class="aside-content">
+<UL class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49367197">日志库EasyLogging++学习系列（1）—— 
+  简要介绍</A>
+  <P class="read">阅读量：<SPAN>7890</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49425949">日志库EasyLogging++学习系列（3）—— 
+  配置功能</A>
+  <P class="read">阅读量：<SPAN>5870</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49617403">日志库EasyLogging++学习系列（10）—— 
+  日志文件滚动</A>
+  <P class="read">阅读量：<SPAN>5098</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/details/49152531">Visual 
+  Studio 2013开发MFC程序对Excel 2010进行写操作（上）</A>
+  <P class="read">阅读量：<SPAN>5058</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49407891">日志库EasyLogging++学习系列（2）—— 
+  日志级别</A>
+  <P class="read">阅读量：<SPAN>4167</SPAN></P></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideNewComments">
+<H3 class="aside-title">最新评论</H3>
+<DIV class="aside-content">
+<UL class="newcomment-list">
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/50601289#comments" 
+  target="_blank">在DLL中定义宏ELPP_THRE...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Doctor_Warren" 
+  target="_blank">Doctor_Warren</A>：谢谢，我最近也被easylogging的多线程问题折腾了，学习学习            
+      </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Wuzm_" 
+  target="_blank">Wuzm_</A>：[reply]woyouyigemengmeng[/reply] 添加 INITIALIZE_EA... 
+                 </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49451321#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：配置好多，大多用不到                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49659825#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：这个库确实功能强大                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/yokeyoke" 
+  target="_blank">yokeyoke</A>：感谢你分享这么完整的资料                
+</P></LI></UL></DIV></DIV>
+<DIV id="asideFooter">
+<DIV class="aside-box">
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/yn6yz.js" type="text/javascript"></SCRIPT>
+					 </DIV>
+<DIV class="aside-box">
+<DIV class="persion_article"></DIV></DIV></DIV></ASIDE>
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/publib_footer-1.0.3.js" type="text/javascript" data-isfootertrack="false"></SCRIPT>
+ 
+<SCRIPT>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</SCRIPT>
+ </DIV>
+<DIV class="mask-dark"></DIV>
+<DIV class="pulllog-box" style="display: block;">
+<DIV class="pulllog clearfix"><SPAN class="text float-left"><!-- 广告位：PC-博客内页底通 文字链位置 -->
+										 
+<SCRIPT>
+				(function() {
+					var s = "_" + Math.random().toString(36).slice(2);
+					document.write('<div id="baidufooter_0001"></div>');
+					(window.slotbydup=window.slotbydup || []).push({
+						id: '5851901',
+						container: 'baidufooter_0001',
+						size: '520,40',
+						display: 'inlay-fix'
+					});
+				})();
+				</SCRIPT>
+				 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/os.js"></SCRIPT>
+				 
+<STYLE>
+					#baidufooter_0001{
+						display: none !important;
+					}
+				</STYLE>
+							 </SPAN>		 
+<DIV class="pulllog-btn float-right clearfix"><BUTTON class="pulllog-login float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_557"><A href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_login" 
+target="_self">登录</A></BUTTON>             
+<DIV class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_558"><A href="https://passport.csdn.net/account/mobileregister" 
+target="_blank">注册</A></DIV><BUTTON class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-times" />                 </svg>             </BUTTON>
+		 </DIV></DIV></DIV>
+<DIV id="loginWrap" style="display: none;"></DIV>
+<DIV class="tool-box">
+<UL class="meau-list">
+  <LI class="btn-like-box "><BUTTON title="点赞" class=" low-height hover-box btn-like "><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon active hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup" />				 </svg>				 <SPAN class="hover-show text-box text"><SPAN 
+  class="no-active">点赞</SPAN>					 <SPAN class="active">取消点赞</SPAN>				 </SPAN>
+  				 
+  <P>0</P></BUTTON>		 </LI>
+  <LI><A title="写评论" class="btn-comments low-height hover-box" href="https://blog.csdn.net/Fish_55_66/article/details/49508961#commentBox"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-comments" />				 </svg>				 <SPAN 
+  class="hover-show text">评论</SPAN>				 
+  <P></P></A></LI>
+  <LI class="toc-container-box" id="liTocBox"><BUTTON title="目录" class="btn-toc low-height hover-box"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-contents" />				 </svg>				 <SPAN 
+  class="hover-show text">目录</SPAN>			 </BUTTON>			 
+  <DIV class="toc-container">
+  <DIV class="pos-box">
+  <DIV class="icon-arrow"></DIV>
+  <DIV class="scroll-box">
+  <DIV class="toc-box"></DIV></DIV></DIV>
+  <DIV class="opt-box"><BUTTON title="向上" class="btn-opt prev nomore"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevronup" />
+  						 </svg>					 </BUTTON>					 <BUTTON class="btn-opt next"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevrondown" />
+  						 </svg>					 </BUTTON>				 </DIV></DIV></LI>
+  <LI><BUTTON title="收藏" class="btn-bookmark low-height hover-box"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark" />				 </svg>					 <SPAN 
+  class="hover-show text">收藏</SPAN>				 <!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+  			 </BUTTON>		 </LI>
+  <LI class="bdsharebuttonbox"><BUTTON 
+  class="btn-comments low-height hover-box"><A title="手机看" class="bds_weixin clear-share-style" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49508961#" data-cmd="weixin"></A>
+  				 <svg xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-wechat" />				 </svg>				 <SPAN class="hover-show text text3">手机看
+  				 </SPAN>			 </BUTTON>		 </LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（7）—— 记录方式详解" class="btn-comments low-height hover-box" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49471873"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-shangyiye" />					 </svg>					 <SPAN class="hover-show text text3">上一篇</SPAN>
+  				 </A></LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（9）—— 性能跟踪功能" class="btn-comments hover-box low-height" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49587949"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-xiayiye" />				 </svg>				 <SPAN class="hover-show text text3">下一篇</SPAN>
+  			 </A></LI>
+  <LI class="bdsharebuttonbox _360_interactive" style="margin-top: 8px;">
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/interactive_plugin.js" type="text/javascript"></SCRIPT>
+   			
+<STYLE>
+				#_360_interactive > *{
+					 margin-left: -8px;
+				}
+			</STYLE>
+  			 
+  <DIV id="_360_interactive">
+<SCRIPT> INTERACTIVE_PLUGIN.render({ showid : 'N0ufqn', w: 60, h: 60, type: 'click', placeholderId: '_360_interactive' }); </SCRIPT>
+   			</DIV><IMG style="margin: 0px auto; display: block;" alt="" src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/201608021757063065.png"></LI><!-- 宽屏更多按钮 -->
+  		 
+  <LI class="widescreen-more"><A title="快问" class="btn-comments chat-ask-button low-height hover-box" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49508961#chatqa"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-more" />				 </svg>				 <SPAN 
+  class="hover-show text">更多</SPAN>							 </A>
+  <UL class="widescreen-more-box">
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（7）—— 记录方式详解" 
+    class="btn-comments low-height hover-box" href="https://blog.csdn.net/fish_55_66/article/details/49471873"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-shangyiye" />							 </svg>							 <SPAN class="hover-show text text3">上一篇</SPAN>
+    						 </A></LI>
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（9）—— 性能跟踪功能" 
+    class="btn-comments hover-box low-height" href="https://blog.csdn.net/fish_55_66/article/details/49587949"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-xiayiye" />						 </svg>						 <SPAN class="hover-show text text3">下一篇</SPAN>
+    					 </A></LI></UL></LI></UL></DIV>
+<SCRIPT>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</SCRIPT>
+ 
+<SCRIPT>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "日志库EasyLogging++学习系列（8）—— Verbose日志详解";
+    var ChannelId = 0;
+    var articleId = "49508961";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Fish_55_66/article/details/49508961";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "verbose+http";
+    var needInsertBaidu = false;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u65e5\u5fd7","easylogging++","\u5b66\u4e60","\u7cfb\u5217","verbose","\u65e5\u5fd7","\u8be6\u89e3"];//高亮数组
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/sandalstrap.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/paging.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/goTop-v1.0.min.js"></SCRIPT>
+ 
+<SCRIPT>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"日志库EasyLogging++学习系列（8）—— Verbose日志详解");
+        }
+    })
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/common-ffcd47990c.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/detail-7060b66935.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/skin3-template-9376486353.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/baidu_search-1.1.2.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/chart.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/chart.min.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/widget2chart.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/atom-one-dark.css" 
+rel="stylesheet">	 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/pc_wap_common-676a063698.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（8）——%20Verbose日志详解_files/MathJax.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</SCRIPT>
+ </BODY><!-- 第四范式SDK --><!-- 高亮未与 markdown兼容  --></HTML>

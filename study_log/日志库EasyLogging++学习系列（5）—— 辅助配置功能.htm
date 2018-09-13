@@ -1,0 +1,1608 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0051)https://blog.csdn.net/Qsir/article/details/73335870 -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-CN"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+     
+<META charset="UTF-8">     <LINK href="https://blog.csdn.net/Qsir/article/details/73335870" 
+rel="canonical">          
+<META name="renderer" content="webkit">     
+<META name="force-rendering" content="webkit">     
+<META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    
+<META name="apple-mobile-web-app-status-bar-style" content="black">     
+<META name="referrer" content="always">     
+<META name="description" content="正如前面《日志库EasyLogging++学习系列（3）—— 配置功能》文中最后提到的，在某些应用场景下，我们还需要通过其他的一些配置手段来辅助我们完成某些特殊功能，这些辅助配置手段包括设置命令行参数、设置日志标记、配置宏定义。本文中就对这几个辅助配置功能逐一进行简要介绍。&#10;&#10;&#10;命令行参数&#10;&#10;&#10;在 Easylogging++ 中可以通过START_EASYLOGGINGPP(argc,"> 
+    
+<META name="keywords" content="Easylogging++,github">     
+<META http-equiv="Cache-Control" content="no-siteapp"><LINK href="#" rel="alternate" 
+media="handheld">     
+<META name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+    
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/tingyun-rum-blog.js"></SCRIPT>
+     <LINK href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">     
+<TITLE>日志库EasyLogging++学习系列（5）—— 辅助配置功能 - CSDN博客</TITLE>             <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/detail-4170e79ecf.min.css" 
+rel="stylesheet">         <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/skin-yellow-2eefd34acf.min.css" 
+rel="stylesheet">     
+<SCRIPT type="text/javascript">
+        var username = "Qsir";
+        var blog_address = "https://blog.csdn.net/qsir";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73335870"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-yellow";
+        // 第四范式所需数据
+        var articleTitles = "日志库EasyLogging++学习系列（5）—— 辅助配置功能";
+        var articleID = "73335870";
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/main-1.0.6.js"></SCRIPT>
+     <!-- 新版上报 -->     
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/track.js" type="text/javascript"></SCRIPT>
+     <!-- 新版上报end -->             <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/sandalstrap.min.css" 
+rel="stylesheet">     
+<STYLE>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </STYLE>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> <!-- nodata 为 第四范式接口有问题时样式不变的处理 --> 
+<BODY class="nodata"><LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/content_toolbar.css" 
+rel="stylesheet">     
+<SCRIPT id="toolbar-tpl-scriptId" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></SCRIPT>
+ <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/blog_code-c3a0c33d5c.css" 
+rel="stylesheet"> <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/paging.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/mvf_news_feed.js" type="text/javascript"></SCRIPT>
+ 
+<DIV style="display: none;"><IMG onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' 
+src=""> </DIV><LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/chart-3456820cac.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/ds.js"></SCRIPT>
+ 
+<DIV class="container clearfix" id="mainBox"><!-- <div id="breadcrumbs">
+			<span><a href="https://blog.csdn.net/">博客首页</a></span>
+			<i>></i>
+			<span><a href="https://blog.csdn.net/qsir">Qsir的专栏</a></span>
+			<i>></i>
+			<span>日志库EasyLogging++学习系列（5）—— 辅助配置功能...</span>
+		</div> -->
+		 
+<UL class="recommend-right"></UL><main>
+<DIV class="blog-content-box">
+<DIV class="article-header-box">
+<DIV class="article-header">
+<DIV class="article-title-box"><SPAN 
+class="article-type type-2 float-left">转</SPAN>				
+<H1 class="title-article">日志库EasyLogging++学习系列（5）—— 辅助配置功能</H1></DIV>
+<DIV class="article-info-box">
+<DIV class="article-bar-top"><SPAN class="time">2017年06月16日 16:48:28</SPAN>
+					 <A class="follow-nickName" href="https://me.csdn.net/Qsir" 
+target="_blank">qsir</A>						 <SPAN class="read-count">阅读数：783</SPAN>
+																										 <SPAN class="tags-box artic-tag-box"><SPAN class="label">标签：</SPAN>
+																 <A class="tag-link" href="http://so.csdn.net/so/search/s.do?q=Easylogging++&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"Easylogging++"}' 
+data-track-click='{"mod":"popu_626","con":"Easylogging++"}'>Easylogging++																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=github&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"github"}' 
+data-track-click='{"mod":"popu_626","con":"github"}'>github																</A>
+							 </SPAN>																					 
+<DIV class="tags-box space"><SPAN class="label">个人分类：</SPAN>																 <A 
+class="tag-link" href="https://blog.csdn.net/Qsir/article/category/6921208" 
+target="_blank">工具																<A class="tag-link" href="https://blog.csdn.net/Qsir/article/category/6940573" 
+target="_blank">CC++																</A>							 </DIV></DIV>
+<DIV class="operating"></DIV></DIV></DIV></DIV><ARTICLE>
+<DIV class="article_content clearfix csdn-tracking-statistics" id="article_content" 
+data-dsm="post" data-mod="popu_307" data-pid="blog"><LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/ck_htmledit_views-e2445db1a8.css" 
+rel="stylesheet">						 
+<DIV class="htmledit_views">
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>正如前面《<A href="http://blog.csdn.net/fish_55_66/article/details/49425949" 
+rel="nofollow">日志库EasyLogging++学习系列（3）—— 配置功能</A>》文中最后提到的，<SPAN style="line-height: 26px;">在某些应用场景下，我们还需要通过其他的一些配置手段来辅助我们完成某些特殊功能，<SPAN 
+style="line-height: 26px;">这些辅助配置手段包括设置命令行参数、设置日志标记、配置宏定义。本文中就对这几个辅助配置功能逐一进行简要介绍。</SPAN></SPAN></SPAN></P>
+<P><SPAN style='line-height: 26px; font-family: "Microsoft YaHei";'><SPAN style="font-size: 12px;"><SPAN 
+style='line-height: 26px; font-family: "Microsoft YaHei";'><BR></SPAN></SPAN></SPAN></P>
+<P><SPAN style="line-height: 26px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'><SPAN 
+style="line-height: 26px;"><STRONG>命令行参数</STRONG></SPAN></SPAN></SPAN></P>
+<P><BR></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>在 
+Easylogging++ 中可以通过<SPAN 
+style="color: rgb(51, 51, 51); line-height: 21px;">START_EASYLOGGINGPP(argc, 
+argv)&nbsp;</SPAN>来完成命令行参数的设置，下面的表格列举了GitHub上给出的 Easylogging++ 
+支持的命令行参数：</SPAN></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></P>
+<P></P>
+<TABLE style='color: rgb(51, 51, 51); line-height: 25px; overflow: auto; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; font-size: 16px; display: block; border-collapse: collapse; border-spacing: 0px;'>
+  <THEAD>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Argument</TH>
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Description</TH></TR></THEAD>
+  <TBODY>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>-v</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Activates 
+      maximum verbosity</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>--v=2</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Activates 
+      verbosity upto verbose level 2 (valid range: 0-9)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>--verbose</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Activates 
+      maximum verbosity</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>-vmodule=MODULE_NAME</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Activates 
+      verbosity for files starting with main to level 1, the rest of the files 
+      depend on logging flag&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>AllowVerboseIfModuleNotSpecified</CODE>&nbsp;Please 
+      see Logging Flags section above. Two modules can be separated by comma. 
+      Please note vmodules are last in order of precedence of checking arguments 
+      for verbose logging, e.g, if we have -v in application arguments before 
+      vmodules, vmodules will be ignored.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>--logging-flags=3</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">Sets 
+      logging flag. In example&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>i.e, 
+      3</CODE>, it sets logging flag to<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>NewLineForContainer</CODE>&nbsp;and&nbsp;<CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>AllowVerboseIfModuleNotSpecified</CODE>. 
+      See logging flags section above for further details and values. See macros 
+      section to disable this function.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>--default-log-file=FILE</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">Sets 
+      default log file for existing and future loggers. You may want to consider 
+      defining&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_NO_DEFAULT_LOG_FILE</CODE>&nbsp;to 
+      prevent creation of default empty log file during pre-processing. See 
+      macros section to disable this function.</TD></TR></TBODY></TABLE><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>对于上述命令行参数，有必要简单说明一下：</SPAN> 
+<P></P>
+<P></P>
+<UL>
+  <LI><SPAN style="font-size: 12px;">其中的 -v 、 --v 、 --verbose 、 -vmodule 都是用来设置 
+  Verbose 详细日志的，而且这几个参数之间是有优先级顺序的，如下：</SPAN><SPAN style="font-size: 12px;">-v 
+  &nbsp;优先于 --verbose 优先于 --v 优先于 -vmodule。但是，在效果上 -v 和 --verbose 
+  是一样的。请看下面的例子：</SPAN></LI></UL>
+<P></P>
+<BLOCKQUOTE style="border: currentColor; border-image: none;">
+  <P><SPAN style="font-size: 10px;">命令行参数例一：--v=2 -v ，在这里参数 --v=2 会被参数 -v 覆盖，因为 
+  -v 优先级最高。</SPAN></P></BLOCKQUOTE>
+<BLOCKQUOTE style="border: currentColor; border-image: none;">
+  <P><SPAN style="font-size: 10px;">命令行参数例二：--verbose -vmodule=main=3 ，在这里参数 
+  -vmodule=main=3&nbsp;会被参数 --verbose 覆盖，因为 --verbose&nbsp;优先于 
+  -vmodule&nbsp;。</SPAN></P>
+  <P><SPAN style="font-size: 10px;">命令行参数例三：-vmodule=main*=3 --v=5 -v --verbose 
+  ，在这里参数 -v 会覆盖其他所有的参数，<SPAN style="font-size: 10px;">因为 -v 
+  优先级最高。</SPAN></SPAN></P></BLOCKQUOTE>
+<UL>
+  <LI><SPAN style="font-size: 10px;">其中的 --logging-flags 
+  是用来设置日志标记的，而且必须定义&nbsp;<SPAN style='line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'>ELPP_LOGGING_FLAGS_FROM_ARG&nbsp;</SPAN>这个宏定义。</SPAN></LI></UL>
+<UL>
+  <LI><SPAN style="font-size: 10px;">其中的 --default-log-file 
+  是用来设置日志默认保存文件名的。如果没用这个命令行参数设置文件名，那么默认的文件名就是&nbsp;logs\\myeasylog.log 
+  。另外，我们也可以用宏定义&nbsp;<SPAN style='line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'>ELPP_DEFAULT_LOG_FILE&nbsp;</SPAN>来达到相同的效果。如：#define<SPAN 
+  style='line-height: 20.98px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 10px;'>ELPP_DEFAULT_LOG_FILE</SPAN> 
+  "logs\\tem\\test.log" 。</SPAN></LI></UL>
+<DIV><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>下面的代码演示了设置命令行参数 --v=2 
+，其最终效果是 VLOG(3) 将会被屏蔽：</SPAN></DIV>
+<DIV>
+<DIV class="dp-highlighter bg_cpp">
+<DIV class="bar">
+<DIV class="tools"><STRONG>[cpp]</STRONG> <A title="view plain" class="ViewSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" rel="nofollow">
+view plain</A><SPAN> <A title="copy" class="CopyToClipboard" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">copy</A></SPAN> 
+<DIV style="width: 18px; z-index: 99;"></DIV><SPAN><A title="print" class="PrintSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">print</A></SPAN><A title="?" class="About" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">?</A></DIV></DIV>
+<OL class="dp-cpp">
+  <LI class="alt"><SPAN><SPAN 
+  class="preprocessor">#include&nbsp;"easylogging++.h"</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>INITIALIZE_EASYLOGGINGPP&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN><SPAN 
+  class="datatypes">int</SPAN><SPAN>&nbsp;main(</SPAN><SPAN 
+  class="datatypes">int</SPAN><SPAN>&nbsp;argc,&nbsp;</SPAN><SPAN class="datatypes">char</SPAN><SPAN>**&nbsp;argv)&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment">///&nbsp;请自行加上命令行参数&nbsp;--v=2，否则达不到演示的效果</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;START_EASYLOGGINGPP(argc,&nbsp;argv);&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;VLOG(0);&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;VLOG(1);&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;VLOG(2);&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;VLOG(3);&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;system(<SPAN 
+  class="string">"pause"</SPAN><SPAN>);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="keyword">return</SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char** argv)
+{
+	/// 请自行加上命令行参数 --v=2，否则达不到演示的效果
+	START_EASYLOGGINGPP(argc, argv);
+
+	VLOG(0);
+	VLOG(1);
+	VLOG(2);
+	VLOG(3);
+
+	system("pause");
+	return 0;
+}</CODE></PRE><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>更多关于Verbose日志的详细信息请参考《</SPAN><A 
+style='font-family: "Microsoft YaHei"; font-size: 14px;' href="http://blog.csdn.net/fish_55_66/article/details/49508961" 
+rel="nofollow">日志库EasyLogging++学习系列（8）——  Verbose日志详解</A><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>》。</SPAN></DIV>
+<DIV><BR></DIV>
+<DIV><BR></DIV>
+<P><SPAN style="font-size: 24px;"><STRONG><SPAN style='font-family: "Microsoft YaHei";'>日志标记</SPAN></STRONG></SPAN></P>
+<P><BR></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>在学习日志标记之前，我们先来看看 
+Easylogging++ 提供出来的三个和日志标记紧密相关的功能接口函数：</SPAN></P>
+<P></P>
+<UL>
+  <LI><SPAN style="font-size: 10px;">增加标记函数：&nbsp;<SPAN style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'>el::Loggers::addFlag&nbsp;</SPAN></SPAN></LI></UL>
+<DIV>
+<UL>
+  <LI><SPAN style="font-size: 10px;">删除标记函数：<SPAN style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'>el::Loggers::removeFlag&nbsp;</SPAN></SPAN></LI></UL></DIV>
+<DIV>
+<UL>
+  <LI><SPAN style="font-size: 10px;">检查标记函数：<SPAN style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;'>el::Loggers::hasFlag&nbsp;</SPAN></SPAN></LI></UL></DIV>
+<P></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>下面的表格列举了GitHub上给出的 
+Easylogging++ 支持的日志标记：</SPAN><BR></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></P>
+<P></P>
+<TABLE style='color: rgb(51, 51, 51); line-height: 25px; overflow: auto; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; font-size: 16px; display: block; border-collapse: collapse; border-spacing: 0px;'>
+  <THEAD>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TH 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">Flag</TH>
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Description</TH></TR></THEAD>
+  <TBODY>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>NewLineForContainer 
+      (1)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Makes 
+      sure we have new line for each <A title="Docker知识库" class="replace_word" 
+      style="color: rgb(223, 52, 52); font-weight: bold;" href="http://lib.csdn.net/base/docker" 
+      rel="nofollow">Container</A> log entry</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>AllowVerboseIfModuleNotSpecified 
+      (2)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Makes 
+      sure if -vmodule is used and does not specifies a module, then verbose 
+      logging is allowed via that module. Say param was -vmodule=main*=3 and a 
+      verbose log is being written from a file called something.cpp then if this 
+      flag is enabled, log will be written otherwise it will be disallowed. 
+      Note: having this defeats purpose of -vmodule</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>LogDetailedCrashReason 
+      (4)</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">When 
+      handling crashes by default, detailed crash reason will be logged as well 
+      (Disabled by default) (<A style="color: rgb(64, 120, 192); text-decoration: none; background-color: transparent;" 
+      href="https://github.com/easylogging/easyloggingpp/issues/90" rel="nofollow">issue 
+      #90</A>)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>DisableApplicationAbortOnFatalLog 
+      (8)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Allows 
+      to disable application abortion when logged using FATAL level. Note that 
+      this does not apply to default crash handlers as application should be 
+      aborted after crash signal is handled. (Not added by default) (<A style="color: rgb(64, 120, 192); text-decoration: none; background-color: transparent;" 
+      href="https://github.com/easylogging/easyloggingpp/issues/119" rel="nofollow">issue 
+      #119</A>)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ImmediateFlush 
+      (16)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Flushes 
+      log with every log-entry (performance sensative) - Disabled by 
+  default</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>StrictLogFileSizeCheck 
+      (32)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Makes 
+      sure log file size is checked with every log</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ColoredTerminalOutput 
+      (64)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Terminal 
+      output will be colorful if supported by terminal.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>MultiLoggerSupport 
+      (128)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Enables 
+      support for using multiple loggers to log single message. (E.g,&nbsp;<CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>CLOG(INFO, 
+      "default", "network") &lt;&lt; This will be logged using default and 
+      network loggers;</CODE>)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>DisablePerformanceTrackingCheckpointComparison 
+      (256)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      checkpoint comparison</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>DisableVModules 
+      (512)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      usage of vmodules</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>DisableVModulesExtensions 
+      (1024)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      vmodules extension. This means if you have a vmodule -vmodule=main*=4 it 
+      will cover everything starting with main, where as if you do not have this 
+      defined you will be covered for any file starting with main and ending 
+      with one of the following extensions; .h .c .cpp .cc .cxx .-inl-.h .hxx 
+      .hpp. Please note following vmodule is not correct -vmodule=main.=4 with 
+      this macro not defined because this will check for main..c, notice double 
+      dots. If you want this to be valid, have a look at logging flag above: 
+      AllowVerboseIfModuleNotSpecified '?' and '' wildcards are supported</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>HierarchicalLogging 
+      (2048)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Enables 
+      hierarchical logging. This is not applicable to verbose logging.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>CreateLoggerAutomatically 
+      (4096)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Creates 
+      logger automatically when not available.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>AutoSpacing 
+      (8192)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Automatically 
+      adds spaces. E.g,<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>LOG(INFO) 
+      &lt;&lt; "DODGE" &lt;&lt; "THIS!";</CODE>&nbsp;will output "DODGE 
+  THIS!"</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>FixedTimeFormat 
+      (16384)</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Applicable 
+      to performace tracking only - this prevents formatting time. 
+      E.g,&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>1001 
+      ms</CODE>&nbsp;will be logged as is, instead of formatting it 
+      as&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>1.01 
+      sec</CODE></TD></TR></TBODY></TABLE><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>对于上述的日志标记，可在 
+Easylogging++ 源码中查看枚举值<SPAN 
+style="color: rgb(51, 51, 51); line-height: 21px;">el::LoggingFlag&nbsp;</SPAN>，每个标记的含义在表格和源码中都描述得比较清楚了，不过还是建议大家都亲自动手试一试，下面的代码演示了标记&nbsp;<SPAN 
+style="color: rgb(51, 51, 51); line-height: 25px;">NewLineForContainer&nbsp;</SPAN>的作用：</SPAN> 
+<P></P>
+<P></P>
+<DIV class="dp-highlighter bg_cpp">
+<DIV class="bar">
+<DIV class="tools"><STRONG>[cpp]</STRONG> <A title="view plain" class="ViewSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" rel="nofollow">
+view plain</A><SPAN> <A title="copy" class="CopyToClipboard" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">copy</A></SPAN> 
+<DIV style="width: 18px; z-index: 99;"></DIV><SPAN><A title="print" class="PrintSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">print</A></SPAN><A title="?" class="About" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">?</A></DIV></DIV>
+<OL class="dp-cpp">
+  <LI class="alt"><SPAN><SPAN 
+  class="preprocessor">#define&nbsp;ELPP_STL_LOGGING</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN><SPAN 
+  class="preprocessor">#include&nbsp;"easylogging++.h"</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>INITIALIZE_EASYLOGGINGPP&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN><SPAN class="datatypes">int</SPAN><SPAN>&nbsp;main(</SPAN><SPAN 
+  class="datatypes">int</SPAN><SPAN>&nbsp;argc,&nbsp;</SPAN><SPAN class="datatypes">char</SPAN><SPAN>**&nbsp;argv)&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;std::vector&lt;<SPAN 
+  class="datatypes">int</SPAN><SPAN>&gt;&nbsp;vecNum;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;vecNum.push_back(1);&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;vecNum.push_back(2);&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;vecNum.push_back(3);&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment">///&nbsp;增加标记&nbsp;NewLineForContainer，注意查看输出STL容器的效果</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::addFlag(el::LoggingFlag::NewLineForContainer);&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;vecNum;&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment">///&nbsp;删除标记&nbsp;NewLineForContainer，注意查看输出STL容器的效果</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;vecNum;&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;system(<SPAN 
+  class="string">"pause"</SPAN><SPAN>);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="keyword">return</SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<PRE><CODE class="language-cpp">#define ELPP_STL_LOGGING
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char** argv)
+{
+	std::vector&lt;int&gt; vecNum;
+	vecNum.push_back(1);
+	vecNum.push_back(2);
+	vecNum.push_back(3);
+
+	/// 增加标记 NewLineForContainer，注意查看输出STL容器的效果
+	el::Loggers::addFlag(el::LoggingFlag::NewLineForContainer);
+	LOG(INFO) &lt;&lt; vecNum;
+
+	/// 删除标记 NewLineForContainer，注意查看输出STL容器的效果
+	el::Loggers::removeFlag(el::LoggingFlag::NewLineForContainer);
+	LOG(INFO) &lt;&lt; vecNum;
+	
+	system("pause");
+	return 0;
+}</CODE></PRE><BR>
+<P><STRONG><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 24px;'>配置宏定义</SPAN></STRONG></P>
+<P><BR></P>
+<P><SPAN style="font-size: 14px;">在 Easylogging++ 
+中，有些功能必须定义相应的宏定义才能开启。为了方便记忆，Easylogging++ 中所有的宏定义都是以 ELPP_ 开头的，所以可以在源码中搜索 ELPP_ 
+来查看都定义了哪些宏定义。<SPAN style='font-family: "Microsoft YaHei";'>下面的表格列举了GitHub上给出的 
+Easylogging++ 支持的宏定义（只列举了部分）：</SPAN></SPAN></P>
+<P><BR></P>
+<P></P>
+<TABLE style='color: rgb(51, 51, 51); line-height: 25px; overflow: auto; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; font-size: 16px; display: block; border-collapse: collapse; border-spacing: 0px;'>
+  <THEAD>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Macro 
+      Name</TH>
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Description</TH></TR></THEAD>
+  <TBODY>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DEBUG_ASSERT_FAILURE</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Aborts 
+      application on first assertion failure. This assertion is due to invalid 
+      input e.g, invalid configuration file etc.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_UNICODE</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Enables 
+      Unicode support when logging. Requires<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>START_EASYLOGGINGPP</CODE></TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_THREAD_SAFE</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Enables 
+      thread-safety - make sure -lpthread linking for <A title="Linux知识库" class="replace_word" 
+      style="color: rgb(223, 52, 52); font-weight: bold;" href="http://lib.csdn.net/base/linux" 
+      rel="nofollow">Linux</A>.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_FORCE_USE_STD_THREAD</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Forces 
+      to use C++ standard library for threading (Only useful when 
+      using&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_THREAD_SAFE</CODE></TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_STACKTRACE_ON_CRASH</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Applicable 
+      to GCC only. Enables stacktrace on application crash</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_DEFAULT_CRASH_HANDLING</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      default crash handling. You can use el::Helpers::setCrashHandler to use 
+      your own handler.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      all logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_DEBUG_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      debug logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_INFO_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      info logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_WARNING_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      warning logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_ERROR_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      error logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_FATAL_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      fatal logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_VERBOSE_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      verbose logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_TRACE_LOGS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Disables 
+      trace logs - (preprocessing)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_FORCE_ENV_VAR_FROM_BASH</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">If 
+      environment variable could not be found, force using alternative bash 
+      command to find value, e.g,<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>whoami</CODE>&nbsp;for 
+      username. (DO NOT USE THIS MACRO WITH&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>LD_PRELOAD</CODE>&nbsp;FOR 
+      LIBRARIES THAT ARE ALREADY USING Easylogging++ OR YOU WILL END UP IN STACK 
+      OVERFLOW FOR PROCESSES (<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>popen</CODE>) 
+      (see&nbsp;<A style="color: rgb(64, 120, 192); text-decoration: none; background-color: transparent;" 
+      href="https://github.com/easylogging/easyloggingpp/issues/87" rel="nofollow">issue 
+      #87</A>&nbsp;for details))</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DEFAULT_LOG_FILE</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">Full 
+      filename where you want initial files to be created. You need to embed 
+      value of this macro with quotes, e.g,&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>-DELPP_DEFAULT_LOG_FILE='"logs/el.gtest.log"'</CODE>Note 
+      the double quotes inside single quotes, double quotes are the values 
+      for&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>const 
+      char*</CODE>&nbsp;and single quotes specifies value of macro</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_NO_DEFAULT_LOG_FILE</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">If 
+      you dont want to initialize library with default log file, define this 
+      macro. But be sure to configure your logger with propery log filename or 
+      you will end up getting heaps of errors when trying to log to file 
+      (and<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>TO_FILE</CODE>&nbsp;is 
+      configured to&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>true</CODE>)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DEBUG_ERRORS</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">If 
+      you wish to find out internal errors raised by Easylogging++ that can be 
+      because of configuration or something else, you can enable them by 
+      defining this macro. You will get your errors on standard output i.e, 
+      terminal or command prompt.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_CUSTOM_FORMAT_SPECIFIERS</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Forcefully 
+      disables custom format specifiers</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_LOGGING_FLAGS_FROM_ARG</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Forcefully 
+      disables ability to set logging flags using command-line arguments</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DISABLE_LOG_FILE_FROM_ARG</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Forcefully 
+      disables ability to set default log file from command-line arguments</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_WINSOCK2</CODE></TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">On 
+      windows system force to use&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>winsock2.h</CODE>instead 
+      of&nbsp;<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>winsock.h</CODE>&nbsp;when&nbsp;<CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>WIN32_LEAN_AND_MEAN</CODE>is 
+      defined</TD></TR></TBODY></TABLE>
+<P></P>
+<P><SPAN style="font-size: 14px;"><SPAN 
+style='font-family: "Microsoft YaHei";'>利用在上述的宏定义，可以完成一些配置文件中无法完成的配置。下面简单介绍几个比较实用的宏定义：</SPAN></SPAN></P>
+<P></P>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_DEBUG_ASSERT_FAILURE&nbsp;</SPAN>宏定义，可以帮助我们检测配置文件中的配置项名称是否正确，假如配置项名称不是Easylogging++ 
+   支持的，那么就会出现断言中断。</SPAN></LI></UL>
+<DIV>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_UNICODE&nbsp;</SPAN>宏定义，默认的日志记录是只支持多字节字符串</SPAN><SPAN 
+  style='font-family: "Microsoft YaHei";'><SPAN 
+  style="font-size: 12px;">的，同时使用这个宏定义和&nbsp;<SPAN style="background-color: rgb(240, 240, 240);">START_EASYLOGGINGPP(argc, 
+  argv) 可以开启 Unicode 字符串记录日志的功能。</SPAN></SPAN></SPAN></LI></UL></DIV>
+<DIV>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_THREAD_SAFE&nbsp;</SPAN>宏定义，在默认情况下，考虑到性能，<SPAN 
+  style='font-family: "Microsoft YaHei"; font-size: 14px;'>多线程安全功能是关闭的，使用这个宏定义则可以开启。</SPAN></SPAN></LI></UL></DIV>
+<DIV>
+<UL>
+  <LI><SPAN style="line-height: 21px;"><SPAN style='color: rgb(51, 51, 51); line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_STL_LOGGING&nbsp;</SPAN><SPAN 
+  style='font-family: "Microsoft YaHei"; font-size: 14px;'>宏定义，使  Easylogging++ 
+  支持STL模板和容器类型的日志输出，比如上面第二部分介绍日志标记最后给出例子。考虑到性能，每个容器最大容量是 
+  100，可以通过修改源码改变这个限制，但不建议这么做，除非你可以无视性能和效率。</SPAN></SPAN></LI></UL>
+<DIV><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style="line-height: 21px;">当然，其他的宏定义也很实用，建议大家也可以亲自试一试，看看其实际的作用。需要注意的是，有些宏必须在包含<SPAN 
+style='line-height: 21px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Easylogging++ 
+头文件之前，即必须在代码&nbsp;#include "easylogging++.h" 之前完成</SPAN>定义才有意义。下面的代码演示了宏定义 <SPAN 
+style='line-height: 21px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px;'>ELPP_UNICODE&nbsp;</SPAN>的作用：</SPAN></SPAN></DIV></DIV>
+<DIV>
+<DIV class="dp-highlighter bg_cpp">
+<DIV class="bar">
+<DIV class="tools"><STRONG>[cpp]</STRONG> <A title="view plain" class="ViewSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" rel="nofollow">
+view plain</A><SPAN> <A title="copy" class="CopyToClipboard" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">copy</A></SPAN> 
+<DIV style="width: 18px; z-index: 99;"></DIV><SPAN><A title="print" class="PrintSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">print</A></SPAN><A title="?" class="About" href="http://blog.csdn.net/fish_55_66/article/details/49451321#" 
+rel="nofollow">?</A></DIV></DIV>
+<OL class="dp-cpp">
+  <LI class="alt"><SPAN><SPAN 
+  class="preprocessor">#define&nbsp;ELPP_UNICODE</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN><SPAN 
+  class="preprocessor">#include&nbsp;"easylogging++.h"</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>INITIALIZE_EASYLOGGINGPP&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN><SPAN class="datatypes">int</SPAN><SPAN>&nbsp;main(</SPAN><SPAN 
+  class="datatypes">int</SPAN><SPAN>&nbsp;argc,&nbsp;</SPAN><SPAN class="datatypes">char</SPAN><SPAN>**&nbsp;argv)&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>{&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment">///&nbsp;同时使用&nbsp;START_EASYLOGGINGPP&nbsp;才能使用Unicode&nbsp;</SPAN><SPAN>&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;START_EASYLOGGINGPP(argc,&nbsp;argv);&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;L<SPAN 
+  class="string">"宏定义演示。"</SPAN><SPAN>;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;system(<SPAN 
+  class="string">"pause"</SPAN><SPAN>);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="keyword">return</SPAN><SPAN>&nbsp;0;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt"><SPAN>}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<PRE><CODE class="language-cpp">#define ELPP_UNICODE
+#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char** argv)
+{
+	/// 同时使用 START_EASYLOGGINGPP 才能使用Unicode 
+	START_EASYLOGGINGPP(argc, argv);
+
+	LOG(INFO) &lt;&lt; L"宏定义演示。";
+
+	system("pause");
+	return 0;
+}</CODE></PRE><BR></DIV></DIV></DIV>
+<DIV class="hide-article-box text-center"><A class="btn" id="btn-readmore" 
+data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/Qsir/article/details/73335870,"}' 
+data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/Qsir/article/details/73335870,"}'>阅读更多</A>
+			 <A class="btn" id="btn-lobinreadmore" href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_more_login" 
+target="_self" data-track-view='{"mod":"popu_557","con":",https://blog.csdn.net/Qsir/article/details/73335870,"}' 
+data-track-click='{"mod":"popu_557","con":",https://blog.csdn.net/Qsir/article/details/73335870,"}'>登录后自动展开</A>
+		 </DIV></ARTICLE></DIV>
+<SCRIPT>
+		$(".MathJax").remove();
+		if($('div.markdown_views pre.prettyprint code.hljs').length > 0 ){
+				$('div.markdown_views')[0].className = 'markdown_views';
+		}
+</SCRIPT>
+ <!-- 博客详情页PC增加广告系统刷量代码 --> 
+<DIV id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+<SCRIPT id="adJs52b5334"></SCRIPT>
+ 
+<SCRIPT>document.getElementById("adJs52b5334").src = "https://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</SCRIPT>
+ </DIV>
+<SCRIPT>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</SCRIPT>
+         
+<DIV id="adt0" style="padding: 20px; overflow: hidden; margin-top: 8px; background-color: rgb(255, 255, 255);" 
+data-track-view='{"mod":"popu_625","con": ",https://blog.csdn.net/Qsir/article/details/73335870,from_360"}'></DIV>
+<SCRIPT>
+                var adWidth = $("div.blog-content-box").outerWidth() - 40;
+                NEWS_FEED({
+                    w: adWidth,
+                    h : 130,
+                    showid : "s02a31",
+                    placeholderId: "adt0",
+                    inject : "define",
+                    define : {
+                    imagePosition : "left",
+                    imageBorderRadius : 0,
+                    imageWidth: 231,
+                    imageHeight: 130,
+                    imageFill : "clip",
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 20,
+                    titleFontColor: "#333",
+                    titleFontFamily : "Microsoft Yahei",
+                    titleFontWeight: "bold",
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 10,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: "#6b6b6b",
+                    descFontFamily : "Microsoft Yahei",
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: "#fff",
+                    hoverColor: "#ca0c16"
+                    }
+                })
+            </SCRIPT>
+        <A id="commentBox"></A> 
+<DIV class="comment-box">
+<DIV class="unlogin-box text-center">想对作者说点什么？		 <!-- $curl 当前地址 -->		 <A class="btn btn-sm btn-red" 
+href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73335870#commentBox">我来说一句</A>
+	 </DIV>
+<DIV class="comment-list-container"><A id="comments"></A>		 
+<DIV class="comment-list-box"></DIV>
+<DIV class="pagination-box d-none" id="commentPage"></DIV>
+<DIV class="opt-box text-center"><BUTTON class="btn btn-sm btn-link-blue" id="btnMoreComment"></BUTTON>
+		 </DIV></DIV></DIV>
+<DIV class="recommend-box">
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendClickRateRank_2"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendClickRateRank_2"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（7）—— 记录方式详解" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49471873" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（7）—— 
+记录方式详解				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-28</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							3350</SPAN>						 </P></DIV>
+<P class="content oneline">在前面所列文章的演示代码中，其实已经展示了一部分记录日志的方式。为了使用方便，在 
+Easylogging++ 中，通过使用宏的集合来完成日志记录。...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendClickRateRank_0"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendClickRateRank_0"}'><A 
+title="<em>EasyLogging++</em><em>学习</em>笔记(1)—— 简要介绍" href="https://blog.csdn.net/xie1xiao1jun/article/details/54572803" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>EasyLogging++</EM><EM>学习</EM>笔记(1)—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="xie1xiao1jun" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_xie1xiao1jun.gif">
+							 <SPAN class="namebox"><SPAN class="name">xie1xiao1jun</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">01-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1441</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box clearfix">
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/pc3553.js" type="text/javascript"></SCRIPT>
+				 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendClickRateRank_1"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendClickRateRank_1"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（2）—— <em>日志</em>级别" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49407891" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（2）—— 
+<EM>日志</EM>级别				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-25</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4182</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多的C++日志库中，日志信息会根据严重性来划分级别，使用者可以设置严重性级别门阀值来控制日志的输出，即严重性级别在该门阀值以上的日志信息才进行记录。然而在Easylogging++中，故意默认采用...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Qsir/article/details/73337134,BlogCommendClickRateRank_3"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Qsir/article/details/73337134,BlogCommendClickRateRank_3"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（11）—— 共享<em>日志</em>库" 
+href="https://blog.csdn.net/Qsir/article/details/73337134" target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（11）—— 
+共享<EM>日志</EM>库				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Qsir" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_qsir.gif">
+							 <SPAN class="namebox"><SPAN class="name">Qsir</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							505</SPAN>						 </P></DIV>
+<P class="content oneline">在前面的学习系列文章中，我们都是在单独的一个应用程序中使用 Easylogging++ 
+日志库。其实&nbsp;Easylogging++ 
+日志库是可以共享给动态库、静态库以及应用程序共同使用的。在编写一些大型...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendClickRateRank_4"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendClickRateRank_4"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（1）—— 简要介绍" href="https://blog.csdn.net/Fish_55_66/article/details/49367197" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（1）—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-23</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							7905</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendClickRateRank_5"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendClickRateRank_5"}'><A 
+title="在VS2015中使用<em>easylogging++</em>添加支持Unicode" href="https://blog.csdn.net/mail_cm/article/details/73604744" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline">在VS2015中使用<EM>easylogging++</EM>添加支持Unicode				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="mail_cm" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_mail_cm.jpg">
+							 <SPAN class="namebox"><SPAN class="name">mail_cm</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-22</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							665</SPAN>						 </P></DIV>
+<P 
+class="content oneline">我在win32应用程序中使用easylogging++做日志，字符集使用的是Unicode,默认无法输出中文到日志，看了http://blog.csdn.net/Fish_55_66/article/...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></DIV>
+<SCRIPT>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 8,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</SCRIPT>
+						 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254039,BlogCommendClickRateRank_6"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254039,BlogCommendClickRateRank_6"}'><A 
+title="<em>Easylogging++</em> <em>辅助</em><em>配置</em><em>功能</em>" href="https://blog.csdn.net/lengyuezuixue/article/details/79254039" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>Easylogging++</EM> 
+<EM>辅助</EM><EM>配置</EM><EM>功能</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-05</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							158</SPAN>						 </P></DIV>
+<P class="content oneline">命令行参数 &nbsp; &nbsp; 
+在Easylogging++中可通过START_EASYLOGGINGPP(argc, 
+argv)来完成命令行参数的设置，下面的表格列举了GitHub上给出的Easyloggin...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,BlogCommendClickRateRank_7"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,BlogCommendClickRateRank_7"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（3）—— <em>配置</em><em>功能</em>" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49425949" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（3）—— 
+<EM>配置</EM><EM>功能</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-26</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							5878</SPAN>						 </P></DIV>
+<P class="content oneline">在前面的文章 《日志库Easylogging++学习系列（1） —— 简要介绍 》中，我们已经初步见识到了 
+Easylogging++ 日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？我们...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79253975,searchFromBaidu_8"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79253975,searchFromBaidu_8"}'><A 
+title="<em>Easylogging++</em> 格式说明符" href="https://blog.csdn.net/lengyuezuixue/article/details/79253975" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>Easylogging++</EM> 格式说明符				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-05</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							124</SPAN>						 </P></DIV>
+<P class="content oneline">输出格式说明符 Specifier Replaced By %logger Logger ID
+ %thread Thread ID - Uses s...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79230411,searchFromBaidu_9"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79230411,searchFromBaidu_9"}'><A 
+title="<em>Easylogging++</em>之<em>配置</em><em>功能</em>" href="https://blog.csdn.net/lengyuezuixue/article/details/79230411" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>Easylogging++</EM>之<EM>配置</EM><EM>功能</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-01</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							153</SPAN>						 </P></DIV>
+<P class="content oneline">要完成Easylogging++日志的配置功能，可以通过三种方式实现，而且每一种方法都非常简单。 
+&nbsp; ·使用配置文件，这种方法的好处就是只要修改配置文件即可实现日志格式的重新配置，而不需要修改源程序...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box type_hot_word">
+<DIV class="content clearfix oneline">
+<H5 class="float-left">相关热词</H5>
+<DIV class="float-left"><SPAN><A href="https://blog.csdn.net/anning_88/article/details/53694810" 
+target="_blank">was的日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/watermelonh/article/details/77471354" 
+target="_blank">as日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_29580525/article/details/79482020" 
+target="_blank">						日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/sdwxqing/article/details/21523079" 
+target="_blank">was日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_19891827/article/details/73732983" 
+target="_blank">						日志组件打日志</A>					 </SPAN>								 </DIV></DIV></DIV>
+<DIV class="recommend-loading-box"><IMG src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/feedLoading.gif"> 
+            </DIV>
+<DIV class="recommend-end-box">
+<P class="text-center">没有更多推荐了，<A class="c-blue c-blue-hover c-blue-focus" href="https://blog.csdn.net/">返回首页</A></P></DIV></DIV></main><ASIDE>
+<DIV class="aside-box" id="asideProfile">
+<H3 class="aside-title">个人资料</H3>
+<DIV class="profile-intro d-flex">
+<DIV class="avatar-box d-flex justify-content-center flex-column"><A href="https://blog.csdn.net/Qsir"><IMG 
+class="avatar_pic" 
+src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/3_qsir.gif"></A>         </DIV>
+<DIV class="user-info d-flex justify-content-center flex-column">
+<P class="name csdn-tracking-statistics tracking-click" data-mod="popu_379"><A 
+id="uid" href="https://blog.csdn.net/Qsir" target="_blank">qsir</A>             
+</P></DIV>
+<DIV class="opt-box d-flex justify-content-center flex-column"><SPAN class="csdn-tracking-statistics tracking-click" 
+data-mod="popu_379"><A class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73335870" 
+target="_self">关注</A>                             </SPAN>                     
+</DIV></DIV>
+<DIV class="data-info d-flex item-tiling">
+<DL title="4" class="text-center">
+  <DT><A href="https://blog.csdn.net/qsir?t=1">原创</A></DT>
+  <DD><A href="https://blog.csdn.net/qsir?t=1"><SPAN 
+  class="count">4</SPAN></A></DD></DL>
+<DL title="43" class="text-center">
+  <DT>粉丝</DT>
+  <DD><SPAN class="count" id="fan">43</SPAN></DD></DL>
+<DL title="36" class="text-center">
+  <DT>喜欢</DT>
+  <DD><SPAN class="count">36</SPAN></DD></DL>
+<DL title="14" class="text-center">
+  <DT>评论</DT>
+  <DD><SPAN class="count">14</SPAN></DD></DL></DIV>
+<DIV class="grade-box clearfix">
+<DL>
+  <DT>等级：</DT>             
+  <DD><A title="5级,点击查看等级说明" href="https://blog.csdn.net/home/help.html#level" 
+  target="_blank"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon icon-level" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bloglevel-5" />                     </svg>                 
+  </A>             </DD>         </DL>
+<DL>
+  <DT>访问：</DT>             
+  <DD title="233581">23万+            </DD>         </DL>
+<DL>
+  <DT>积分：</DT>             
+  <DD title="3013">3013            </DD>         </DL>
+<DL title="16584">
+  <DT>排名：</DT>             
+  <DD>1万+</DD>         </DL></DIV></DIV>
+<DIV class="csdn-tracking-statistics mb8 box-shadow" style="height: 250px;" 
+data-mod="popu_4" data-pid="blog">
+<DIV class="aside-content text-center" id="cpro_u2734133"><!-- 广告位：PC-博客内页-百度联盟-300x250 -->
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/z3n86.js" type="text/javascript"></SCRIPT>
+    </DIV></DIV>
+<DIV class="aside-box" id="asideNewArticle">
+<H3 class="aside-title">最新文章</H3>
+<DIV class="aside-content">
+<UL class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/82286233" 
+  target="_blank">友善串口调试助手</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946974" 
+  target="_blank">UART串口通信浅谈之(三)--字符与数据的转换</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946923" 
+  target="_blank">UART串口通信浅谈之(二)--寄存器设置</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946769" 
+  target="_blank">UART串口通信浅谈之(一)--基础概述</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81706158" 
+  target="_blank">C/C++ 踩过的坑和防御式编程</A></LI></UL></DIV></DIV>
+<DIV class="aside-box flexible-box" id="asideCategory">
+<H3 class="aside-title">个人分类</H3>
+<DIV class="aside-content">
+<UL>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917782"><SPAN 
+  class="title oneline">Windows</SPAN>                     <SPAN class="count float-right">181篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917784"><SPAN 
+  class="title oneline">MFC</SPAN>                     <SPAN class="count float-right">100篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917800"><SPAN 
+  class="title oneline">职业生涯</SPAN>                     <SPAN class="count float-right">36篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917970"><SPAN 
+  class="title oneline">行业观察</SPAN>                     <SPAN class="count float-right">24篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6919199"><SPAN 
+  class="title oneline">串口</SPAN>                     <SPAN class="count float-right">21篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921203"><SPAN 
+  class="title oneline">Web开发</SPAN>                     <SPAN class="count float-right">4篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921205"><SPAN 
+  class="title oneline">C\C++</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921207"><SPAN 
+  class="title oneline">Visual Studio</SPAN>                     <SPAN class="count float-right">25篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921208"><SPAN 
+  class="title oneline">工具</SPAN>                     <SPAN class="count float-right">91篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6940573"><SPAN 
+  class="title oneline">CC++</SPAN>                     <SPAN class="count float-right">120篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7194069"><SPAN 
+  class="title oneline">随笔与文摘</SPAN>                     <SPAN class="count float-right">11篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7212900"><SPAN 
+  class="title oneline">大数据</SPAN>                     <SPAN class="count float-right">10篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7137502"><SPAN 
+  class="title oneline">嵌入式</SPAN>                     <SPAN class="count float-right">15篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7464411"><SPAN 
+  class="title oneline">金融工程/量化交易</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7766384"><SPAN 
+  class="title oneline">硬件</SPAN>                     <SPAN class="count float-right">4篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7766385"><SPAN 
+  class="title oneline">运维</SPAN>                     <SPAN class="count float-right">9篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7816230"><SPAN 
+  class="title oneline">开发管理</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box flexible-box" id="asideArchive">
+<H3 class="aside-title">归档</H3>
+<DIV class="aside-content">
+<UL class="archive-list"><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/09">2018年9月         
+             <SPAN class="count float-right">1篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/08">2018年8月         
+             <SPAN class="count float-right">6篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/07">2018年7月         
+             <SPAN class="count float-right">21篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/06">2018年6月         
+             <SPAN class="count float-right">10篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/03">2018年3月         
+             <SPAN class="count float-right">5篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/02">2018年2月         
+             <SPAN class="count float-right">11篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/01">2018年1月         
+             <SPAN class="count float-right">10篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/12">2017年12月        
+              <SPAN class="count float-right">22篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/11">2017年11月        
+              <SPAN class="count float-right">33篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/10">2017年10月        
+              <SPAN class="count float-right">49篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/09">2017年9月         
+             <SPAN class="count float-right">41篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/08">2017年8月         
+             <SPAN class="count float-right">58篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/07">2017年7月         
+             <SPAN class="count float-right">98篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/06">2017年6月         
+             <SPAN class="count float-right">47篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/05">2017年5月         
+             <SPAN class="count float-right">81篇</SPAN>                 
+</A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box" id="asideHotArticle">
+<H3 class="aside-title">热门文章</H3>
+<DIV class="aside-content">
+<UL class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+  <LI><A 
+  href="https://blog.csdn.net/qsir/article/details/72628127">用户·角色·权限·表的设计</A>
+  <P class="read">阅读量：<SPAN>30417</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/78180958">写给大数据开发初学者的话 
+  | 附教程</A>
+  <P class="read">阅读量：<SPAN>9528</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/77838151">[置顶] 
+  C/C++超级大火锅</A>
+  <P class="read">阅读量：<SPAN>5937</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/qsir/article/details/77867758">C语言数组清空的几种方法比较</A>
+  <P class="read">阅读量：<SPAN>5340</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/72002824">未来物联网全栈开发 
+  --JavaScript or Python？</A>
+  <P class="read">阅读量：<SPAN>4833</SPAN></P></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideNewComments">
+<H3 class="aside-title">最新评论</H3>
+<DIV class="aside-content">
+<UL class="newcomment-list">
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/njl_041x" 
+  target="_blank">njl_041x</A>：组 的概念感觉没有必要                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/tr1912" 
+  target="_blank">tr1912</A>：再次拜读，果然又有新的体会                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/80852002#comments" 
+  target="_blank">几种常用的版本控制系统优缺点比较</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/zt15732621796" 
+  target="_blank">zt15732621796</A>：很好的博客，很详细的                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72898381#comments" 
+  target="_blank">MFC中动态创建控件以及事件响应实...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/zYongheng" 
+  target="_blank">zYongheng</A>：不是我想要的，“动态”的概念是可能产生也可能不产生，而不是已经知道一定会产生而动态的添加！    
+              </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/hui_2016" 
+  target="_blank">hui_2016</A>：6666，但是没有看懂                
+</P></LI></UL></DIV></DIV>
+<DIV id="asideFooter">
+<DIV class="aside-box">
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/nqnl.js" type="text/javascript"></SCRIPT>
+					 </DIV>
+<DIV class="aside-box">
+<DIV class="persion_article"></DIV></DIV></DIV></ASIDE>
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/publib_footer-1.0.3.js" type="text/javascript" data-isfootertrack="false"></SCRIPT>
+ 
+<SCRIPT>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</SCRIPT>
+ </DIV>
+<DIV class="mask-dark"></DIV>
+<DIV class="pulllog-box" style="display: block;">
+<DIV class="pulllog clearfix"><SPAN class="text float-left"><!-- 广告位：PC-博客内页底通 文字链位置 -->
+										 
+<SCRIPT>
+				(function() {
+					var s = "_" + Math.random().toString(36).slice(2);
+					document.write('<div id="baidufooter_0001"></div>');
+					(window.slotbydup=window.slotbydup || []).push({
+						id: '5851901',
+						container: 'baidufooter_0001',
+						size: '520,40',
+						display: 'inlay-fix'
+					});
+				})();
+				</SCRIPT>
+				 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/os.js"></SCRIPT>
+				 
+<STYLE>
+					#baidufooter_0001{
+						display: none !important;
+					}
+				</STYLE>
+							 </SPAN>		 
+<DIV class="pulllog-btn float-right clearfix"><BUTTON class="pulllog-login float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_557"><A href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_login" 
+target="_self">登录</A></BUTTON>             
+<DIV class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_558"><A href="https://passport.csdn.net/account/mobileregister" 
+target="_blank">注册</A></DIV><BUTTON class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-times" />                 </svg>             </BUTTON>
+		 </DIV></DIV></DIV>
+<DIV id="loginWrap" style="display: none;"></DIV>
+<DIV class="tool-box">
+<UL class="meau-list">
+  <LI class="btn-like-box "><BUTTON title="点赞" class=" low-height hover-box btn-like "><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon active hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup" />				 </svg>				 <SPAN class="hover-show text-box text"><SPAN 
+  class="no-active">点赞</SPAN>					 <SPAN class="active">取消点赞</SPAN>				 </SPAN>
+  				 
+  <P>0</P></BUTTON>		 </LI>
+  <LI><A title="写评论" class="btn-comments low-height hover-box" href="https://blog.csdn.net/Qsir/article/details/73335870#commentBox"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-comments" />				 </svg>				 <SPAN 
+  class="hover-show text">评论</SPAN>				 
+  <P></P></A></LI>
+  <LI class="toc-container-box" id="liTocBox"><BUTTON title="目录" class="btn-toc low-height hover-box"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-contents" />				 </svg>				 <SPAN 
+  class="hover-show text">目录</SPAN>			 </BUTTON>			 
+  <DIV class="toc-container">
+  <DIV class="pos-box">
+  <DIV class="icon-arrow"></DIV>
+  <DIV class="scroll-box">
+  <DIV class="toc-box"></DIV></DIV></DIV>
+  <DIV class="opt-box"><BUTTON title="向上" class="btn-opt prev nomore"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevronup" />
+  						 </svg>					 </BUTTON>					 <BUTTON class="btn-opt next"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevrondown" />
+  						 </svg>					 </BUTTON>				 </DIV></DIV></LI>
+  <LI><BUTTON title="收藏" class="btn-bookmark low-height hover-box"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark" />				 </svg>					 <SPAN 
+  class="hover-show text">收藏</SPAN>				 <!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+  			 </BUTTON>		 </LI>
+  <LI class="bdsharebuttonbox"><BUTTON 
+  class="btn-comments low-height hover-box"><A title="手机看" class="bds_weixin clear-share-style" 
+  href="https://blog.csdn.net/Qsir/article/details/73335870#" 
+  data-cmd="weixin"></A>				 <svg xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-wechat" />				 </svg>				 <SPAN class="hover-show text text3">手机看
+  				 </SPAN>			 </BUTTON>		 </LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（4）—— 格式说明符" class="btn-comments low-height hover-box" 
+  href="https://blog.csdn.net/qsir/article/details/73335824"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-shangyiye" />					 </svg>					 <SPAN class="hover-show text text3">上一篇</SPAN>
+  				 </A></LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（6）—— 日志记录器" class="btn-comments hover-box low-height" 
+  href="https://blog.csdn.net/qsir/article/details/73335986"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-xiayiye" />				 </svg>				 <SPAN class="hover-show text text3">下一篇</SPAN>
+  			 </A></LI>
+  <LI class="bdsharebuttonbox _360_interactive" style="margin-top: 8px;">
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/interactive_plugin.js" type="text/javascript"></SCRIPT>
+   			
+<STYLE>
+				#_360_interactive > *{
+					 margin-left: -8px;
+				}
+			</STYLE>
+  			 
+  <DIV id="_360_interactive">
+<SCRIPT> INTERACTIVE_PLUGIN.render({ showid : 'N0ufqn', w: 60, h: 60, type: 'click', placeholderId: '_360_interactive' }); </SCRIPT>
+   			</DIV><IMG style="margin: 0px auto; display: block;" alt="" src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/201608021757063065.png"></LI><!-- 宽屏更多按钮 -->
+  		 
+  <LI class="widescreen-more"><A title="快问" class="btn-comments chat-ask-button low-height hover-box" 
+  href="https://blog.csdn.net/Qsir/article/details/73335870#chatqa"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-more" />				 </svg>				 <SPAN 
+  class="hover-show text">更多</SPAN>							 </A>
+  <UL class="widescreen-more-box">
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（4）—— 格式说明符" 
+    class="btn-comments low-height hover-box" href="https://blog.csdn.net/qsir/article/details/73335824"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-shangyiye" />							 </svg>							 <SPAN class="hover-show text text3">上一篇</SPAN>
+    						 </A></LI>
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（6）—— 日志记录器" 
+    class="btn-comments hover-box low-height" href="https://blog.csdn.net/qsir/article/details/73335986"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-xiayiye" />						 </svg>						 <SPAN class="hover-show text text3">下一篇</SPAN>
+    					 </A></LI></UL></LI></UL></DIV>
+<SCRIPT>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</SCRIPT>
+ 
+<SCRIPT>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "日志库EasyLogging++学习系列（5）—— 辅助配置功能";
+    var ChannelId = 0;
+    var articleId = "73335870";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Qsir/article/details/73335870";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "easylogging+%E5%A4%9A%E7%BA%BF%E7%A8%8B";
+    var needInsertBaidu = false;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u65e5\u5fd7","easylogging++","\u5b66\u4e60","\u7cfb\u5217","\u8f85\u52a9","\u914d\u7f6e","\u529f\u80fd"];//高亮数组
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/sandalstrap.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/paging.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/goTop-v1.0.min.js"></SCRIPT>
+ 
+<SCRIPT>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"日志库EasyLogging++学习系列（5）—— 辅助配置功能");
+        }
+    })
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/common-ffcd47990c.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/detail-7060b66935.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/skin-yellow-9376486353.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/baidu_search-1.1.2.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/chart.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/chart.min.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/widget2chart.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/atom-one-dark.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/pc_wap_common-676a063698.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（5）——%20辅助配置功能_files/MathJax.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</SCRIPT>
+ </BODY><!-- 第四范式SDK --><!-- 高亮未与 markdown兼容  --></HTML>

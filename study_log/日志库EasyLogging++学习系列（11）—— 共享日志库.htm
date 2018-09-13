@@ -1,0 +1,1080 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0051)https://blog.csdn.net/Qsir/article/details/73337134 -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-CN"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+     
+<META charset="UTF-8">     <LINK href="https://blog.csdn.net/Qsir/article/details/73337134" 
+rel="canonical">          
+<META name="renderer" content="webkit">     
+<META name="force-rendering" content="webkit">     
+<META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    
+<META name="apple-mobile-web-app-status-bar-style" content="black">     
+<META name="referrer" content="always">     
+<META name="description" content="在前面的学习系列文章中，我们都是在单独的一个应用程序中使用 Easylogging++ 日志库。其实&nbsp;Easylogging++ 日志库是可以共享给动态库、静态库以及应用程序共同使用的。在编写一些大型程序的时候，我们往往会把各个功能分别封装成一个动态库，然后再编写一个主程序来负责调用这些动态库就可以了。现在假设我们想在主程序和各个动态库中都使用&nbsp;Easylogging++ 来记录日志，那么我们需要"> 
+    
+<META name="keywords" content="Easylogging++,logging">     
+<META http-equiv="Cache-Control" content="no-siteapp"><LINK href="#" rel="alternate" 
+media="handheld">     
+<META name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+    
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/tingyun-rum-blog.js"></SCRIPT>
+     <LINK href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">     
+<TITLE>日志库EasyLogging++学习系列（11）—— 共享日志库 - CSDN博客</TITLE>             <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/detail-4170e79ecf.min.css" 
+rel="stylesheet">         <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/skin-yellow-2eefd34acf.min.css" 
+rel="stylesheet">     
+<SCRIPT type="text/javascript">
+        var username = "Qsir";
+        var blog_address = "https://blog.csdn.net/qsir";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73337134"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-yellow";
+        // 第四范式所需数据
+        var articleTitles = "日志库EasyLogging++学习系列（11）—— 共享日志库";
+        var articleID = "73337134";
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/main-1.0.6.js"></SCRIPT>
+     <!-- 新版上报 -->     
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/track.js" type="text/javascript"></SCRIPT>
+     <!-- 新版上报end -->             <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/sandalstrap.min.css" 
+rel="stylesheet">     
+<STYLE>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </STYLE>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> <!-- nodata 为 第四范式接口有问题时样式不变的处理 --> 
+<BODY class="nodata"><LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/content_toolbar.css" 
+rel="stylesheet">     
+<SCRIPT id="toolbar-tpl-scriptId" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></SCRIPT>
+ <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/blog_code-c3a0c33d5c.css" 
+rel="stylesheet"> <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/paging.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/mvf_news_feed.js" type="text/javascript"></SCRIPT>
+ 
+<DIV style="display: none;"><IMG onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' 
+src=""> </DIV><LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/chart-3456820cac.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/ds.js"></SCRIPT>
+ 
+<DIV class="container clearfix" id="mainBox"><!-- <div id="breadcrumbs">
+			<span><a href="https://blog.csdn.net/">博客首页</a></span>
+			<i>></i>
+			<span><a href="https://blog.csdn.net/qsir">Qsir的专栏</a></span>
+			<i>></i>
+			<span>日志库EasyLogging++学习系列（11）—— 共享日志库...</span>
+		</div> -->
+		 
+<UL class="recommend-right"></UL><main>
+<DIV class="blog-content-box">
+<DIV class="article-header-box">
+<DIV class="article-header">
+<DIV class="article-title-box"><SPAN 
+class="article-type type-2 float-left">转</SPAN>				
+<H1 class="title-article">日志库EasyLogging++学习系列（11）—— 共享日志库</H1></DIV>
+<DIV class="article-info-box">
+<DIV class="article-bar-top"><SPAN class="time">2017年06月16日 16:56:38</SPAN>
+					 <A class="follow-nickName" href="https://me.csdn.net/Qsir" 
+target="_blank">qsir</A>						 <SPAN class="read-count">阅读数：506</SPAN>
+																										 <SPAN class="tags-box artic-tag-box"><SPAN class="label">标签：</SPAN>
+																 <A class="tag-link" href="http://so.csdn.net/so/search/s.do?q=Easylogging++&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"Easylogging++"}' 
+data-track-click='{"mod":"popu_626","con":"Easylogging++"}'>Easylogging++																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=logging&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"logging"}' 
+data-track-click='{"mod":"popu_626","con":"logging"}'>logging																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=开源&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"开源"}' 
+data-track-click='{"mod":"popu_626","con":"开源"}'>开源																<A class="tag-link" 
+href="http://so.csdn.net/so/search/s.do?q=日志&amp;t=blog" target="_blank" 
+data-track-view='{"mod":"popu_626","con":"日志"}' data-track-click='{"mod":"popu_626","con":"日志"}'>日志																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=日志工具&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"日志工具"}' 
+data-track-click='{"mod":"popu_626","con":"日志工具"}'>日志工具																</A>
+							 </SPAN>																					 
+<DIV class="tags-box space"><SPAN class="label">个人分类：</SPAN>																 <A 
+class="tag-link" href="https://blog.csdn.net/Qsir/article/category/6940573" 
+target="_blank">CC++																<A class="tag-link" href="https://blog.csdn.net/Qsir/article/category/6921208" 
+target="_blank">工具																</A>							 </DIV></DIV>
+<DIV class="operating"></DIV></DIV></DIV></DIV><ARTICLE>
+<DIV class="article_content clearfix csdn-tracking-statistics" id="article_content" 
+data-dsm="post" data-mod="popu_307" data-pid="blog"><LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/ck_htmledit_views-e2445db1a8.css" 
+rel="stylesheet">						 
+<DIV class="htmledit_views">
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>在前面的学习系列文章中，我们都是在单独的一个应用程序中使用 
+Easylogging++ 日志库。其实&nbsp;Easylogging++ 
+日志库是可以共享给动态库、静态库以及应用程序共同使用的。在编写一些大型程序的时候，我们往往会把各个功能分别封装成一个动态库，然后再编写一个主程序来负责调用这些动态库就可以了。现在假设我们想在主程序和各个动态库中都使用&nbsp;Easylogging++ 
+来记录日志，那么我们需要在主程序和各个动态库中的代码中都包含&nbsp;Easylogging++  
+的头文件，然后再分别设置主程序和各个动态库的日志配置。这是一个非常繁琐的事情，而且很容易把主程序和各个动态库中的日志配置成保存在同一个文件里，这可能会造成多个动态库同时对同一个日志文件进行写操作的情形，从而可能会使得日志内容乱成一团。但是因为主程序和各个动态库合并起来才算是一个完整的程序，我们又确实想把主程序和各个动态库中相同级别的的日志都保存在同一个文件中，那么我们只需要使用&nbsp;Easylogging++ 
+的共享功能，就可以完美地满足我们的需求，并且还能避免上述所说的问题。</SPAN></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>在 
+Easylogging++ 日志库的源码中，有一个名为 Storage 的类，这个类是负责维护 Easylogging++ 
+日志库数据的主要入口，比如日志记录器的管理，日志配置的管理等都是在 Storage 类中完成的。默认情况下，我们每调用一次初始化宏&nbsp;<SPAN 
+style="line-height: 1.45; background-color: rgb(255, 255, 255);">INITIALIZE_EASYLOGGINGPP&nbsp;</SPAN><SPAN 
+style="color: rgb(51, 51, 51); line-height: 1.45; background-color: rgb(255, 255, 255);"></SPAN><SPAN 
+style="line-height: 1.45; background-color: rgb(255, 255, 255);">就会创建一个&nbsp;Storage 
+ 类对象，所以不同的程序就会有不同的<SPAN style="line-height: 23.2px;">&nbsp;Storage 
+类</SPAN>对象在负责维护相应的日志记录器和日志配置。如果</SPAN>我们只创建一次<SPAN 
+style="line-height: 23.2px;">&nbsp;Storage 
+类对象，然后再将这个</SPAN>对象共享给其他使用&nbsp;Easylogging++ 日志库的程序使用，那么就可以保证所有程序都在使用同一个<SPAN 
+style="line-height: 23.2px;">&nbsp;Storage  
+类对象维护的</SPAN>日志记录器和日志配置，如同在单独的应用程序中使用日志记录一样方便和安全。</SPAN></P>
+<P><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="font-size: 14px;">为了使用共享的</SPAN><SPAN style="line-height: 23.2px;"><SPAN 
+style="font-size: 14px;">&nbsp;Storage 类对象，在其他程序中我们不能用宏&nbsp;<SPAN style="line-height: 1.45;">INITIALIZE_EASYLOGGINGPP 
+来初始化日志库，应该改用以下两个宏定义中任意一个：</SPAN></SPAN></SPAN></SPAN></P>
+<P></P>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;"><SPAN style="line-height: 21.76px;"><SPAN style="background-color: rgb(255, 255, 255);"><SPAN 
+  style="line-height: 25.6px;"><SPAN style="line-height: 21.76px;"><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;</SPAN><CODE 
+  style="line-height: 21.76px;"><SPAN 
+  style='font-family: "Microsoft YaHei";'>INITIALIZE_NULL_EASYLOGGINGPP</SPAN></CODE><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;"><SPAN style="line-height: 21.76px;"><SPAN style="background-color: rgb(255, 255, 255);"><SPAN 
+  style="line-height: 25.6px;"><SPAN style="line-height: 21.76px;"><CODE style="line-height: 21.76px;"><SPAN 
+  style='font-family: "Microsoft YaHei";'><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>SHARE_EASYLOGGINGPP</SPAN><BR></SPAN></CODE></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></LI></UL>
+<DIV><SPAN style="line-height: 21.76px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>如果使用宏&nbsp;<CODE 
+style="line-height: 21.76px;"><SPAN 
+style='font-family: "Microsoft YaHei";'>INITIALIZE_NULL_EASYLOGGINGPP</SPAN></CODE></SPAN><SPAN 
+style="line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;，那么必须用函数</SPAN><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="font-size: 14px;">&nbsp;</SPAN><SPAN style="line-height: 21.76px;"><SPAN 
+style="font-size: 14px;">el::Helpers::setStorage(el::base::type::StoragePointer) 
+ 来设置共享的&nbsp;<SPAN style="line-height: 23.2px;">Storage 
+类对象，否则将会运行出错；如果使用宏&nbsp;<SPAN style="line-height: 21.76px;">SHARE_EASYLOGGINGPP 
+，那么必须将<SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>共享的&nbsp;</SPAN><SPAN 
+style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>Storage 
+ 类对象作为参数传递进去。在<SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Easylogging++ 
+V9.80 的版本中，如果使用<SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>宏&nbsp;</SPAN><SPAN 
+style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>SHARE_EASYLOGGINGPP 
+ 
+编译会出现错误，提示无法解析的外部符号，下面是定义该宏的源码：</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN> 
+<DIV class="dp-highlighter bg_plain">
+<DIV class="bar">
+<DIV class="tools"><STRONG>[plain]</STRONG> <A title="view plain" class="ViewSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49659825#" rel="nofollow">
+view plain</A><SPAN> <A title="copy" class="CopyToClipboard" href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">copy</A></SPAN> 
+<DIV style="width: 18px; z-index: 99;"></DIV><SPAN><A title="print" class="PrintSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">print</A></SPAN><A title="?" class="About" href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">?</A></DIV></DIV>
+<OL>
+  <LI 
+  class="alt"><SPAN><SPAN>#define&nbsp;SHARE_EASYLOGGINGPP(initializedStorage)\&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;el&nbsp;{\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;base&nbsp;{\&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::base::type::StoragePointer&nbsp;elStorage(initializedStorage);\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::base::debug::CrashHandler&nbsp;elCrashHandler(ELPP_USE_DEF_CRASH_HANDLER);\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<PRE><CODE class="language-plain">#define SHARE_EASYLOGGINGPP(initializedStorage)\
+    namespace el {\
+        namespace base {\
+            el::base::type::StoragePointer elStorage(initializedStorage);\
+        }\
+        el::base::debug::CrashHandler elCrashHandler(ELPP_USE_DEF_CRASH_HANDLER);\
+    }</CODE></PRE><SPAN 
+style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>解决编译出错的方法很简单，增加一个宏&nbsp;ELPP_INITI_BASIC_DECLR 
+即可，</SPAN>下面是修改之后的代码：</DIV>
+<DIV><SPAN style="line-height: 21.76px;"><SPAN 
+style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 21.76px;"><SPAN style="font-size: 14px;"><SPAN style="line-height: 23.2px;"><SPAN 
+style="line-height: 21.76px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN> 
+<DIV class="dp-highlighter bg_plain">
+<DIV class="bar">
+<DIV class="tools"><STRONG>[plain]</STRONG> <A title="view plain" class="ViewSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49659825#" rel="nofollow">
+view plain</A><SPAN> <A title="copy" class="CopyToClipboard" href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">copy</A></SPAN> 
+<DIV style="width: 18px; z-index: 99;"></DIV><SPAN><A title="print" class="PrintSource" 
+href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">print</A></SPAN><A title="?" class="About" href="http://blog.csdn.net/fish_55_66/article/details/49659825#" 
+rel="nofollow">?</A></DIV></DIV>
+<OL>
+  <LI 
+  class="alt"><SPAN><SPAN>#define&nbsp;SHARE_EASYLOGGINGPP(initializedStorage)\&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;ELPP_INITI_BASIC_DECLR\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;el&nbsp;{\&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;base&nbsp;{\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::base::type::StoragePointer&nbsp;elStorage(initializedStorage);\&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\&nbsp;&nbsp;</SPAN></LI>
+  <LI 
+  class="alt"><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::base::debug::CrashHandler&nbsp;elCrashHandler(ELPP_USE_DEF_CRASH_HANDLER);\&nbsp;&nbsp;</SPAN></LI>
+  <LI><SPAN>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<PRE><CODE class="language-plain">#define SHARE_EASYLOGGINGPP(initializedStorage)\
+	ELPP_INITI_BASIC_DECLR\
+    namespace el {\
+        namespace base {\
+            el::base::type::StoragePointer elStorage(initializedStorage);\
+        }\
+        el::base::debug::CrashHandler elCrashHandler(ELPP_USE_DEF_CRASH_HANDLER);\
+    }</CODE></PRE>其实，修改之后的代码就和另外一个宏<SPAN 
+style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;</SPAN><SPAN 
+style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>ELPP_INIT_EASYLOGGINGPP&nbsp;</SPAN>的代码一模一样。有兴趣的小伙伴可以查看一下源码分别了解一下以下几个和初始化有关的宏定义：</DIV>
+<DIV>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 21.76px;"><SPAN 
+  style="line-height: 23.2px;">INITIALIZE_EASYLOGGINGPP</SPAN><BR></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 21.76px;"><SPAN style="line-height: 23.2px;"><SPAN style="line-height: 21.76px;">ELPP_INIT_EASYLOGGINGPP</SPAN><BR></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 21.76px;"><SPAN style="line-height: 23.2px;"><SPAN style="line-height: 21.76px;"><SPAN 
+  style="line-height: 21.76px;">INITIALIZE_NULL_EASYLOGGINGPP</SPAN><BR></SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 21.76px;"><SPAN style="line-height: 23.2px;"><SPAN style="line-height: 21.76px;"><SPAN 
+  style="line-height: 21.76px;"><SPAN 
+  style="line-height: 21.76px;">SHARE_EASYLOGGINGPP</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></LI></UL></DIV>
+<DIV><SPAN style="line-height: 21.76px;"><SPAN 
+style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 21.76px;"><SPAN style="font-size: 14px;"><SPAN style="line-height: 23.2px;"><SPAN 
+style="line-height: 21.76px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'>最后通过一个完整的演示工程来说明如何只创建一个<SPAN 
+style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Storage 
+类对象，然后再将该对象共享给其他工程使用。在演示工程有下面四个项目：</SPAN></SPAN></DIV>
+<DIV><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></DIV>
+<P></P>
+<BLOCKQUOTE style="border: currentColor; border-image: none;">
+  <P></P>
+  <DIV><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><IMG 
+  alt="" 
+  src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/20151106141149400.png"></SPAN></SPAN></DIV>
+  <P></P></BLOCKQUOTE>
+<P></P>
+<DIV>
+<UL>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;">ShareEasylogging++项目，一个动态库工程，完成<SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Storage 
+  类对象的创建，并提供获取该对象的接口，以便其他工程共享该对象。</SPAN><BR></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>ShareEasyloggingDll1项目，一个<SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>动态库工程，</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>演示了如何使用宏&nbsp;<SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>SHARE_EASYLOGGINGPP&nbsp;</SPAN>和共享的<SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Storage 
+   类对象完</SPAN>成初始化。</SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>ShareEasyloggingDll2项目，一个<SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>动态库工程，</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>演示了如何使用宏&nbsp;</SPAN><SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>SHARE_EASYLOGGINGPP&nbsp;</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>和共享的</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Storage 
+   类对象完</SPAN><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>成初始化。</SPAN></SPAN><BR></SPAN></SPAN></SPAN></SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style="line-height: 23.2px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>ShareEasyloggingTest项目，演示工程主程序，演示了</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>如何使用宏&nbsp;</SPAN><SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+  style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'>INITIALIZE_NULL_EASYLOGGINGPP</SPAN>&nbsp;</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>和共享的</SPAN><SPAN 
+  style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>&nbsp;Storage 
+   类对象完</SPAN><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'>成初始化。</SPAN></LI></UL></DIV>
+<DIV><SPAN style="line-height: 21.76px;"><SPAN 
+style="line-height: 25.6px;"><SPAN 
+style="background-color: rgb(255, 255, 255);"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 21.76px;"><SPAN style="font-size: 14px;"><SPAN style="line-height: 23.2px;"><SPAN 
+style="line-height: 21.76px;"><SPAN style='line-height: 23.2px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN style='line-height: 21.76px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></DIV>
+<DIV><SPAN style="background-color: rgb(255, 255, 255);"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="font-size: 14px;">完整的演示工程代码下载：</SPAN><A href="http://download.csdn.net/detail/fish_55_66/9247483" 
+rel="nofollow"><SPAN style="font-size: 24px;">猛戳这里</SPAN></A><SPAN style="font-size: 14px;">。</SPAN><BR></SPAN></SPAN></DIV></DIV></DIV>
+<DIV class="hide-article-box text-center"><A class="btn" id="btn-readmore" 
+data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/Qsir/article/details/73337134,"}' 
+data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/Qsir/article/details/73337134,"}'>阅读更多</A>
+			 <A class="btn" id="btn-lobinreadmore" href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_more_login" 
+target="_self" data-track-view='{"mod":"popu_557","con":",https://blog.csdn.net/Qsir/article/details/73337134,"}' 
+data-track-click='{"mod":"popu_557","con":",https://blog.csdn.net/Qsir/article/details/73337134,"}'>登录后自动展开</A>
+		 </DIV></ARTICLE></DIV>
+<SCRIPT>
+		$(".MathJax").remove();
+		if($('div.markdown_views pre.prettyprint code.hljs').length > 0 ){
+				$('div.markdown_views')[0].className = 'markdown_views';
+		}
+</SCRIPT>
+ <!-- 博客详情页PC增加广告系统刷量代码 --> 
+<DIV id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+<SCRIPT id="adJs52b5334"></SCRIPT>
+ 
+<SCRIPT>document.getElementById("adJs52b5334").src = "https://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</SCRIPT>
+ </DIV>
+<SCRIPT>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</SCRIPT>
+         
+<DIV class="p4course_target"></DIV>
+<SCRIPT>window.p4sdk_enable_courseBox=true</SCRIPT>
+        <A id="commentBox"></A> 
+<DIV class="comment-box">
+<DIV class="unlogin-box text-center">想对作者说点什么？		 <!-- $curl 当前地址 -->		 <A class="btn btn-sm btn-red" 
+href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73337134#commentBox">我来说一句</A>
+	 </DIV>
+<DIV class="comment-list-container"><A id="comments"></A>		 
+<DIV class="comment-list-box"></DIV>
+<DIV class="pagination-box d-none" id="commentPage"></DIV>
+<DIV class="opt-box text-center"><BUTTON class="btn btn-sm btn-link-blue" id="btnMoreComment"></BUTTON>
+		 </DIV></DIV></DIV>
+<DIV class="recommend-box">
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,BlogCommendESEnWordWeight_10"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,BlogCommendESEnWordWeight_10"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（10）—— <em>日志</em>文件滚动" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49617403" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（10）—— 
+<EM>日志</EM>文件滚动				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">11-03</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							5111</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多应用场合，我们是需要实现日志文件滚动的，特别是在一些长期运行的服务器程序中，如果把所有的日志都记录在一个文件之中，势必会造成日志文件越来越大。当日志内容很多的时候，万一哪天突然需要查询某个日志信...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendFromBaidu_0"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/mail_cm/article/details/73604744,BlogCommendFromBaidu_0"}'><A 
+title="在VS2015中使用<em>easylogging++</em>添加支持Unicode" href="https://blog.csdn.net/mail_cm/article/details/73604744" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline">在VS2015中使用<EM>easylogging++</EM>添加支持Unicode				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="mail_cm" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_mail_cm.jpg">
+							 <SPAN class="namebox"><SPAN class="name">mail_cm</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">06-22</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							665</SPAN>						 </P></DIV>
+<P 
+class="content oneline">我在win32应用程序中使用easylogging++做日志，字符集使用的是Unicode,默认无法输出中文到日志，看了http://blog.csdn.net/Fish_55_66/article/...					</P></DIV></A>
+	 </DIV><!-- 第四范式广告开关 -->				 
+<DIV class="p4courset3_target _4paradigm_box recommend-item-box clearfix"></DIV>
+<SCRIPT>window.p4sdk_enable_recommendBox=true</SCRIPT>
+								 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,BlogCommendFromBaidu_1"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,BlogCommendFromBaidu_1"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（3）—— 配置功能" href="https://blog.csdn.net/Fish_55_66/article/details/49425949" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（3）—— 
+配置功能				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-26</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							5878</SPAN>						 </P></DIV>
+<P class="content oneline">在前面的文章 《日志库Easylogging++学习系列（1） —— 简要介绍 》中，我们已经初步见识到了 
+Easylogging++ 日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？我们...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendFromBaidu_2"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendFromBaidu_2"}'><A 
+title="<em>EasyLogging++</em><em>学习</em>笔记(1)—— 简要介绍" href="https://blog.csdn.net/xie1xiao1jun/article/details/54572803" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>EasyLogging++</EM><EM>学习</EM>笔记(1)—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="xie1xiao1jun" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_xie1xiao1jun.gif">
+							 <SPAN class="namebox"><SPAN class="name">xie1xiao1jun</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">01-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1441</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendFromBaidu_3"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendFromBaidu_3"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（2）—— <em>日志</em>级别" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49407891" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（2）—— 
+<EM>日志</EM>级别				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-25</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4182</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多的C++日志库中，日志信息会根据严重性来划分级别，使用者可以设置严重性级别门阀值来控制日志的输出，即严重性级别在该门阀值以上的日志信息才进行记录。然而在Easylogging++中，故意默认采用...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49451321,BlogCommendFromBaidu_4"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49451321,BlogCommendFromBaidu_4"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（5）—— 辅助配置功能" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49451321" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（5）—— 
+辅助配置功能				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-27</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4149</SPAN>						 </P></DIV>
+<P class="content oneline">正如前面《日志库EasyLogging++学习系列（3）—— 
+配置功能》文中最后提到的，在某些应用场景下，我们还需要通过其他的一些配置手段来辅助我们完成某些特殊功能，这些辅助配置手段包括设置命令行参数...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></DIV>
+<SCRIPT>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 8,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</SCRIPT>
+						 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendFromBaidu_5"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendFromBaidu_5"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（7）—— 记录方式详解" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49471873" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（7）—— 
+记录方式详解				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-28</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							3352</SPAN>						 </P></DIV>
+<P class="content oneline">在前面所列文章的演示代码中，其实已经展示了一部分记录日志的方式。为了使用方便，在 
+Easylogging++ 中，通过使用宏的集合来完成日志记录。...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendFromBaidu_6"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendFromBaidu_6"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（1）—— 简要介绍" href="https://blog.csdn.net/Fish_55_66/article/details/49367197" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（1）—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-23</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							7905</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254039,BlogCommendFromBaidu_7"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254039,BlogCommendFromBaidu_7"}'><A 
+title="<em>Easylogging++</em> 辅助配置功能" href="https://blog.csdn.net/lengyuezuixue/article/details/79254039" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>Easylogging++</EM> 辅助配置功能				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-05</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							158</SPAN>						 </P></DIV>
+<P class="content oneline">命令行参数 &nbsp; &nbsp; 
+在Easylogging++中可通过START_EASYLOGGINGPP(argc, 
+argv)来完成命令行参数的设置，下面的表格列举了GitHub上给出的Easyloggin...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79228073,BlogCommendFromBaidu_8"}' 
+data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/lengyuezuixue/article/details/79228073,BlogCommendFromBaidu_8"}'><A 
+title="简单好用的Log类， <em>easylogging++</em>" href="https://blog.csdn.net/lengyuezuixue/article/details/79228073" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">简单好用的Log类， <EM>easylogging++</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-01</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							297</SPAN>						 </P></DIV>
+<P class="content oneline">名称：easyloggingpp&nbsp; &nbsp;GitHub 
+地址：easylogging(点击链接)&nbsp; &nbsp; 特点：简单、支持多级log输出，支持多种输出形式：文件、控制台、多线程支持 &nbsp; 
+&nbsp;之前版本是...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box type_hot_word">
+<DIV class="content clearfix oneline">
+<H5 class="float-left">相关热词</H5>
+<DIV class="float-left"><SPAN><A href="https://blog.csdn.net/anning_88/article/details/53694810" 
+target="_blank">was的日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/watermelonh/article/details/77471354" 
+target="_blank">as日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_29580525/article/details/79482020" 
+target="_blank">						日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/sdwxqing/article/details/21523079" 
+target="_blank">was日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_19891827/article/details/73732983" 
+target="_blank">						日志组件打日志</A>					 </SPAN>								 </DIV></DIV></DIV>
+<DIV class="recommend-loading-box"><IMG src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/feedLoading.gif"> 
+            </DIV>
+<DIV class="recommend-end-box">
+<P class="text-center">没有更多推荐了，<A class="c-blue c-blue-hover c-blue-focus" href="https://blog.csdn.net/">返回首页</A></P></DIV></DIV></main><ASIDE>
+<DIV class="aside-box" id="asideProfile">
+<H3 class="aside-title">个人资料</H3>
+<DIV class="profile-intro d-flex">
+<DIV class="avatar-box d-flex justify-content-center flex-column"><A href="https://blog.csdn.net/Qsir"><IMG 
+class="avatar_pic" 
+src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/3_qsir.gif"></A>         </DIV>
+<DIV class="user-info d-flex justify-content-center flex-column">
+<P class="name csdn-tracking-statistics tracking-click" data-mod="popu_379"><A 
+id="uid" href="https://blog.csdn.net/Qsir" target="_blank">qsir</A>             
+</P></DIV>
+<DIV class="opt-box d-flex justify-content-center flex-column"><SPAN class="csdn-tracking-statistics tracking-click" 
+data-mod="popu_379"><A class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Qsir/article/details/73337134" 
+target="_self">关注</A>                             </SPAN>                     
+</DIV></DIV>
+<DIV class="data-info d-flex item-tiling">
+<DL title="4" class="text-center">
+  <DT><A href="https://blog.csdn.net/qsir?t=1">原创</A></DT>
+  <DD><A href="https://blog.csdn.net/qsir?t=1"><SPAN 
+  class="count">4</SPAN></A></DD></DL>
+<DL title="43" class="text-center">
+  <DT>粉丝</DT>
+  <DD><SPAN class="count" id="fan">43</SPAN></DD></DL>
+<DL title="36" class="text-center">
+  <DT>喜欢</DT>
+  <DD><SPAN class="count">36</SPAN></DD></DL>
+<DL title="14" class="text-center">
+  <DT>评论</DT>
+  <DD><SPAN class="count">14</SPAN></DD></DL></DIV>
+<DIV class="grade-box clearfix">
+<DL>
+  <DT>等级：</DT>             
+  <DD><A title="5级,点击查看等级说明" href="https://blog.csdn.net/home/help.html#level" 
+  target="_blank"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon icon-level" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bloglevel-5" />                     </svg>                 
+  </A>             </DD>         </DL>
+<DL>
+  <DT>访问：</DT>             
+  <DD title="233584">23万+            </DD>         </DL>
+<DL>
+  <DT>积分：</DT>             
+  <DD title="3013">3013            </DD>         </DL>
+<DL title="16584">
+  <DT>排名：</DT>             
+  <DD>1万+</DD>         </DL></DIV></DIV>
+<DIV class="csdn-tracking-statistics mb8 box-shadow" style="height: 250px;" 
+data-mod="popu_4" data-pid="blog">
+<DIV class="aside-content text-center" id="cpro_u2734133"><!-- 广告位：PC-博客内页-百度联盟-300x250 -->
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/z3n86.js" type="text/javascript"></SCRIPT>
+    </DIV></DIV>
+<DIV class="aside-box" id="asideNewArticle">
+<H3 class="aside-title">最新文章</H3>
+<DIV class="aside-content">
+<UL class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/82286233" 
+  target="_blank">友善串口调试助手</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946974" 
+  target="_blank">UART串口通信浅谈之(三)--字符与数据的转换</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946923" 
+  target="_blank">UART串口通信浅谈之(二)--寄存器设置</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81946769" 
+  target="_blank">UART串口通信浅谈之(一)--基础概述</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Qsir/article/details/81706158" 
+  target="_blank">C/C++ 踩过的坑和防御式编程</A></LI></UL></DIV></DIV>
+<DIV class="aside-box flexible-box" id="asideCategory">
+<H3 class="aside-title">个人分类</H3>
+<DIV class="aside-content">
+<UL>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917782"><SPAN 
+  class="title oneline">Windows</SPAN>                     <SPAN class="count float-right">181篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917784"><SPAN 
+  class="title oneline">MFC</SPAN>                     <SPAN class="count float-right">100篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917800"><SPAN 
+  class="title oneline">职业生涯</SPAN>                     <SPAN class="count float-right">36篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6917970"><SPAN 
+  class="title oneline">行业观察</SPAN>                     <SPAN class="count float-right">24篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6919199"><SPAN 
+  class="title oneline">串口</SPAN>                     <SPAN class="count float-right">21篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921203"><SPAN 
+  class="title oneline">Web开发</SPAN>                     <SPAN class="count float-right">4篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921205"><SPAN 
+  class="title oneline">C\C++</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921207"><SPAN 
+  class="title oneline">Visual Studio</SPAN>                     <SPAN class="count float-right">25篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6921208"><SPAN 
+  class="title oneline">工具</SPAN>                     <SPAN class="count float-right">91篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/6940573"><SPAN 
+  class="title oneline">CC++</SPAN>                     <SPAN class="count float-right">120篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7194069"><SPAN 
+  class="title oneline">随笔与文摘</SPAN>                     <SPAN class="count float-right">11篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7212900"><SPAN 
+  class="title oneline">大数据</SPAN>                     <SPAN class="count float-right">10篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7137502"><SPAN 
+  class="title oneline">嵌入式</SPAN>                     <SPAN class="count float-right">15篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7464411"><SPAN 
+  class="title oneline">金融工程/量化交易</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7766384"><SPAN 
+  class="title oneline">硬件</SPAN>                     <SPAN class="count float-right">4篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7766385"><SPAN 
+  class="title oneline">运维</SPAN>                     <SPAN class="count float-right">9篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/qsir/article/category/7816230"><SPAN 
+  class="title oneline">开发管理</SPAN>                     <SPAN class="count float-right">5篇</SPAN> 
+                  </A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box flexible-box" id="asideArchive">
+<H3 class="aside-title">归档</H3>
+<DIV class="aside-content">
+<UL class="archive-list"><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/09">2018年9月         
+             <SPAN class="count float-right">1篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/08">2018年8月         
+             <SPAN class="count float-right">6篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/07">2018年7月         
+             <SPAN class="count float-right">21篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/06">2018年6月         
+             <SPAN class="count float-right">10篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/03">2018年3月         
+             <SPAN class="count float-right">5篇</SPAN>                 </A></LI><!--归档统计--> 
+              
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/02">2018年2月         
+             <SPAN class="count float-right">11篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2018/01">2018年1月         
+             <SPAN class="count float-right">10篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/12">2017年12月        
+              <SPAN class="count float-right">22篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/11">2017年11月        
+              <SPAN class="count float-right">33篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/10">2017年10月        
+              <SPAN class="count float-right">49篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/09">2017年9月         
+             <SPAN class="count float-right">41篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/08">2017年8月         
+             <SPAN class="count float-right">58篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/07">2017年7月         
+             <SPAN class="count float-right">98篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/06">2017年6月         
+             <SPAN class="count float-right">47篇</SPAN>                 
+</A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/qsir/article/month/2017/05">2017年5月         
+             <SPAN class="count float-right">81篇</SPAN>                 
+</A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box" id="asideHotArticle">
+<H3 class="aside-title">热门文章</H3>
+<DIV class="aside-content">
+<UL class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+  <LI><A 
+  href="https://blog.csdn.net/qsir/article/details/72628127">用户·角色·权限·表的设计</A>
+  <P class="read">阅读量：<SPAN>30417</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/78180958">写给大数据开发初学者的话 
+  | 附教程</A>
+  <P class="read">阅读量：<SPAN>9528</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/77838151">[置顶] 
+  C/C++超级大火锅</A>
+  <P class="read">阅读量：<SPAN>5937</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/qsir/article/details/77867758">C语言数组清空的几种方法比较</A>
+  <P class="read">阅读量：<SPAN>5340</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/qsir/article/details/72002824">未来物联网全栈开发 
+  --JavaScript or Python？</A>
+  <P class="read">阅读量：<SPAN>4833</SPAN></P></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideNewComments">
+<H3 class="aside-title">最新评论</H3>
+<DIV class="aside-content">
+<UL class="newcomment-list">
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/njl_041x" 
+  target="_blank">njl_041x</A>：组 的概念感觉没有必要                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/tr1912" 
+  target="_blank">tr1912</A>：再次拜读，果然又有新的体会                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/80852002#comments" 
+  target="_blank">几种常用的版本控制系统优缺点比较</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/zt15732621796" 
+  target="_blank">zt15732621796</A>：很好的博客，很详细的                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72898381#comments" 
+  target="_blank">MFC中动态创建控件以及事件响应实...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/zYongheng" 
+  target="_blank">zYongheng</A>：不是我想要的，“动态”的概念是可能产生也可能不产生，而不是已经知道一定会产生而动态的添加！    
+              </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/qsir/article/details/72628127#comments" 
+  target="_blank">用户·角色·权限·表的设计</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/hui_2016" 
+  target="_blank">hui_2016</A>：6666，但是没有看懂                
+</P></LI></UL></DIV></DIV>
+<DIV id="asideFooter">
+<DIV class="aside-box">
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/nqnl.js" type="text/javascript"></SCRIPT>
+					 </DIV>
+<DIV class="aside-box">
+<DIV class="persion_article"></DIV></DIV></DIV></ASIDE>
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/publib_footer-1.0.3.js" type="text/javascript" data-isfootertrack="false"></SCRIPT>
+ 
+<SCRIPT>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</SCRIPT>
+ </DIV>
+<DIV class="mask-dark"></DIV>
+<DIV class="pulllog-box" style="display: block;">
+<DIV class="pulllog clearfix"><SPAN class="text float-left"><!-- 广告位：PC-博客内页底通 文字链位置 -->
+										 
+<SCRIPT>
+			var mediav_ad_pub = 'cXt9eo_2313086';
+			var mediav_ad_width = '500';
+			var mediav_ad_height = '36';
+			</SCRIPT>
+			 
+<SCRIPT language="javascript" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/mvf_g2.js" type="text/javascript" charset="utf-8"></SCRIPT>
+							 </SPAN>		 
+<DIV class="pulllog-btn float-right clearfix"><BUTTON class="pulllog-login float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_557"><A href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_login" 
+target="_self">登录</A></BUTTON>             
+<DIV class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_558"><A href="https://passport.csdn.net/account/mobileregister" 
+target="_blank">注册</A></DIV><BUTTON class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-times" />                 </svg>             </BUTTON>
+		 </DIV></DIV></DIV>
+<DIV id="loginWrap" style="display: none;"></DIV>
+<DIV class="tool-box">
+<UL class="meau-list">
+  <LI class="btn-like-box "><BUTTON title="点赞" class=" low-height hover-box btn-like "><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon active hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup" />				 </svg>				 <SPAN class="hover-show text-box text"><SPAN 
+  class="no-active">点赞</SPAN>					 <SPAN class="active">取消点赞</SPAN>				 </SPAN>
+  				 
+  <P>0</P></BUTTON>		 </LI>
+  <LI><A title="写评论" class="btn-comments low-height hover-box" href="https://blog.csdn.net/Qsir/article/details/73337134#commentBox"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-comments" />				 </svg>				 <SPAN 
+  class="hover-show text">评论</SPAN>				 
+  <P></P></A></LI>
+  <LI class="toc-container-box" id="liTocBox"><BUTTON title="目录" class="btn-toc low-height hover-box"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-contents" />				 </svg>				 <SPAN 
+  class="hover-show text">目录</SPAN>			 </BUTTON>			 
+  <DIV class="toc-container">
+  <DIV class="pos-box">
+  <DIV class="icon-arrow"></DIV>
+  <DIV class="scroll-box">
+  <DIV class="toc-box"></DIV></DIV></DIV>
+  <DIV class="opt-box"><BUTTON title="向上" class="btn-opt prev nomore"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevronup" />
+  						 </svg>					 </BUTTON>					 <BUTTON class="btn-opt next"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevrondown" />
+  						 </svg>					 </BUTTON>				 </DIV></DIV></LI>
+  <LI><BUTTON title="收藏" class="btn-bookmark low-height hover-box"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark" />				 </svg>					 <SPAN 
+  class="hover-show text">收藏</SPAN>				 <!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+  			 </BUTTON>		 </LI>
+  <LI class="bdsharebuttonbox"><BUTTON 
+  class="btn-comments low-height hover-box"><A title="手机看" class="bds_weixin clear-share-style" 
+  href="https://blog.csdn.net/Qsir/article/details/73337134#" 
+  data-cmd="weixin"></A>				 <svg xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-wechat" />				 </svg>				 <SPAN class="hover-show text text3">手机看
+  				 </SPAN>			 </BUTTON>		 </LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（10）—— 日志文件滚动" 
+  class="btn-comments low-height hover-box" href="https://blog.csdn.net/qsir/article/details/73336759"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-shangyiye" />					 </svg>					 <SPAN class="hover-show text text3">上一篇</SPAN>
+  				 </A></LI>
+  <LI class="widescreen-hide"><A title="MFC隐藏和显示一个控件的方法" class="btn-comments hover-box low-height" 
+  href="https://blog.csdn.net/qsir/article/details/73568370"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-xiayiye" />				 </svg>				 <SPAN class="hover-show text text3">下一篇</SPAN>
+  			 </A></LI>
+  <LI class="bdsharebuttonbox _360_interactive" style="margin-top: 8px;">
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/interactive_plugin.js" type="text/javascript"></SCRIPT>
+   			
+<STYLE>
+				#_360_interactive > *{
+					 margin-left: -8px;
+				}
+			</STYLE>
+  			 
+  <DIV id="_360_interactive">
+<SCRIPT> INTERACTIVE_PLUGIN.render({ showid : 'N0ufqn', w: 60, h: 60, type: 'click', placeholderId: '_360_interactive' }); </SCRIPT>
+   			</DIV><IMG style="margin: 0px auto; display: block;" alt="" src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/201608021757063065.png"></LI><!-- 宽屏更多按钮 -->
+  		 
+  <LI class="widescreen-more"><A title="快问" class="btn-comments chat-ask-button low-height hover-box" 
+  href="https://blog.csdn.net/Qsir/article/details/73337134#chatqa"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-more" />				 </svg>				 <SPAN 
+  class="hover-show text">更多</SPAN>							 </A>
+  <UL class="widescreen-more-box">
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（10）—— 日志文件滚动" 
+    class="btn-comments low-height hover-box" href="https://blog.csdn.net/qsir/article/details/73336759"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-shangyiye" />							 </svg>							 <SPAN class="hover-show text text3">上一篇</SPAN>
+    						 </A></LI>
+    <LI class="widescreen-more"><A title="MFC隐藏和显示一个控件的方法" class="btn-comments hover-box low-height" 
+    href="https://blog.csdn.net/qsir/article/details/73568370"><svg xmlns="http://www.w3.org/2000/svg" 
+    class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-xiayiye" />						 </svg>						 <SPAN class="hover-show text text3">下一篇</SPAN>
+    					 </A></LI></UL></LI></UL></DIV>
+<SCRIPT>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</SCRIPT>
+ 
+<SCRIPT>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "日志库EasyLogging++学习系列（11）—— 共享日志库";
+    var ChannelId = 0;
+    var articleId = "73337134";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Qsir/article/details/73337134";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "%E4%B8%93%E5%B1%9E%E6%97%A5%E5%BF%97%E5%BA%93";
+    var needInsertBaidu = false;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u65e5\u5fd7","easylogging++","\u5b66\u4e60","\u7cfb\u5217","11","\u5171\u4eab","\u65e5\u5fd7"];//高亮数组
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/sandalstrap.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/paging.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/goTop-v1.0.min.js"></SCRIPT>
+ 
+<SCRIPT>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"日志库EasyLogging++学习系列（11）—— 共享日志库");
+        }
+    })
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/common-ffcd47990c.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/detail-7060b66935.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/skin-yellow-9376486353.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/baidu_search-1.1.2.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/chart.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/chart.min.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/widget2chart.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（11）——%20共享日志库_files/atom-one-dark.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/pc_wap_common-676a063698.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（11）——%20共享日志库_files/MathJax.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</SCRIPT>
+ </BODY><!-- 第四范式SDK --><!-- 高亮未与 markdown兼容  --></HTML>

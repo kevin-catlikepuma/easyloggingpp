@@ -1,0 +1,1456 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0057)https://blog.csdn.net/Fish_55_66/article/details/49425949 -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-CN"><HEAD><META content="IE=11.0000" 
+http-equiv="X-UA-Compatible">
+     
+<META charset="UTF-8">     <LINK href="https://blog.csdn.net/Fish_55_66/article/details/49425949" 
+rel="canonical">          
+<META name="renderer" content="webkit">     
+<META name="force-rendering" content="webkit">     
+<META http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+    
+<META name="apple-mobile-web-app-status-bar-style" content="black">     
+<META name="referrer" content="always">     
+<META name="description" content="在前面的文章 《日志库Easylogging++学习系列（1） —— 简要介绍 》中，我们已经初步见识到了 Easylogging++ 日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？我们应该如何编写自己的配置文件呢？又或者说，除了配置文件之外，我们还有没有别的方法可以完成日志的配置功能呢？希望各位有疑惑的小伙伴在看了本文的内容之后，都能够找到自己满意的答案！"> 
+    
+<META name="keywords" content="Easylogging++,C++日志">     
+<META http-equiv="Cache-Control" content="no-siteapp"><LINK href="#" rel="alternate" 
+media="handheld">     
+<META name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848"> 
+    
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/tingyun-rum-blog.js"></SCRIPT>
+     <LINK href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">     
+<TITLE>日志库EasyLogging++学习系列（3）—— 配置功能 - CSDN博客</TITLE>             <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/detail-4170e79ecf.min.css" 
+rel="stylesheet">         <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/skin3-template-9b39979775.min.css" 
+rel="stylesheet">     
+<SCRIPT type="text/javascript">
+        var username = "Fish_55_66";
+        var blog_address = "https://blog.csdn.net/fish_55_66";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49425949"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin3-template";
+        // 第四范式所需数据
+        var articleTitles = "日志库EasyLogging++学习系列（3）—— 配置功能";
+        var articleID = "49425949";
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/jquery-1.9.1.min.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/main-1.0.6.js"></SCRIPT>
+     <!-- 新版上报 -->     
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/track.js" type="text/javascript"></SCRIPT>
+     <!-- 新版上报end -->             <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/sandalstrap.min.css" 
+rel="stylesheet">     
+<STYLE>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </STYLE>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD> <!-- nodata 为 第四范式接口有问题时样式不变的处理 --> 
+<BODY class="nodata"><LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/content_toolbar.css" 
+rel="stylesheet">     
+<SCRIPT id="toolbar-tpl-scriptId" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></SCRIPT>
+ <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/blog_code-c3a0c33d5c.css" 
+rel="stylesheet"> <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/paging.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/mvf_news_feed.js" type="text/javascript"></SCRIPT>
+ 
+<DIV style="display: none;"><IMG onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);' 
+src=""> </DIV><LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/chart-3456820cac.css" 
+rel="stylesheet"> 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/ds.js"></SCRIPT>
+ 
+<DIV class="container clearfix" id="mainBox"><!-- <div id="breadcrumbs">
+			<span><a href="https://blog.csdn.net/">博客首页</a></span>
+			<i>></i>
+			<span><a href="https://blog.csdn.net/fish_55_66">Fish的博客</a></span>
+			<i>></i>
+			<span>日志库EasyLogging++学习系列（3）—— 配置功能...</span>
+		</div> -->
+		 
+<UL class="recommend-right"></UL><main>
+<DIV class="blog-content-box">
+<DIV class="article-header-box">
+<DIV class="article-header">
+<DIV class="article-title-box"><SPAN 
+class="article-type type-1 float-left">原</SPAN>				
+<H1 class="title-article">日志库EasyLogging++学习系列（3）—— 配置功能</H1></DIV>
+<DIV class="article-info-box">
+<DIV class="article-bar-top"><SPAN class="time">2015年10月26日 16:34:47</SPAN>
+					 <A class="follow-nickName" href="https://me.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>
+						 <SPAN class="read-count">阅读数：5878</SPAN>																										 <SPAN 
+class="tags-box artic-tag-box"><SPAN class="label">标签：</SPAN>																 <A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=Easylogging++&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"Easylogging++"}' 
+data-track-click='{"mod":"popu_626","con":"Easylogging++"}'>Easylogging++																<A 
+class="tag-link" href="http://so.csdn.net/so/search/s.do?q=C++日志&amp;t=blog" 
+target="_blank" data-track-view='{"mod":"popu_626","con":"C++日志"}' 
+data-track-click='{"mod":"popu_626","con":"C++日志"}'>C++日志																</A>
+							 </SPAN>																					 
+<DIV class="tags-box space"><SPAN class="label">个人分类：</SPAN>																 <A 
+class="tag-link" href="https://blog.csdn.net/Fish_55_66/article/category/5911481" 
+target="_blank">Easylogging++日志库																</A>							 </DIV></DIV>
+<DIV class="operating"></DIV></DIV></DIV></DIV><ARTICLE>
+<DIV class="article_content clearfix csdn-tracking-statistics" id="article_content" 
+data-dsm="post" data-mod="popu_307" data-pid="blog">
+<DIV class="article-copyright">
+					版权声明：本文为博主原创文章，转载请注明出处。					https://blog.csdn.net/Fish_55_66/article/details/49425949				</DIV><LINK 
+href="日志库EasyLogging++学习系列（3）——%20配置功能_files/ck_htmledit_views-e2445db1a8.css" 
+rel="stylesheet">						 
+<DIV class="htmledit_views">
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>在前面的文章 
+《<A style="color: rgb(202, 0, 0); text-decoration: none;" href="http://blog.csdn.net/fish_55_66/article/details/49367197" 
+rel="nofollow">日志库Easylogging++学习系列（1） —— 简要介绍</A>&nbsp;》中，我们已经初步见识到了 
+Easylogging++  
+日志库强大的配置功能。那么配置文件中各个字段的意义是什么呢？我们应该如何编写自己的配置文件呢？又或者说，除了配置文件之外，我们还有没有别的方法可以完成日志的配置功能呢？希望各位有疑惑的小伙伴在看了本文的内容之后，都能够找到自己满意的答案！</SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'><BR></SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'><SPAN></SPAN>要完成 
+Easylogging++ 
+日志的配置功能，可以通过三种方法去实现，而且每一种方法都非常简单。第一种方法就是使用配置文件，这种方法的好处就是只要修改配置文件即可实现日志格式的重新配置，而不需要修改源程序代码，缺点就是发布程序时必须打包配置文件一起发布，否则程序无法正常运行。在一些小项目中，特别是在只有一个EXE运行文件的程序中，如果我们不希望程序带着一个多余的日志配置文件，那么我们可以使用另外一种方法，就是使用<SPAN 
+style="color: rgb(51, 51, 51); line-height: 25px;">&nbsp;el::Configurations&nbsp;</SPAN><SPAN 
+style="line-height: 25px;">类提供的成员函数，这种方法和第一种方法的优缺点刚好相反。最后一种方法就是使用&nbsp;Easylogging++ 
+ 的内联配置功能，但是并不推荐使用这种方法，因为它会显得配置十分凌乱<SPAN 
+style="font-size: 12px;">。</SPAN></SPAN></SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 25px;"><BR></SPAN></SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'><SPAN 
+style="line-height: 25px;"><STRONG>方法一：使用配置文件</STRONG></SPAN></SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><BR></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'>在程序运行时，可以通过使用&nbsp;<SPAN 
+style="color: rgb(51, 51, 51); line-height: 25px;">el::Configurations&nbsp;</SPAN><SPAN 
+style="line-height: 25px;">类</SPAN>加载配置文件来完成&nbsp;Easylogging++ 
+的配置功能，配置文件必须遵循下面的语法：</SPAN></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN style='font-family: "Microsoft YaHei";'></SPAN></P>
+<DIV class="dp-highlighter bg_plain" style='line-height: 26px; overflow: auto; font-family: Consolas, "Courier New", Courier, mono, serif; background-color: rgb(231, 229, 220);'>
+<DIV class="bar">
+<DIV class="tools" style="color: rgb(192, 192, 192); line-height: normal; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; border-left-style: solid; background-color: rgb(248, 248, 248);"><STRONG>[plain]</STRONG>&nbsp;<A 
+title="view plain" class="ViewSource" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">view plain</A><A title="copy" class="CopyToClipboard" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">copy</A> 
+<DIV style="width: 18px; z-index: 99;"></DIV></DIV></DIV>
+<OL style="border: currentColor; border-image: none; color: rgb(92, 92, 92); background-color: rgb(255, 255, 255);" 
+start="1">
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">*&nbsp;LEVEL:&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;CONFIGURATION&nbsp;NAME&nbsp;&nbsp;=&nbsp;"VALUE"&nbsp;##&nbsp;Comment&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;CONFIGURATION&nbsp;NAME&nbsp;&nbsp;=&nbsp;"VALUE"&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"></P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;">语法简要说明如下：</P>
+<P style="line-height: 26px; font-family: Arial; font-size: 14px;"></P>
+<UL style="line-height: 26px; font-family: Arial; font-size: 14px;">
+  <LI><SPAN 
+  style='font-family: "Microsoft YaHei";'>*LEVEL，指的是日志级别，以星号符“*”开始，并以英文冒号“:”结束。</SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'>CONFIGURATION NAME 
+  ，指的是配置项的名称，全部名称详见下面的表格。</SPAN></LI>
+  <LI><SPAN 
+  style='font-family: "Microsoft YaHei";'>"VALUE"，指的是配置项的值，各个配置项对应的值类型详见下面的表格。</SPAN></LI>
+  <LI><SPAN style='font-family: "Microsoft YaHei";'>## 
+  Comment，指的是注释，其中两个连续井号"##"表示注释，Comment是注释的内容。注释是可有可无的，但是千万不要在注释中使用双引号，否则可能会出现意想不到的错误。</SPAN></LI></UL>
+<DIV style="line-height: 26px; font-family: Arial; font-size: 14px;"><SPAN 
+style='font-family: "Microsoft YaHei";'></SPAN> 
+<P><SPAN style='font-family: "Microsoft YaHei";'>编写配置文件时，强烈建议先写 Global 
+级别的配置，这样的好处是可以使其他任何未在配置文件中明确指出的级别都将会自动地继承并使用 Global 
+级别的配置。比如，如果你想把所有级别的日志都保存在同一个文件里，你只需要</SPAN><SPAN style='font-family: "Microsoft YaHei";'>在 
+Global 级别中设置 Filename 就可以了，其他级别的日志将会默认的使用 Global 级别中的  Filename 
+。下面的表格列举了GitHub上给出的Easylogging++在配置文件中支持的配置项：</SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei";'><BR></SPAN></P>
+<P><SPAN style='font-family: "Microsoft YaHei";'></SPAN></P>
+<TABLE style='color: rgb(51, 51, 51); line-height: 25.6px; overflow: auto; font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif; font-size: 16px; display: block; border-collapse: collapse; border-spacing: 0px;'>
+  <THEAD>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Configuration 
+      Name</TH>
+    <TH 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">Type</TH>
+    <TH 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Description</TH></TR></THEAD>
+  <TBODY>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Enabled</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">bool</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Determines 
+      whether or not corresponding level for logger is enabled. You may disable 
+      all logs by using<CODE style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>el::Level::Global</CODE></TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>To_File</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">bool</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Whether 
+      or not to write corresponding log to log file</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>To_Standard_Output</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">bool</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Whether 
+      or not to write logs to standard output e.g, terminal or command 
+  prompt</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Format</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">char*</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Determines 
+      format/pattern of logging for corresponding level and logger.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Filename</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">char*</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Determines 
+      log file (full path) to write logs to for corresponding level and 
+  logger</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Milliseconds_Width</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">uint</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Specifies 
+      milliseconds width. Width can be within range (1-6)</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Performance_Tracking</CODE></TD>
+    <TD 
+    style="border: 1px solid rgb(221, 221, 221); border-image: none;">bool</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Determines 
+      whether or not performance tracking is enabled. This does not depend on 
+      logger or level. Performance tracking always uses 'performance' logger 
+      unless specified</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid; background-color: rgb(248, 248, 248);">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Max_Log_File_Size</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">size_t</TD>
+    <TD style="border: 1px solid rgb(221, 221, 221); border-image: none;">If 
+      log file size of corresponding level is &gt;= specified size, log file 
+      will be truncated.</TD></TR>
+  <TR style="border-top-color: rgb(204, 204, 204); border-top-width: 1px; border-top-style: solid;">
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;"><CODE 
+      style='font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>Log_Flush_Threshold</CODE></TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">size_t</TD>
+    <TD 
+      style="border: 1px solid rgb(221, 221, 221); border-image: none;">Specifies 
+      number of log entries to hold until we flush pending log 
+data</TD></TR></TBODY></TABLE>
+<P></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;">下面再回顾一下《<A style="color: rgb(202, 0, 0); text-decoration: none;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49367197" 
+rel="nofollow">日志库Easylogging++学习系列（1） —— 简要介绍</A>&nbsp;》这篇文章中给出的名称为&nbsp;<SPAN 
+style="color: rgb(51, 51, 51); line-height: 25.59px; font-family: Arial; font-size: 14px;">my_log.conf 
+ 的</SPAN>配置文件：</P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"></P>
+<DIV class="dp-highlighter bg_plain" style='overflow: auto; font-family: Consolas, "Courier New", Courier, mono, serif; font-size: 12px; background-color: rgb(231, 229, 220);'>
+<DIV class="bar">
+<DIV class="tools" style="color: rgb(192, 192, 192); line-height: normal; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; border-left-style: solid; background-color: rgb(248, 248, 248);"><STRONG>[plain]</STRONG>&nbsp;<A 
+title="view plain" class="ViewSource" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">view plain</A><A title="copy" class="CopyToClipboard" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">copy</A> 
+<DIV style="width: 18px; z-index: 99;"></DIV></DIV></DIV>
+<OL style="border: currentColor; border-image: none; color: rgb(92, 92, 92); background-color: rgb(255, 255, 255);" 
+start="1">
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">*&nbsp;GLOBAL:&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;ENABLED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;true&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;TO_FILE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;true&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;TO_STANDARD_OUTPUT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;true&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FORMAT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"[%level&nbsp;|&nbsp;%datetime]&nbsp;|&nbsp;%msg"&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;MILLISECONDS_WIDTH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;PERFORMANCE_TRACKING&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;false&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;MAX_LOG_FILE_SIZE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;1048576&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;LOG_FLUSH_THRESHOLD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;TRACE:&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\trace_log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;DEBUG:&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\debug_log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;FATAL:&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;ENABLED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;false&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;ERROR:&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\error_log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;WARNING:&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\warning_log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;INFO:&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;FILENAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;"log\\info_log_%datetime{%Y%M%d}.log"&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">*&nbsp;VERBOSE:&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;ENABLED&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;false&nbsp;&nbsp;</SPAN></LI></OL></DIV>
+<P></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"><SPAN style="line-height: 25.6px;">在上面的</SPAN><SPAN 
+style="line-height: 25.6px;">文件中，我们以 Global 级别开始，并在 Global 级别中把 Easylogging++ 
+支持的所有的配置项都设置好了，这样&nbsp;<SPAN style="line-height: 25.6px;">Global 
+级别的配置就会被后续的日志级别所继承，一直到后续的日志级别再次明确地设置配置项才会覆盖原有的来自于&nbsp;<SPAN style="line-height: 25.6px;">Global 
+ 级别的配置。比如这里的TRACE、DEBUG、ERROR、WARNING、INFO等级别都显式地定义了 Filename 
+，所以这几个级别的日志记录会各自保存在相应的文件里面。而FATAL、VERBOSE这两个级别则显式地定义了 ENABLE 
+，并将其值设置为false，所以这两个级别的日志记录将会被禁用。下面的代码再次演示如何使用该配置文件（注意注释的内容）：</SPAN></SPAN></SPAN></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"><SPAN style="line-height: 25.6px;"><SPAN 
+style="line-height: 25.6px;"></SPAN></SPAN></P>
+<DIV class="dp-highlighter bg_cpp" style='overflow: auto; font-family: Consolas, "Courier New", Courier, mono, serif; font-size: 12px; background-color: rgb(231, 229, 220);'>
+<DIV class="bar">
+<DIV class="tools" style="color: rgb(192, 192, 192); line-height: normal; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; border-left-style: solid; background-color: rgb(248, 248, 248);"><STRONG>[cpp]</STRONG>&nbsp;<A 
+title="view plain" class="ViewSource" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">view plain</A><A title="copy" class="CopyToClipboard" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">copy</A> 
+<DIV style="width: 18px; z-index: 99;"></DIV></DIV></DIV>
+<OL class="dp-cpp" style="border: currentColor; border-image: none; color: rgb(92, 92, 92); background-color: rgb(255, 255, 255);" 
+start="1">
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="preprocessor" style="border: currentColor; border-image: none; color: rgb(128, 128, 128); background-color: inherit;">#include&nbsp;"easylogging++.h"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">INITIALIZE_EASYLOGGINGPP&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">int</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;main(</SPAN><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">int</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;argc,&nbsp;</SPAN><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">char</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">**&nbsp;argv)&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">{&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">/*/////////////////////////////////////////////////////////////////////////</SPAN>&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;必须设置标记&nbsp;LoggingFlag::StrictLogFileSizeCheck</SPAN>&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;否则,配置文件中MAX_LOG_FILE_SIZE&nbsp;=&nbsp;1048576不生效</SPAN>&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;/////////////////////////////////////////////////////////////////////////*/</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::addFlag(el::LoggingFlag::StrictLogFileSizeCheck);&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Configurations&nbsp;conf(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"my_log.conf"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;可以单独设置某一个logger的配置</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::reconfigureLogger(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"default"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">,&nbsp;conf);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;也可以设置全部logger的配置</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::reconfigureAllLoggers(conf);&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"*****&nbsp;info&nbsp;log&nbsp;&nbsp;*****"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;system(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"pause"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="keyword" style="border: currentColor; border-image: none; color: rgb(0, 102, 153); font-weight: bold; background-color: inherit;">return</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;0;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">}&nbsp;&nbsp;</SPAN></LI></OL></DIV><BR>
+<P></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"><SPAN style="line-height: 25.6px;"><SPAN 
+style="line-height: 25.6px;"><SPAN style="line-height: 25.6px;"><STRONG><SPAN 
+style="font-size: 24px;">方法二：使用<SPAN 
+style="line-height: 25px;">&nbsp;el::Configurations&nbsp;</SPAN><SPAN style="line-height: 25px;">类的成员函数</SPAN></SPAN></STRONG></SPAN></SPAN></SPAN></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 25px;">在&nbsp;<SPAN style="line-height: 26px;">Easylogging++ 
+日志库中，封装了配置类&nbsp;</SPAN>el::Configurations，该类提供了完成日志配置功能的全部接口，建议参考该类的源码，可以查看和了解更多更详细和更全面的功能接口。下面的代码演示了几个常用接口的用法：</SPAN></SPAN><BR></P>
+<P style="color: rgb(51, 51, 51); line-height: 25.6px;"><SPAN style='font-family: "Microsoft YaHei";'><SPAN 
+style="line-height: 25px;"></SPAN></SPAN></P>
+<DIV class="dp-highlighter bg_cpp" style='overflow: auto; font-family: Consolas, "Courier New", Courier, mono, serif; font-size: 12px; background-color: rgb(231, 229, 220);'>
+<DIV class="bar">
+<DIV class="tools" style="color: rgb(192, 192, 192); line-height: normal; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; border-left-style: solid; background-color: rgb(248, 248, 248);"><STRONG>[cpp]</STRONG>&nbsp;<A 
+title="view plain" class="ViewSource" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">view plain</A><A title="copy" class="CopyToClipboard" style="border: currentColor; border-image: none; width: 16px; color: rgb(160, 160, 160); text-indent: -2000px; font-size: 9px; text-decoration: none; display: inline-block; background-color: inherit;" 
+href="http://blog.csdn.net/fish_55_66/article/details/49422079#" 
+rel="nofollow">copy</A> 
+<DIV style="width: 18px; z-index: 99;"></DIV></DIV></DIV>
+<OL class="dp-cpp" style="border: currentColor; border-image: none; color: rgb(92, 92, 92); background-color: rgb(255, 255, 255);" 
+start="1">
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="preprocessor" style="border: currentColor; border-image: none; color: rgb(128, 128, 128); background-color: inherit;">#include&nbsp;"easylogging++.h"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">INITIALIZE_EASYLOGGINGPP&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;"><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">int</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;main(</SPAN><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">int</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;argc,&nbsp;</SPAN><SPAN 
+  class="keyword" style="border: currentColor; border-image: none; color: rgb(0, 102, 153); font-weight: bold; background-color: inherit;">const</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;</SPAN><SPAN 
+  class="datatypes" style="border: currentColor; border-image: none; color: rgb(46, 139, 87); font-weight: bold; background-color: inherit;">char</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">**&nbsp;argv)&nbsp;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">{&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;使用默认配置</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Configurations&nbsp;defaultConf;&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;defaultConf.setToDefault();&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"Using&nbsp;el::Configurations&nbsp;class"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;重新设置INFO级别的配置项FORMAT的值</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;defaultConf.set(el::Level::Info,&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::ConfigurationType::Format,&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"%datetime&nbsp;%level&nbsp;%msg"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;重新设置配置</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::reconfigureLogger(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"default"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">,&nbsp;defaultConf);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"Using&nbsp;el::Configurations&nbsp;class"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">//&nbsp;重新设置GLOBAL级别的配置项FORMAT的值</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;defaultConf.setGlobally(&nbsp;&nbsp;</SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;el::ConfigurationType::Format,&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"%datetime&nbsp;%msg"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="comment" style="border: currentColor; border-image: none; color: rgb(0, 130, 0); background-color: inherit;">///&nbsp;重新设置配置</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;el::Loggers::reconfigureLogger(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"default"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">,&nbsp;defaultConf);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;LOG(INFO)&nbsp;&lt;&lt;&nbsp;<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"Using&nbsp;el::Configurations&nbsp;class"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;</SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;system(<SPAN 
+  class="string" style="border: currentColor; border-image: none; color: rgb(0, 0, 255); background-color: inherit;">"pause"</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">);&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI class="alt" style="border-style: none none none solid; color: inherit; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px;"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+  class="keyword" style="border: currentColor; border-image: none; color: rgb(0, 102, 153); font-weight: bold; background-color: inherit;">return</SPAN><SPAN 
+  style="border: currentColor; border-image: none; background-color: inherit;">&nbsp;0;&nbsp;&nbsp;</SPAN></SPAN></LI>
+  <LI style="border-style: none none none solid; line-height: 18px; border-left-color: rgb(108, 226, 108); border-left-width: 3px; background-color: rgb(248, 248, 248);"><SPAN 
+  style="border: currentColor; border-image: none; color: rgb(0, 0, 0); background-color: inherit;">}&nbsp;&nbsp;</SPAN></LI></OL></DIV><BR>
+<P></P>
+<P style="color: rgb(51, 51, 51);"><SPAN style="line-height: 25px;"><SPAN style="font-size: 24px;"><STRONG>方法三：使用内联配置功能</STRONG></SPAN></SPAN></P>
+<P style="color: rgb(51, 51, 51);">所谓的内联配置功能，就是说你可以通过使用&nbsp;<SPAN style="line-height: 21px;">std::string 
+字符串来完成日志的配置功能，但是要注意在<SPAN 
+style='font-family: "Microsoft YaHei";'>&nbsp;std::string 
+字符串中加上换行符保证字符串的格式遵循配置文件中的格式。比如，如果要使用内联配置功能实现和方法二中一样的输出格式，那么实现代码必须像下面这样：</SPAN></SPAN></P>
+<P style="color: rgb(51, 51, 51);"><SPAN style="line-height: 21px;"><SPAN style='font-family: "Microsoft YaHei";'></SPAN></SPAN></P>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, const char** argv) 
+{
+	/// 使用默认配置
+	el::Configurations defaultConf;
+	defaultConf.setToDefault();
+	LOG(INFO) &lt;&lt; "Using inline configuration";
+	
+	/// 重新设置INFO级别的配置项FORMAT的值
+	defaultConf.parseFromText("*INFO:\n FORMAT = %datetime %level %msg");
+	/// 重新设置配置
+	el::Loggers::reconfigureLogger("default", defaultConf);
+	LOG(INFO) &lt;&lt; "Using inline configuration";
+
+	// 重新设置GLOBAL级别的配置项FORMAT的值
+	defaultConf.parseFromText("*INFO:\n FORMAT = %datetime %msg");
+	/// 重新设置配置
+	el::Loggers::reconfigureLogger("default", defaultConf);
+	LOG(INFO) &lt;&lt; "Using inline configuration";
+
+	system("pause");
+	return 0;
+}</CODE></PRE>仔细看上面的代码，注意每一次调用函数parseFromText()的参数中都包含了一个换行符 
+“\n”。假如没有这个换行符，就不能正确的解析出配置项的内容，从而会导致配置无效。由于这个原因，当需要设置的配置项很多的时候，如果还使用内联配置功能完成日志的配置，就会使得代码变得凌乱复杂，而且很容易造成错误，所以尽量不要使用这种方法或者避免使用这种方法。</DIV>
+<DIV style="line-height: 26px; font-family: Arial; font-size: 14px;"><BR></DIV>
+<DIV style="line-height: 26px; font-family: Arial; font-size: 14px;"><BR></DIV>
+<DIV>
+<P style="line-height: 26px;"><STRONG><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'>默认配置功能</SPAN></STRONG></P>
+<P style="line-height: 26px;"><BR></P>
+<P style="line-height: 26px;">如果你希望为现有的或者将来新建的日志记录器设置一个默认的配置，你可以使用下面的这个函数：</P>
+<P style="line-height: 26px;"></P>
+<PRE><CODE class="language-cpp">el::Loggers::setDefaultConfigurations(el::Configurations&amp; configurations, bool configureExistingLoggers = false)</CODE></PRE>当你在编写大型程序或者调用同样使用 
+Easylogging++ 的第三方库时，默认配置功能显得十分有用。<SPAN 
+style="line-height: 26px;">这个功能使得后续</SPAN>任何新建的日志记录器，都将会使用默认配置；如果你希望现有的日志记录器也使用默认配置，只需把函数的第二个参数设置为 
+true 即可。下面的代码演示了默认配置功能：</DIV>
+<DIV>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(void)
+{
+	el::Configurations defaultConf;
+	defaultConf.setGlobally(el::ConfigurationType::Format, "[%logger] %level: %msg");
+
+	/// 只为新建的日志记录器设置默认配置
+	el::Loggers::setDefaultConfigurations(defaultConf);
+	LOG(INFO) &lt;&lt; "Set default configuration but existing loggers not updated yet";
+
+	/// 新建日志记录器 testDefaultConf1
+	el::Loggers::getLogger("testDefaultConf1");
+	CLOG(INFO, "testDefaultConf1") &lt;&lt; "Logging using new logger 1";
+
+	// 为现有的日志记录器设置默认配置
+	el::Loggers::setDefaultConfigurations(defaultConf, true);
+	LOG(INFO) &lt;&lt; "Existing loggers updated as well";
+
+	/// 新建日志记录器 testDefaultConf2
+	el::Loggers::getLogger("testDefaultConf2");
+	CLOG(INFO, "testDefaultConf2") &lt;&lt; "Logging using new logger 2";
+
+	system("pause");
+	return 0;
+}</CODE></PRE><BR></DIV>
+<DIV>
+<P style="line-height: 26px;"></P><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'><STRONG>全局配置功能</STRONG></SPAN> 
+<P></P>
+<P style="line-height: 26px;"><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'><STRONG><BR></STRONG></SPAN></P>
+<P style="line-height: 26px;">全局配置并不是指 Global 
+级别，而是指利用全局配置文件为全部或部分，甚至是为新建的日志记录器注册配置。全局配置文件必须遵循下面的语法：</P>
+<P></P>
+<PRE><CODE class="language-plain">-- LOGGER ID ## Case sensitive
+  ## Everything else is same as configuration file
+
+-- ANOTHER LOGGER ID
+  ## Configuration for this logger</CODE></PRE><SPAN 
+style="line-height: 26px;">语法简要说明如下：</SPAN><BR>
+<P></P>
+<UL>
+  <LI><SPAN style="line-height: 26px;">LOGGER ID ，指的是记录器 
+  ID，大小写敏感，并以两个破折号开始。</SPAN></LI>
+  <LI><SPAN 
+  style="line-height: 26px;">其余部分的语法规则和本文中方法一的配置文件的语法规则完全一样。</SPAN></LI></UL>
+<DIV><SPAN 
+style="line-height: 26px;">一旦你编写好了全局配置文件，你仅需使用一个函数就可以完成你的日志记录器的配置，甚至是注册一个全新的日志记录器。需要注意的是，你不能使用空白的配置来注册新的日志记录器，也就是说在&nbsp;<SPAN 
+style="line-height: 26px;">LOGGER ID 
+下面，你至少得定义一个配置项。下面的代码演示了全局配置功能：</SPAN></SPAN></DIV>
+<DIV>
+<PRE><CODE class="language-cpp">#include "easylogging++.h"
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(void) 
+{
+	LOG(INFO) &lt;&lt; "Info log before using global configuration";
+
+	/// 只需一个函数即可实现全局配置功能
+	el::Loggers::configureFromGlobal("global.conf");
+
+	LOG(INFO) &lt;&lt; "Info log AFTER using global configuration";
+	LOG(ERROR) &lt;&lt; "Error log AFTER using global configuration";
+
+	/// 用全局配置文件中新建的日志记录器 testGlobalConf 来记录日志
+	CLOG(TRACE, "testGlobalConf") &lt;&lt; "TRACE Logging using new logger";
+	CLOG(DEBUG, "testGlobalConf") &lt;&lt; "DEBUG Logging using new logger";
+	CLOG(WARNING, "testGlobalConf") &lt;&lt; "WARNING Logging using new logger";
+	CLOG(ERROR, "testGlobalConf") &lt;&lt; "ERROR Logging using new logger";
+	CLOG(INFO, "testGlobalConf") &lt;&lt; "INFO Logging using new logger";
+
+	system("pause");
+	return 0;
+}</CODE></PRE></DIV>
+<DIV>其中全局配置文件 global.conf 的内容如下：</DIV>
+<DIV>
+<PRE><CODE class="language-plain">-- default 
+   *INFO:
+      FORMAT   = "%level %msg"
+      FILENAME = "/tmp/logs/wow.log"
+   *ERROR:
+      FORMAT   = "%levshort %fbase:%line %msg"
+
+	  
+-- testGlobalConf
+   *GLOBAL:
+      FORMAT                  =   "[%level | %datetime] | %msg"
+      ENABLED                 =   true
+      TO_FILE                 =   true
+      TO_STANDARD_OUTPUT      =   true
+      MILLISECONDS_WIDTH      =   3</CODE></PRE>
+<DIV><BR></DIV><STRONG><SPAN style='font-family: "Microsoft YaHei"; font-size: 24px;'>读取配置</SPAN></STRONG></DIV>
+<DIV><BR></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); line-height: 25px; font-family: "Microsoft YaHei"; font-size: 14px;'>在某些情况下，如果我们想要获取某一个日志记录器的当前配置，</SPAN><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>可以通过使用 
+el::Loggers  类的成员函数&nbsp;<SPAN style='color: rgb(51, 51, 51); line-height: 21.76px; font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 13.6px;'>typedConfigurations()来实现</SPAN>，<SPAN 
+style='color: rgb(51, 51, 51); line-height: 25px; font-family: "Microsoft YaHei"; font-size: 14px;'>建议参考该类的源码，可以查看和了解更多更详细和更全面的功能接口，</SPAN>下面的代码片段演示了该功能：</SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'></SPAN>
+<PRE><CODE class="language-cpp">el::Logger* defaultLogger = el::Loggers::getLogger("default");
+/// 记录器default是否被禁用
+bool enabled = defaultLogger-&gt;typedConfigurations()-&gt;enabled(el::Level::Info);
+/// 记录器default的INFO级别的日志输出格式
+std::string format =  defaultLogger-&gt;typedConfigurations()-&gt;logFormat(el::Level::Info).format();</CODE></PRE></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>学习配置日志是掌握 
+Easylogging++ 使用的关键，通过灵活地运用配置功能，才能更好地将&nbsp;<SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'>Easylogging++ 
+ 
+的强悍之处应用到我们的程序开发当中。在本文列举了几个比较通用的配置方法，然而，在某些应用场景下，我们还需要通过其他的一些配置手段来辅助我们完成某些特殊功能，这些辅助配置手段包括设置命令行参数、设置日志标记、配置宏定义等，限于篇幅，后面的文章再对这些内容的学习过程逐一进行记录。</SPAN></SPAN></DIV>
+<DIV><SPAN style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><SPAN 
+style='color: rgb(51, 51, 51); line-height: 26px; font-family: "Microsoft YaHei"; font-size: 14px;'><BR></SPAN></SPAN></DIV>
+<P></P></DIV></DIV></DIV>
+<DIV class="hide-article-box text-center"><A class="btn" id="btn-readmore" 
+data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,"}' 
+data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,"}'>阅读更多</A>
+			 <A class="btn" id="btn-lobinreadmore" href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_more_login" 
+target="_self" data-track-view='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,"}' 
+data-track-click='{"mod":"popu_557","con":",https://blog.csdn.net/Fish_55_66/article/details/49425949,"}'>登录后自动展开</A>
+		 </DIV></ARTICLE></DIV>
+<SCRIPT>
+		$(".MathJax").remove();
+		if($('div.markdown_views pre.prettyprint code.hljs').length > 0 ){
+				$('div.markdown_views')[0].className = 'markdown_views';
+		}
+</SCRIPT>
+ <!-- 博客详情页PC增加广告系统刷量代码 --> 
+<DIV id="a52b5334d" style="width: 1px; height: 1px; display: none;">
+<SCRIPT id="adJs52b5334"></SCRIPT>
+ 
+<SCRIPT>document.getElementById("adJs52b5334").src = "https://ads.csdn.net/js/opt/52b5334.js?t=" + Math.random();</SCRIPT>
+ </DIV>
+<SCRIPT>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</SCRIPT>
+         
+<DIV class="p4course_target"></DIV>
+<SCRIPT>window.p4sdk_enable_courseBox=true</SCRIPT>
+        <A id="commentBox"></A> 
+<DIV class="comment-box">
+<DIV class="unlogin-box text-center">想对作者说点什么？		 <!-- $curl 当前地址 -->		 <A class="btn btn-sm btn-red" 
+href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49425949#commentBox">我来说一句</A>
+	 </DIV>
+<DIV class="comment-list-container"><A id="comments"></A>		 
+<DIV class="comment-list-box"></DIV>
+<DIV class="pagination-box d-none" id="commentPage"></DIV>
+<DIV class="opt-box text-center"><BUTTON class="btn btn-sm btn-link-blue" id="btnMoreComment"></BUTTON>
+		 </DIV></DIV></DIV>
+<DIV class="recommend-box">
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49427295,BlogCommendESEnWordWeight_0"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49427295,BlogCommendESEnWordWeight_0"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（4）—— 格式说明符" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49427295" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（4）—— 
+格式说明符				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-26</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							2470</SPAN>						 </P></DIV>
+<P class="content oneline">上一篇文章中，主要记录了如何使用 Easylogging++ 
+的配置功能，有些细心的小伙伴可能已经发现遗漏了些什么，请看下面两句摘自 my_log.conf 配置文件的语句： FORMAT      
+...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendFromGuangxin_5"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49471873,BlogCommendFromGuangxin_5"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（7）—— 记录方式详解" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49471873" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（7）—— 
+记录方式详解				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-28</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							3350</SPAN>						 </P></DIV>
+<P class="content oneline">在前面所列文章的演示代码中，其实已经展示了一部分记录日志的方式。为了使用方便，在 
+Easylogging++ 中，通过使用宏的集合来完成日志记录。...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box clearfix">
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/pc3553.js" type="text/javascript"></SCRIPT>
+				 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendESEnWordWeight_1"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49407891,BlogCommendESEnWordWeight_1"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（2）—— <em>日志</em>级别" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49407891" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（2）—— 
+<EM>日志</EM>级别				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-25</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4182</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多的C++日志库中，日志信息会根据严重性来划分级别，使用者可以设置严重性级别门阀值来控制日志的输出，即严重性级别在该门阀值以上的日志信息才进行记录。然而在Easylogging++中，故意默认采用...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254120,BlogCommendESEnWordWeight_2"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/lengyuezuixue/article/details/79254120,BlogCommendESEnWordWeight_2"}'><A 
+title="Easylogging <em>日志</em>记录器" href="https://blog.csdn.net/lengyuezuixue/article/details/79254120" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline">Easylogging <EM>日志</EM>记录器				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="lengyuezuixue" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_lengyuezuixue.jpg">
+							 <SPAN class="namebox"><SPAN class="name">lengyuezuixue</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">02-05</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							112</SPAN>						 </P></DIV>
+<P 
+class="content oneline">所有的日志都是由日志记录器完成的，日志记录器使用唯一的ID(大小写敏感)来标识。在Easylogging++中默认了三个现有的日志记录器： 
+&nbsp; &nbsp;·默认日志记录器，其ID为：default&nbsp; &nbsp;...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendESEnWordWeight_3"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49367197,BlogCommendESEnWordWeight_3"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（1）—— 简要介绍" href="https://blog.csdn.net/Fish_55_66/article/details/49367197" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（1）—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-23</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							7905</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendFromGuangxin_4"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/xie1xiao1jun/article/details/54572803,BlogCommendFromGuangxin_4"}'><A 
+title="<em>EasyLogging++</em><em>学习</em>笔记(1)—— 简要介绍" href="https://blog.csdn.net/xie1xiao1jun/article/details/54572803" 
+target="_blank">
+<DIV class="content">
+<H4 class="text-truncate oneline"><EM>EasyLogging++</EM><EM>学习</EM>笔记(1)—— 
+简要介绍				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="xie1xiao1jun" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_xie1xiao1jun.gif">
+							 <SPAN class="namebox"><SPAN class="name">xie1xiao1jun</SPAN>
+								 <SPAN class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">01-16</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1441</SPAN>						 </P></DIV>
+<P 
+class="content oneline">对于有开发经验的程序员来说，记录程序执行日志是一件必不可少的事情。通过查看和分析日志信息，不仅可以有效地帮助我们调试程序，而且当程序正式发布运行之后，更是可以帮助我们快速、准确地定位问题。在现在这个开...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></DIV>
+<SCRIPT>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'left',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 8,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</SCRIPT>
+						 
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49451321,BlogCommendFromGuangxin_6"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49451321,BlogCommendFromGuangxin_6"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（5）—— 辅助<em>配置</em><em>功能</em>" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49451321" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（5）—— 
+辅助<EM>配置</EM><EM>功能</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-27</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							4149</SPAN>						 </P></DIV>
+<P class="content oneline">正如前面《日志库EasyLogging++学习系列（3）—— 
+配置功能》文中最后提到的，在某些应用场景下，我们还需要通过其他的一些配置手段来辅助我们完成某些特殊功能，这些辅助配置手段包括设置命令行参数...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,BlogCommendFromQuerySearch_7"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49617403,BlogCommendFromQuerySearch_7"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（10）—— <em>日志</em>文件滚动" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49617403" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（10）—— 
+<EM>日志</EM>文件滚动				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">11-03</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							5111</SPAN>						 </P></DIV>
+<P 
+class="content oneline">在很多应用场合，我们是需要实现日志文件滚动的，特别是在一些长期运行的服务器程序中，如果把所有的日志都记录在一个文件之中，势必会造成日志文件越来越大。当日志内容很多的时候，万一哪天突然需要查询某个日志信...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49587949,BlogCommendFromQuerySearch_8"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49587949,BlogCommendFromQuerySearch_8"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（9）—— 性能跟踪<em>功能</em>" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49587949" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（9）—— 
+性能跟踪<EM>功能</EM>				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">11-02</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							1644</SPAN>						 </P></DIV>
+<P class="content oneline">性能跟踪是 Easylogging++ 
+其中一个非常显著的功能，而且使用起来也十分简单。如果在Windows平台下使用性能跟踪的话，其原理是基于 Windows 
+API函数&nbsp;GetSystemTime...					</P></DIV></A>	 </DIV>
+<DIV class="recommend-item-box recommend-box-ident type_blog clearfix" 
+data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,BlogCommendFromQuerySearch_9"}' 
+data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Fish_55_66/article/details/49508961,BlogCommendFromQuerySearch_9"}'><A 
+title="<em>日志</em>库<em>EasyLogging++</em><em>学习</em><em>系列</em>（8）—— Verbose<em>日志</em>详解" 
+href="https://blog.csdn.net/Fish_55_66/article/details/49508961" 
+target="_blank">
+<DIV class="content">
+<H4 
+class="text-truncate oneline"><EM>日志</EM>库<EM>EasyLogging++</EM><EM>学习</EM><EM>系列</EM>（8）—— 
+Verbose<EM>日志</EM>详解				</H4>
+<DIV class="info-box d-flex align-content-center">
+<P class="avatar"><IMG class="avatar-pic" alt="Fish_55_66" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg">
+							 <SPAN class="namebox"><SPAN class="name">Fish_55_66</SPAN>								 <SPAN 
+class="triangle"></SPAN>							 </SPAN>					 </P>
+<P class="date-and-readNum"><SPAN class="date hover-show">10-30</SPAN>
+						 <SPAN class="read-num hover-hide"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon csdnc-yuedushu" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-yuedushu" />							 </svg>							3536</SPAN>						 </P></DIV>
+<P class="content oneline">这里之所以把Verbose日志单独拿出来讲，是因为最初接触 Easylogging++ 
+的时候，对Verbose级别的日志感到有点迷惑，并不是十分清楚其用法。不过后来发现，在不扩展日志级别的情况下，其...					</P></DIV></A>
+	 </DIV>
+<DIV class="recommend-item-box type_hot_word">
+<DIV class="content clearfix oneline">
+<H5 class="float-left">相关热词</H5>
+<DIV class="float-left"><SPAN><A href="https://blog.csdn.net/anning_88/article/details/53694810" 
+target="_blank">was的日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/watermelonh/article/details/77471354" 
+target="_blank">as日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_29580525/article/details/79482020" 
+target="_blank">						日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/sdwxqing/article/details/21523079" 
+target="_blank">was日志</A>					 </SPAN>									 <SPAN><A href="https://blog.csdn.net/qq_19891827/article/details/73732983" 
+target="_blank">						日志组件打日志</A>					 </SPAN>								 </DIV></DIV></DIV>
+<DIV class="recommend-loading-box"><IMG src="日志库EasyLogging++学习系列（3）——%20配置功能_files/feedLoading.gif"> 
+            </DIV>
+<DIV class="recommend-end-box">
+<P class="text-center">没有更多推荐了，<A class="c-blue c-blue-hover c-blue-focus" href="https://blog.csdn.net/">返回首页</A></P></DIV></DIV></main><ASIDE>
+<DIV class="aside-box" id="asideProfile">
+<H3 class="aside-title">个人资料</H3>
+<DIV class="profile-intro d-flex">
+<DIV class="avatar-box d-flex justify-content-center flex-column"><A href="https://blog.csdn.net/Fish_55_66"><IMG 
+class="avatar_pic" 
+src="日志库EasyLogging++学习系列（3）——%20配置功能_files/3_fish_55_66.jpg"></A>         
+</DIV>
+<DIV class="user-info d-flex justify-content-center flex-column">
+<P class="name csdn-tracking-statistics tracking-click" data-mod="popu_379"><A 
+id="uid" href="https://blog.csdn.net/Fish_55_66" target="_blank">Fish_55_66</A>  
+           </P></DIV>
+<DIV class="opt-box d-flex justify-content-center flex-column"><SPAN class="csdn-tracking-statistics tracking-click" 
+data-mod="popu_379"><A class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/Fish_55_66/article/details/49425949" 
+target="_self">关注</A>                             </SPAN>                     
+</DIV></DIV>
+<DIV class="data-info d-flex item-tiling">
+<DL title="22" class="text-center">
+  <DT><A href="https://blog.csdn.net/fish_55_66?t=1">原创</A></DT>
+  <DD><A href="https://blog.csdn.net/fish_55_66?t=1"><SPAN 
+  class="count">22</SPAN></A></DD></DL>
+<DL title="30" class="text-center">
+  <DT>粉丝</DT>
+  <DD><SPAN class="count" id="fan">30</SPAN></DD></DL>
+<DL title="7" class="text-center">
+  <DT>喜欢</DT>
+  <DD><SPAN class="count">7</SPAN></DD></DL>
+<DL title="20" class="text-center">
+  <DT>评论</DT>
+  <DD><SPAN class="count">20</SPAN></DD></DL></DIV>
+<DIV class="grade-box clearfix">
+<DL>
+  <DT>等级：</DT>             
+  <DD><A title="3级,点击查看等级说明" href="https://blog.csdn.net/home/help.html#level" 
+  target="_blank"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon icon-level" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bloglevel-3" />                     </svg>                 
+  </A>             </DD>         </DL>
+<DL>
+  <DT>访问：</DT>             
+  <DD title="63683">6万+            </DD>         </DL>
+<DL>
+  <DT>积分：</DT>             
+  <DD title="864">864            </DD>         </DL>
+<DL title="66590">
+  <DT>排名：</DT>             
+  <DD>6万+</DD>         </DL></DIV>
+<DIV class="badge-box d-flex"><SPAN>勋章：</SPAN>                         <A title="持之以恒" 
+class="icon-badge"><svg xmlns="http://www.w3.org/2000/svg" class="icon" 
+aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" 
+/>             </svg>             
+<DIV class="icon-arrow"></DIV>
+<DIV class="grade-detail-box item2">
+<DIV class="pos-box">
+<DIV class="left-box d-flex justify-content-center align-items-center flex-column"><svg 
+xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-m-lasting" />      
+                   </svg>                         
+<P>持之以恒</P></DIV>
+<DIV class="right-box d-flex justify-content-center align-items-center">         
+               
+授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！              
+       </DIV></DIV></DIV></A></DIV></DIV>
+<DIV class="csdn-tracking-statistics mb8 box-shadow" style="height: 250px;" 
+data-mod="popu_4" data-pid="blog">
+<DIV class="aside-content text-center" id="cpro_u2734133"><!-- 广告位：PC-博客内页-百度联盟-300x250 -->
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/ymebi.js" type="text/javascript"></SCRIPT>
+    </DIV></DIV>
+<DIV class="aside-box" id="asideNewArticle">
+<H3 class="aside-title">最新文章</H3>
+<DIV class="aside-content">
+<UL class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/51064137" 
+  target="_blank">MFC调用4.0.1版本libpqxx库连接postgresql数据库提示编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50955806" 
+  target="_blank">图文说明Visual Studio 2013编译libpqxx步骤以及常见编译错误</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50601289" 
+  target="_blank">在DLL中定义宏ELPP_THREAD_SAFE会导致EasyLogging++初始化死锁的问题</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50454754" 
+  target="_blank">探讨WaitForMultipleObjects如何突破64个句柄的限制</A></LI>
+  <LI class="clearfix"><A href="https://blog.csdn.net/Fish_55_66/article/details/50352080" 
+  target="_blank">Windows网络编程之Select模型学习笔记</A></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideCategory">
+<H3 class="aside-title">个人分类</H3>
+<DIV class="aside-content">
+<UL>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5887819"><SPAN 
+  class="title oneline">C++点滴记录</SPAN>                     <SPAN class="count float-right">3篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5911481"><SPAN 
+  class="title oneline">Easylogging++日志库</SPAN>                     <SPAN class="count float-right">12篇</SPAN> 
+                  </A></LI>
+  <LI><A class="clearfix" href="https://blog.csdn.net/fish_55_66/article/category/5999661"><SPAN 
+  class="title oneline">日常杂记</SPAN>                     <SPAN class="count float-right">7篇</SPAN> 
+                  </A></LI></UL></DIV></DIV>
+<DIV class="aside-box flexible-box" id="asideArchive">
+<H3 class="aside-title">归档</H3>
+<DIV class="aside-content">
+<UL class="archive-list"><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/04">2016年4月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/03">2016年3月   
+                   <SPAN class="count float-right">1篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2016/01">2016年1月   
+                   <SPAN class="count float-right">2篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/12">2015年12月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/11">2015年11月  
+                    <SPAN class="count float-right">3篇</SPAN>                 
+  </A></LI><!--归档统计-->             
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/month/2015/10">2015年10月  
+                    <SPAN class="count float-right">12篇</SPAN>                 
+  </A></LI></UL></DIV>
+<P class="text-center"><A class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</A> 
+    </P></DIV>
+<DIV class="aside-box" id="asideHotArticle">
+<H3 class="aside-title">热门文章</H3>
+<DIV class="aside-content">
+<UL class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49367197">日志库EasyLogging++学习系列（1）—— 
+  简要介绍</A>
+  <P class="read">阅读量：<SPAN>7890</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49425949">日志库EasyLogging++学习系列（3）—— 
+  配置功能</A>
+  <P class="read">阅读量：<SPAN>5870</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49617403">日志库EasyLogging++学习系列（10）—— 
+  日志文件滚动</A>
+  <P class="read">阅读量：<SPAN>5098</SPAN></P></LI>
+  <LI><A href="https://blog.csdn.net/fish_55_66/article/details/49152531">Visual 
+  Studio 2013开发MFC程序对Excel 2010进行写操作（上）</A>
+  <P class="read">阅读量：<SPAN>5058</SPAN></P></LI>
+  <LI><A 
+  href="https://blog.csdn.net/fish_55_66/article/details/49407891">日志库EasyLogging++学习系列（2）—— 
+  日志级别</A>
+  <P class="read">阅读量：<SPAN>4167</SPAN></P></LI></UL></DIV></DIV>
+<DIV class="aside-box" id="asideNewComments">
+<H3 class="aside-title">最新评论</H3>
+<DIV class="aside-content">
+<UL class="newcomment-list">
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/50601289#comments" 
+  target="_blank">在DLL中定义宏ELPP_THRE...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Doctor_Warren" 
+  target="_blank">Doctor_Warren</A>：谢谢，我最近也被easylogging的多线程问题折腾了，学习学习            
+      </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/Wuzm_" 
+  target="_blank">Wuzm_</A>：[reply]woyouyigemengmeng[/reply] 添加 INITIALIZE_EA... 
+                 </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49451321#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：配置好多，大多用不到                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49659825#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/wang70937" 
+  target="_blank">wang70937</A>：这个库确实功能强大                </P></LI>
+  <LI><A class="title text-truncate" href="https://blog.csdn.net/fish_55_66/article/details/49367197#comments" 
+  target="_blank">日志库EasyLogging++学...</A>                 
+  <P class="comment"><A class="user-name" href="https://my.csdn.net/yokeyoke" 
+  target="_blank">yokeyoke</A>：感谢你分享这么完整的资料                
+</P></LI></UL></DIV></DIV>
+<DIV id="asideFooter">
+<DIV class="aside-box">
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/yn6yz.js" type="text/javascript"></SCRIPT>
+					 </DIV>
+<DIV class="aside-box">
+<DIV class="persion_article"></DIV></DIV></DIV></ASIDE>
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/publib_footer-1.0.3.js" type="text/javascript" data-isfootertrack="false"></SCRIPT>
+ 
+<SCRIPT>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</SCRIPT>
+ </DIV>
+<DIV class="mask-dark"></DIV>
+<DIV class="pulllog-box" style="display: block;">
+<DIV class="pulllog clearfix"><SPAN class="text float-left"><!-- 广告位：PC-博客内页底通 文字链位置 -->
+										 
+<SCRIPT>
+				(function() {
+					var s = "_" + Math.random().toString(36).slice(2);
+					document.write('<div id="baidufooter_0001"></div>');
+					(window.slotbydup=window.slotbydup || []).push({
+						id: '5851901',
+						container: 'baidufooter_0001',
+						size: '520,40',
+						display: 'inlay-fix'
+					});
+				})();
+				</SCRIPT>
+				 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/os.js"></SCRIPT>
+				 
+<STYLE>
+					#baidufooter_0001{
+						display: none !important;
+					}
+				</STYLE>
+							 </SPAN>		 
+<DIV class="pulllog-btn float-right clearfix"><BUTTON class="pulllog-login float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_557"><A href="https://passport.csdn.net/account/login?utm_source=csdn_blog_pc_login" 
+target="_self">登录</A></BUTTON>             
+<DIV class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" 
+data-mod="popu_558"><A href="https://passport.csdn.net/account/mobileregister" 
+target="_blank">注册</A></DIV><BUTTON class="btn-close"><svg xmlns="http://www.w3.org/2000/svg" 
+class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#csdnc-times" />                 </svg>             </BUTTON>
+		 </DIV></DIV></DIV>
+<DIV id="loginWrap" style="display: none;"></DIV>
+<DIV class="tool-box">
+<UL class="meau-list">
+  <LI class="btn-like-box "><BUTTON title="点赞" class=" low-height hover-box btn-like "><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon active hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-thumbsup" />				 </svg>				 <SPAN class="hover-show text-box text"><SPAN 
+  class="no-active">点赞</SPAN>					 <SPAN class="active">取消点赞</SPAN>				 </SPAN>
+  				 
+  <P>0</P></BUTTON>		 </LI>
+  <LI><A title="写评论" class="btn-comments long-height hover-box" href="https://blog.csdn.net/Fish_55_66/article/details/49425949#commentBox"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-comments" />				 </svg>				 <SPAN 
+  class="hover-show text">评论</SPAN>				 
+  <P>1				</P></A></LI>
+  <LI class="toc-container-box" id="liTocBox"><BUTTON title="目录" class="btn-toc low-height hover-box"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-contents" />				 </svg>				 <SPAN 
+  class="hover-show text">目录</SPAN>			 </BUTTON>			 
+  <DIV class="toc-container">
+  <DIV class="pos-box">
+  <DIV class="icon-arrow"></DIV>
+  <DIV class="scroll-box">
+  <DIV class="toc-box"></DIV></DIV></DIV>
+  <DIV class="opt-box"><BUTTON title="向上" class="btn-opt prev nomore"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevronup" />
+  						 </svg>					 </BUTTON>					 <BUTTON class="btn-opt next"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon" aria-hidden="true"><use 
+  xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#csdnc-chevrondown" />
+  						 </svg>					 </BUTTON>				 </DIV></DIV></LI>
+  <LI><BUTTON title="收藏" class="btn-bookmark low-height hover-box"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark-ok" />				 </svg>				 <svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon no-active hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-bookmark" />				 </svg>					 <SPAN 
+  class="hover-show text">收藏</SPAN>				 <!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+  			 </BUTTON>		 </LI>
+  <LI class="bdsharebuttonbox"><BUTTON 
+  class="btn-comments low-height hover-box"><A title="手机看" class="bds_weixin clear-share-style" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49425949#" data-cmd="weixin"></A>
+  				 <svg xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-wechat" />				 </svg>				 <SPAN class="hover-show text text3">手机看
+  				 </SPAN>			 </BUTTON>		 </LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（2）—— 日志级别" class="btn-comments low-height hover-box" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49407891"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-shangyiye" />					 </svg>					 <SPAN class="hover-show text text3">上一篇</SPAN>
+  				 </A></LI>
+  <LI class="widescreen-hide"><A title="日志库EasyLogging++学习系列（4）—— 格式说明符" class="btn-comments hover-box low-height" 
+  href="https://blog.csdn.net/fish_55_66/article/details/49427295"><svg xmlns="http://www.w3.org/2000/svg" 
+  class="icon hover-hide" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-xiayiye" />				 </svg>				 <SPAN class="hover-show text text3">下一篇</SPAN>
+  			 </A></LI>
+  <LI class="bdsharebuttonbox _360_interactive" style="margin-top: 8px;">
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/interactive_plugin.js" type="text/javascript"></SCRIPT>
+   			
+<STYLE>
+				#_360_interactive > *{
+					 margin-left: -8px;
+				}
+			</STYLE>
+  			 
+  <DIV id="_360_interactive">
+<SCRIPT> INTERACTIVE_PLUGIN.render({ showid : 'N0ufqn', w: 60, h: 60, type: 'click', placeholderId: '_360_interactive' }); </SCRIPT>
+   			</DIV><IMG style="margin: 0px auto; display: block;" alt="" src="日志库EasyLogging++学习系列（3）——%20配置功能_files/201608021757063065.png"></LI><!-- 宽屏更多按钮 -->
+  		 
+  <LI class="widescreen-more"><A title="快问" class="btn-comments chat-ask-button low-height hover-box" 
+  href="https://blog.csdn.net/Fish_55_66/article/details/49425949#chatqa"><svg 
+  xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+  aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xlink:href="#csdnc-more" />				 </svg>				 <SPAN 
+  class="hover-show text">更多</SPAN>							 </A>
+  <UL class="widescreen-more-box">
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（2）—— 日志级别" class="btn-comments low-height hover-box" 
+    href="https://blog.csdn.net/fish_55_66/article/details/49407891"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-shangyiye" />							 </svg>							 <SPAN class="hover-show text text3">上一篇</SPAN>
+    						 </A></LI>
+    <LI class="widescreen-more"><A title="日志库EasyLogging++学习系列（4）—— 格式说明符" 
+    class="btn-comments hover-box low-height" href="https://blog.csdn.net/fish_55_66/article/details/49427295"><svg 
+    xmlns="http://www.w3.org/2000/svg" class="icon hover-hide" 
+    aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+    xlink:href="#csdnc-xiayiye" />						 </svg>						 <SPAN class="hover-show text text3">下一篇</SPAN>
+    					 </A></LI></UL></LI></UL></DIV>
+<SCRIPT>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</SCRIPT>
+ 
+<SCRIPT>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "日志库EasyLogging++学习系列（3）—— 配置功能";
+    var ChannelId = 16;
+    var articleId = "49425949";
+    var commentscount = 1;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Fish_55_66/article/details/49425949";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u65e5\u5fd7","easylogging++","\u5b66\u4e60","\u7cfb\u5217","\u914d\u7f6e","\u529f\u80fd"];//高亮数组
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/sandalstrap.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/paging.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/goTop-v1.0.min.js"></SCRIPT>
+ 
+<SCRIPT>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"日志库EasyLogging++学习系列（3）—— 配置功能");
+        }
+    })
+</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/common-ffcd47990c.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/detail-7060b66935.min.js"></SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/skin3-template-9376486353.min.js"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/chart.css" 
+rel="stylesheet">	 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/chart.min.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/widget2chart.js" type="text/javascript"></SCRIPT>
+	 <LINK href="日志库EasyLogging++学习系列（3）——%20配置功能_files/atom-one-dark.css" rel="stylesheet">
+	 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/pc_wap_common-676a063698.js" type="text/javascript"></SCRIPT>
+	 
+<SCRIPT type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</SCRIPT>
+ 
+<SCRIPT src="日志库EasyLogging++学习系列（3）——%20配置功能_files/MathJax.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</SCRIPT>
+ </BODY><!-- 第四范式SDK --><!-- 高亮未与 markdown兼容  --></HTML>
